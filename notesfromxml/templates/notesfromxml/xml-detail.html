@@ -1,0 +1,61 @@
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'notesfromxml/style.css' %}" />
+
+<!-- This is a recursive HTML file that goes through a recursion for the entire XML tree.
+ For the recursion to work, it is necessary that every variable that is recursed through be named "value". -->
+
+<!-- Checks if the value is any sort of dictionary, if not then it should have just regular values to output -->
+{% if value.1.keys %}
+<div id="div-container-main">
+    <!-- If the node is called "links", it is guaranteed to have 1 to many "link" nodes.
+     The link nodes should always have a "description" and an "url" properties. -->
+    {% if value.0 == 'links' %}
+        <h4>Further reading:</h4>
+        {% for link_key, link_value in value.1.items %}
+            {% for linkdetails in link_value %}
+                <div id="div-container-link">
+                    {% if linkdetails.description or linkdetails.url %}
+                        <p>Description: {{ linkdetails.description }} - {{ linkdetails.url|urlize }}</p>
+                    {% else %}
+                        <p>description: {{ link_value.description }} - {{ link_value.url|urlize }}</p>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        {% endfor %}
+    <!-- If the node is called "notes" then it should have multiple branches that the code needs to
+    recursively go through. -->
+    {% elif value.0 == 'notes'%}
+        {% for value in value.1.items %}
+            {% include 'notesfromxml/xml-detail.html' %}
+        {% endfor %}
+    {% else %}
+        <h2>{{ value.0 }}</h2>
+        {% if value.1.items %}
+            {% for value in value.1.items %}
+                {% include 'notesfromxml/xml-detail.html' %}
+            {% endfor %}
+        {% endif %}
+    {% endif %}
+</div>
+{% else %}
+    <div id="div-container-endnode">
+        <h5>{{ value.0 }}</h5>
+        {% if  value.1.0.keys %}
+            {% for value in value.1 %}
+                {% if value.name %}
+                    <div style="border: 1px solid yellowgreen">
+                        <p id="p-name">{{ value.name }}</p>
+                        <p>{{ value.purpose }}</p>
+                        <p>{{ value.link|urlize }}</p>
+                    </div>
+                {% else %}
+                    {% for value in value.items %}
+                        {% include 'notesfromxml/xml-detail.html' %}
+                    {% endfor %}
+                {% endif %}
+            {% endfor %}
+        {% else %}
+            <p>{{ value.1 }}</p>
+        {% endif %}
+    </div>
+{% endif %}

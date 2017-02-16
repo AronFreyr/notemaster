@@ -1,0 +1,16 @@
+#div-container-main{
+    border: 1px solid black;
+    padding: 25px;
+}
+
+/*#div-container-link{
+    border: 1px solid blue;
+}*/
+
+#div-container-endnode{
+    border: 1px solid red;
+}
+
+#p-name{
+    text-decoration: underline;
+}
