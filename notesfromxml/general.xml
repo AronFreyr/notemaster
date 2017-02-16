@@ -268,6 +268,26 @@ In addition to its role for component initialization, this annotation may also b
 	</spring>
 	<hdm>
 		<notes>
+			<hdm_management_console>
+				<links>
+					<link>
+						<description>A link to the Management console. Since it is using version 3.1 of HDM (which is very old) it is impossible to open the management console on any oter browser than Internet Explorer.</description>
+						<url>http://hnm-01.siminn.is:7003/hdm/welcome/welcome.do</url>
+					</link>
+				</links>
+			</hdm_management_console>
+			<hdm_sce>
+				<description>The HDM Services Management (SCE) is used to change clobal variables for HDM. An example would be to change the "nbi.notification.blocked.inform.eventcodes" variable by adding "2 PERIODIC" to it, to make it block periodic messages from coming in to the event queue as an nbi notification.</description>
+				<links>
+					<link>
+						<description>A link to the HDM Services Management. It would be best not to fiddle with any of the settings.</description>
+						<url>http://hnm-01.siminn.is:7003/sce/selectConfigurationView.do</url>
+					</link>
+				</links>
+			</hdm_sce>
+			<firmware_update>
+				Firmware Updates must use the FrimwareImageDTO which only takes in a name. That name is the of a firmware image that is stored in HDM and can be seen inthe HDM management console. If the name is incorrect then the "createSingleDeviceOperation" method throws a SOAP fault exception.
+			</firmware_update>
 			<nbi_notifications>
 				<definition>WHAT THE FUCK IS AN NBI NOTIFICATION?</definition>
 				<notification>
@@ -918,6 +938,14 @@ In addition to its role for component initialization, this annotation may also b
 					<link>
 						<description>Guides to teach you how to have development, production, deployment and other environments and what the benefits are to each one.</description>
 						<url>http://guides.beanstalkapp.com/</url>
+					</link>
+					<link>
+						<description>A guide that talks about the best practices in deployment environments. It talks about tree diferent environments: Development, Staging and Production, and how to best utilize them.</description>
+						<url>http://guides.beanstalkapp.com/deployments/best-practices.html</url>
+					</link>
+					<link>
+						<description>A guide about the best practices when it comes to branching. It talks about how you should have a branch for each environment and when you start work on a new feature, how you should create a new branch for the feature and merge it with the appropriate environment branch when done.</description>
+						<url>http://guides.beanstalkapp.com/version-control/branching-best-practices.html</url>
 					</link>
 				</links>
 			</work_environments>
