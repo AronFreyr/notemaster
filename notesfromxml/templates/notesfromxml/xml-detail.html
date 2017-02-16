@@ -7,12 +7,13 @@
 <!-- Checks if the value is any sort of dictionary, if not then it should have just regular values to output -->
 {% if value.1.keys %}
 <div id="div-container-main">
-    <!-- If the node is called "links", it is guaranteed to have 1 to many "link" nodes.
+    <!-- If the node is called "links", it is guaranteed to have 1 or more "link" nodes.
      The link nodes should always have a "description" and an "url" properties. -->
     {% if value.0 == 'links' %}
         <h4>Further reading:</h4>
         {% for link_key, link_value in value.1.items %}
             {% for linkdetails in link_value %}
+                <p>{{ linkdetails }}</p>
                 <div id="div-container-link">
                     {% if linkdetails.description or linkdetails.url %}
                         <p>Description: {{ linkdetails.description }} - {{ linkdetails.url|urlize }}</p>
@@ -22,7 +23,7 @@
                 </div>
             {% endfor %}
         {% endfor %}
-    <!-- If the node is called "notes" then it should have multiple branches that the code needs to
+    <!-- If the node is called "notes" then it should have multiple branches that we need to
     recursively go through. -->
     {% elif value.0 == 'notes'%}
         {% for value in value.1.items %}
