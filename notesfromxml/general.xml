@@ -910,6 +910,10 @@ In addition to its role for component initialization, this annotation may also b
 					<url>http://clearbridgemobile.com/how-to-submit-an-app-to-the-app-store/</url>
 				</link>
 				<link>
+					<description>A tutorial for submitting an iOS app as a beta app. So that it won't be open to the public, only for specified testers.</description>
+					<url>https://developer.apple.com/library/content/documentation/LanguagesUtilities/Conceptual/iTunesConnect_Guide/Chapters/BetaTestingTheApp.html#//apple_ref/doc/uid/TP40011225-CH35-SW2</url>
+				</link>
+				<link>
 					<description>A Wikipedia page that describes what an .ipa file is.</description>
 					<url>https://en.wikipedia.org/wiki/.ipa</url>
 				</link>
