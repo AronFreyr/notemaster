@@ -838,8 +838,8 @@ In addition to its role for component initialization, this annotation may also b
 	<funambol>
 		<links>
 			<link>
-				<description></description>
-				<url></url>
+				<description>A link to the current builds of the app for Síminn Ský. The username is 'funambol@siminn.is' and the password is 'changeme'</description>
+				<url>ftp://funambol-ftp.funambol.com</url>
 			</link>
 		</links>
 	</funambol>
@@ -908,6 +908,18 @@ In addition to its role for component initialization, this annotation may also b
 				<link>
 					<description>A detailed tutorial for the process of submitting an app to the Apple Appstore.</description>
 					<url>http://clearbridgemobile.com/how-to-submit-an-app-to-the-app-store/</url>
+				</link>
+				<link>
+					<description>A tutorial for submitting an iOS app as a beta app. So that it won't be open to the public, only for specified testers.</description>
+					<url>https://developer.apple.com/library/content/documentation/LanguagesUtilities/Conceptual/iTunesConnect_Guide/Chapters/BetaTestingTheApp.html#//apple_ref/doc/uid/TP40011225-CH35-SW2</url>
+				</link>
+				<link>
+					<description>A Wikipedia page that describes what an .ipa file is.</description>
+					<url>https://en.wikipedia.org/wiki/.ipa</url>
+				</link>
+				<link>
+					<description>A website where one can upload .ipa files and get a link which allows you to download the app on an iOS device. This is done because you need to build and deploy the .ipa file to be able to get it working on an iOS device. This needs to be done by either submitting it to the iOS store or using this link. Otherwise you cannot get it running on your device. This link allows you to do the same for Android apps but .apk files work differently so it isn't really necessary to use this method for Android apps.</description>
+					<url>https://www.diawi.com/</url>
 				</link>
 			</links>
 		</ios>
