@@ -7,7 +7,7 @@ from selenium import webdriver
 
 class SeleniumTests(TestCase):
 
-    def test_selenium(self):
+    """def test_selenium(self):
 
         chromedriver = r'C:/Users/default.default-PC/Downloads/chromedriver.exe'
         os.environ["webdriver.chrome.driver"] = chromedriver
@@ -15,6 +15,7 @@ class SeleniumTests(TestCase):
         driver.get("http://www.python.org")
         assert 'Python' in driver.title
         driver.quit()
+    """
 
 
 class XMLTests(TestCase):
@@ -53,7 +54,7 @@ class XMLTests(TestCase):
                 #print('input_dict is a dictionary:')
                 #print(input_dict.keys())
                 for dict_item in input_dict.items():
-                    print('dict item[0]', dict_item[0])
+                    #print('dict item[0]', dict_item[0])
                     dict_recursion(dict_item[1])
             elif type(input_dict) is list:
                 #print('input_dict is a list:')
@@ -61,34 +62,49 @@ class XMLTests(TestCase):
                     #print('list item:')
                     #print(x)
                     dict_recursion(x)
-            else:
-                print('input_dict is not a dictionary:')
-                print(input_dict)
+            #else:
+                #print('input_dict is not a dictionary:')
+                #print(input_dict)
 
         xml_dict = get_xml_file()
         dict_recursion(xml_dict)
         html_string = ''
+
+        def dict_recursion_with_html_init(input_dict):
+            string_input = ''
+            for dict_item in input_dict.items():
+                string_input = '<h2>' + dict_item[0] + '</h2>'
+                string_input += dict_recursion_with_html(dict_item[1], '')
+            return string_input
 
         def dict_recursion_with_html(input_dict, html_string_input):
             if type(input_dict) is dict:
                 #print('input_dict is a dictionary:')
                 #print(input_dict.keys())
                 for dict_item in input_dict.items():
-                    html_string_input += '<h2> ' + dict_item[0] + ' </h2>'
-                    print('dict item[0]', dict_item[0])
-                    dict_recursion_with_html(dict_item[1], html_string_input)
+                    html_string_input += '<h2>' + dict_item[0] + '</h2>'
+                    html_string_input += dict_recursion_with_html(dict_item[1], '')
+                    print('html_string_input', html_string_input)
+                    return html_string_input
+                    #return dict_recursion_with_html(dict_item[1], html_string_input)
             elif type(input_dict) is list:
                 #print('input_dict is a list:')
                 for x in input_dict:
                     #print('list item:')
                     #print(x)
-                    dict_recursion_with_html(x, html_string_input)
+                    return dict_recursion_with_html(x, html_string_input)
+                #print('end list---------------')
             else:
-                print('input_dict is not a dictionary:')
-                print(input_dict)
-                html_string_input += '<p>' + input_dict + '</p>'
-                print('html_string_input: ', html_string_input)
+                #print('input_dict is not a dictionary:')
+                #print(input_dict)
+                if input_dict is not None:
+                    html_string_input = '<p>' + input_dict + '</p>'
+                    return html_string_input
+                #else:
+                #    return html_string_input
+            #print('html_string_input: ', html_string_input)
 
-        dict_recursion_with_html(xml_dict, html_string)
-         #return_html = dict_recursion_with_html(xml_dict, html_string)
+        #dict_recursion_with_html(xml_dict, html_string)
+        return_html = dict_recursion_with_html_init(xml_dict)
+        print(return_html)
 
