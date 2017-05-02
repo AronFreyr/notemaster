@@ -31,6 +31,7 @@ def get_xml_file():
     return root_dict
 
 
+# This function was acquired from the internet.
 def etree_to_dict(t):
     d = {t.tag: {} if t.attrib else None}
     children = list(t)

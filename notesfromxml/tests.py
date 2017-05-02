@@ -53,6 +53,7 @@ class XMLTests(TestCase):
                 #print('input_dict is a dictionary:')
                 #print(input_dict.keys())
                 for dict_item in input_dict.items():
+                    print('dict item[0]', dict_item[0])
                     dict_recursion(dict_item[1])
             elif type(input_dict) is list:
                 #print('input_dict is a list:')
@@ -66,3 +67,28 @@ class XMLTests(TestCase):
 
         xml_dict = get_xml_file()
         dict_recursion(xml_dict)
+        html_string = ''
+
+        def dict_recursion_with_html(input_dict, html_string_input):
+            if type(input_dict) is dict:
+                #print('input_dict is a dictionary:')
+                #print(input_dict.keys())
+                for dict_item in input_dict.items():
+                    html_string_input += '<h2> ' + dict_item[0] + ' </h2>'
+                    print('dict item[0]', dict_item[0])
+                    dict_recursion_with_html(dict_item[1], html_string_input)
+            elif type(input_dict) is list:
+                #print('input_dict is a list:')
+                for x in input_dict:
+                    #print('list item:')
+                    #print(x)
+                    dict_recursion_with_html(x, html_string_input)
+            else:
+                print('input_dict is not a dictionary:')
+                print(input_dict)
+                html_string_input += '<p>' + input_dict + '</p>'
+                print('html_string_input: ', html_string_input)
+
+        dict_recursion_with_html(xml_dict, html_string)
+         #return_html = dict_recursion_with_html(xml_dict, html_string)
+
