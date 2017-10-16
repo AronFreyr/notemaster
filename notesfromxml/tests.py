@@ -2,20 +2,7 @@ import os
 from lxml import etree
 from collections import defaultdict
 from django.test import TestCase
-from selenium import webdriver
-
-
-class SeleniumTests(TestCase):
-
-    """def test_selenium(self):
-
-        chromedriver = r'C:/Users/default.default-PC/Downloads/chromedriver.exe'
-        os.environ["webdriver.chrome.driver"] = chromedriver
-        driver = webdriver.Chrome(chromedriver)
-        driver.get("http://www.python.org")
-        assert 'Python' in driver.title
-        driver.quit()
-    """
+import urllib.request
 
 
 class XMLTests(TestCase):
@@ -70,41 +57,43 @@ class XMLTests(TestCase):
         dict_recursion(xml_dict)
         html_string = ''
 
-        def dict_recursion_with_html_init(input_dict):
-            string_input = ''
-            for dict_item in input_dict.items():
-                string_input = '<h2>' + dict_item[0] + '</h2>'
-                string_input += dict_recursion_with_html(dict_item[1], '')
-            return string_input
-
         def dict_recursion_with_html(input_dict, html_string_input):
+            if input_dict is None:
+                print('input_dict is None')
+                return
+            print('input_dict', input_dict)
             if type(input_dict) is dict:
-                #print('input_dict is a dictionary:')
+                print('input_dict is a dictionary:')
                 #print(input_dict.keys())
                 for dict_item in input_dict.items():
+                    print('<div>')
                     html_string_input += '<h2>' + dict_item[0] + '</h2>'
-                    html_string_input += dict_recursion_with_html(dict_item[1], '')
-                    print('html_string_input', html_string_input)
-                    return html_string_input
-                    #return dict_recursion_with_html(dict_item[1], html_string_input)
+                    print('dict item[0]', '<h2>' + dict_item[0] + '</h2>')
+                    dict_recursion_with_html(dict_item[1], html_string_input)
+                    print('</div>')
             elif type(input_dict) is list:
-                #print('input_dict is a list:')
+                print('input_dict is a list:')
                 for x in input_dict:
                     #print('list item:')
                     #print(x)
-                    return dict_recursion_with_html(x, html_string_input)
-                #print('end list---------------')
+                    dict_recursion_with_html(x, html_string_input)
             else:
                 #print('input_dict is not a dictionary:')
-                #print(input_dict)
-                if input_dict is not None:
-                    html_string_input = '<p>' + input_dict + '</p>'
-                    return html_string_input
-                #else:
-                #    return html_string_input
-            #print('html_string_input: ', html_string_input)
+                print('<p>' + input_dict + '</p>')
+                html_string_input += '<p>' + input_dict + '</p>'
+            print('html_string_input: ', html_string_input)
+            print('END!!!')
 
-        #dict_recursion_with_html(xml_dict, html_string)
-        return_html = dict_recursion_with_html_init(xml_dict)
-        print(return_html)
+        dict_recursion_with_html(xml_dict, html_string)
+         #return_html = dict_recursion_with_html(xml_dict, html_string)
 
+
+# Not working. I need to be signed in to dropbox for this to work.
+class DropboxTests(TestCase):
+    def test_download_from_dropbox(self):
+        url = 'https://www.dropbox.com/home/glosur/general.xml?dl=1'
+        #url = 'https://dl.dropboxusercontent.com/content_link/moluVccftJLq0UwJkGW3QFZri4OgGPgOzNa7d913SSnnwgoHKFbPYhKCnUhuffgQ/file'
+        u = urllib.request.urlopen(url)
+        data = u.read()
+        u.close()
+        print(data)

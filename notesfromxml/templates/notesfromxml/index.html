@@ -1,5 +1,5 @@
 {% for note in notes.items %}
     {% for chapter in note.1.items %}
-        <h2><a href="{% url 'notesfromxml:xml_detail' chapter.0 %}"> {{ chapter.0 }}</a></h2>
+        <h2><a href="{% url 'notesfromxml:xml_detail-test' chapter.0 %}"> {{ chapter.0 }}</a></h2>
     {% endfor %}
 {% endfor %}

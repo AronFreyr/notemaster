@@ -1,0 +1,48 @@
+<data>
+	<category>
+		<name>Java</name>
+		<subcategories>
+			<category>
+				<name>Annotations</name>
+				<links>
+					<link>
+						<description></description>
+						<url>https://www.javacodegeeks.com/2014/11/java-annotations-tutorial.html</url>
+					</link>
+				</links>
+			</category>
+			<category>
+				<name>Dependency Injection</name>
+				<definition>Dependency injection simply means receiving collaborators as constructor parameters instead of fetching them ourselves.</definition>
+				<links>
+					<link>
+						<description></description>
+						<url>https://www.objc.io/issues/11-android/dependency-injection-in-java/</url>
+					</link>
+				</links>
+			</category>
+			<category>
+				<name>Java Datavase Connectivity</name>
+				<definition>Java Database Connectivity (JDBC) is an API for Java which defines how a client may access a database. It provides methods to query and update data in a database, and is oriented towards relational databases.
+JDBC connections support creating and executing statements. These may be update statements such as SQL's CREATE, READ UPDATE and DELETE, or they may be query statements such as SELECT. Additionally, stored procedures may be invoked through a JDBC connection.
+See examples in link.</definition>
+				<links>
+					<link>
+						<description></description>
+						<url>https://en.wikipedia.org/wiki/Java_Database_Connectivity</url>
+					</link>
+				</links>
+			</category>
+		</subcategories>
+		<links>
+			<link>
+				<description></description>
+				<url>https://docs.oracle.com/cd/E19798-01/821-1841/bncgq/index.html</url>
+			</link>
+			<link>
+				<description>A short and concise explaination of what the finally block is in try/catch/finally exception handling in Java.</description>
+				<url>https://docs.oracle.com/javase/tutorial/essential/exceptions/finally.html</url>
+			</link>
+		</links>
+	</category>
+</data>
