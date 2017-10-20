@@ -7,14 +7,25 @@
 
 <!-- Checks if the value is any sort of dictionary, if not then it should have just regular values to output -->
 
-
+<p>value: {{ value }}</p>
 {% if value.1|get_type == "list" %}
     {% for value in value.1 %}
         {% include 'notesfromxml/xml-detail-test.html' %}
     {% endfor %}
     <!-- If value.1 is a dict, then value.0 is it's key. -->
 {% elif value.1|get_type == "dict" %}
+
     <h4>value.0 - {{ value.0 }}</h4>
+
+    <p>value: {{ value }}</p>
+    <p>value get_type: {{ value|get_type }}</p>
+
+    <!--{% if value.0 == "links" %}
+        {% for key, value in value.1.items %}
+            <p>links key: {{ key }} - links value: {{ value }}</p>
+        {% endfor %}
+    {% endif %}-->
+
     {% for value in value.1.items %}
         {% include 'notesfromxml/xml-detail-test.html' %}
     {% endfor %}
