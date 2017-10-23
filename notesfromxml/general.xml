@@ -33,7 +33,7 @@ See examples in link.</definition>
 	</java>
 	<java_servlets>
 		<notes>
-			<what_is_a_servletcontext>ServletContext is a configuration Object which is created when web application is started. It contains different initialization parameter that can be configured in web.xml.</what_is_a_servletcontext>
+			<what_is_a_servletcontext>ServletContext is a configuration Object which is created when web application is started. It contains different initialization parameter that can be configured in web.xml...</what_is_a_servletcontext>
 			<deployment_descriptor></deployment_descriptor>
 			<generic_servlet>GenericServlet is a Java class for implementing servlets in java via extensions. The servlet that is being implemented needs to extend the GenericServlet class and implement a service function that takes in a request and a response (example: public void service(ServletRequest request, ServletResponse response) throws ServletException, IOException {})...</generic_servlet>
 			<httpservlet>HTTPServlet is a more advanced version of the GenericServlet. The biggest functional difference is that the HTTPServlet does not need to implement a service function, it has one already. THe HTTPServlet reads the HTTP request and determines if the request is an HTTP GET, POST, PUT, DELETE, HEAD etc. and calls the corresponding method. that corresponding method needs to be implemented in the HTTPServlet class. This is accomplished by overriding a HTTP method like: doGet(), doPost(), doHead(), doPut(), doDelete(), doOptions(), doTrace()...</httpservlet>
@@ -201,7 +201,19 @@ To use views, such as specific html files and related, one cannot use @RestContr
 				</annotation>
 				<annotation>
 					<name>@Bean</name>
-					<purpose>
+					<purpose> ...Spring used to require the user to declare beans by writing them as XML. Now we can use the @Bean annotation instead to declare a bean, since XML coding is tedious work. When using the @Bean annotation, one declares a bean like this:
+						@Configuration
+						public class AppConfig {
+
+							@Bean
+							public TransferService transferService() {
+								return new TransferServiceImpl();
+							}
+						}
+					The same is exactly equivalent to this XML:
+					&lt;beans&gt;
+						&lt;bean id="transferService" class="com.acme.TransferServiceImpl"/&gt;
+					&lt;/beans&gt;
 					</purpose>
 				</annotation>
 				<annotation>
@@ -229,6 +241,10 @@ In addition to its role for component initialization, this annotation may also b
 					<purpose>
 					</purpose>
 					<link>http://docs.spring.io/spring/docs/4.2.1.RELEASE/javadoc-api/org/springframework/context/annotation/Profile.html</link>
+				</annotation>
+				<annotation>
+					<name>@PropertySource</name>
+					<purpose></purpose>
 				</annotation>
 			</annotations>
 			<dependency_injection>
@@ -263,6 +279,10 @@ In addition to its role for component initialization, this annotation may also b
 			<link>
 				<description>A step by step guide for creating a MVC project using spring, very useful for seeing the correct structure of a spring project.</description>
 				<url>https://docs.spring.io/docs/Spring-MVC-step-by-step/part1.html</url>
+			</link>
+			<link>
+				<description>An explanation on marhallers and unmarshallers, what they are and how to use them</description>
+				<url>https://docs.spring.io/spring/docs/current/spring-framework-reference/html/oxm.html</url>
 			</link>
 		</links>
 	</spring>
@@ -547,6 +567,26 @@ In addition to its role for component initialization, this annotation may also b
 						<description>A PEP style guide (pep-0257) detailing some specifics around how to document python code according to the PEP standards.</description>
 						<url>https://www.python.org/dev/peps/pep-0257/#specification</url>
 					</link>
+					<link>
+						<description>A useful description on how exception handling works in python. Written by the guy who wrote the book "The Hacker's Guide to Python."</description>
+						<url>https://julien.danjou.info/blog/2016/python-exceptions-guide</url>
+					</link>
+					<link>
+						<description>The "Hacker's Guide to Python" writer explains what the static, class and abstract methods in python.</description>
+						<url>https://julien.danjou.info/blog/2013/guide-python-static-class-abstract-methods</url>
+					</link>
+					<link>
+						<description>The "Hacker's Guide to Python" guy shows an example of how to not program in python.</description>
+						<url>https://julien.danjou.info/blog/2014/python-bad-practice-concrete-case</url>
+					</link>
+					<link>
+						<description>An example chapter from the book "The Hacker's Guide to Python".</description>
+						<url>https://github.com/jd/thehackerguidetopython.com/blob/master/the-hacker-guide-to-python-sample.pdf</url>
+					</link>
+					<link>
+						<description>A tutorial on how to create a wiki-like application using Python. I have yet to determine whether it is any good or not.</description>
+						<url>https://www.packtpub.com/books/content/python-3-building-wiki-application</url>
+					</link>
 				</links>
 			</notes>
 		</general>
@@ -577,14 +617,24 @@ In addition to its role for component initialization, this annotation may also b
 				</link>
 			</links>
 		</postgresql>
+		<wsgi>
+			<links>
+				<link>
+					<description>A wikipedia article on the Web Server Gateway Interface (WSGI)</description>
+					<url>https://en.wikipedia.org/wiki/Web_Server_Gateway_Interface</url>
+				</link>
+				<link>
+					<description>A website that is essentially a tutorial for WSGI, it explains what WSGI is, what it does, how to use it, and more.</description>
+					<url>http://wsgi.tutorial.codepoint.net/</url>
+				</link>
+				<link>
+					<description>The home site of Werkzeug. A very capable WSGI library that is supposed to be excellent at letting people create python web services.</description>
+					<url>http://werkzeug.pocoo.org/</url>
+				</link>
+			</links>
+		</wsgi>
 		<django>
 			<notes>
-				<wsgi>
-					<link>
-						<description></description>
-						<url>https://en.wikipedia.org/wiki/Web_Server_Gateway_Interface</url>
-					</link>
-				</wsgi>
 				<links>
 					<link>
 						<description>An intro tutorial for programming using the Django framework.</description>
@@ -609,9 +659,37 @@ In addition to its role for component initialization, this annotation may also b
 				</link>
 			</links>
 		</threading>
+		<ssh>
+			<links>
+				<link>
+					<description>An answer on Stack Overflow that gives good code example on how to create an interactive shell in Python for ssh. It has a class that uses Paramiko to create a shell over ssh that allows the user to input multiple commands and keep the ssh session open for as long as necessary.</description>
+					<url>http://stackoverflow.com/questions/35821184/implement-an-interactive-shell-over-ssh-in-python-using-paramiko</url>
+				</link>
+				<link>
+					<description>A clever description of how ssh tunneling works. It's written idiot-proof enough so it's easy to comprehend the basics of ssh tunneling after reading it.</description>
+					<url>http://blog.trackets.com/2014/05/17/ssh-tunnel-local-and-remote-port-forwarding-explained-with-examples.html</url>
+				</link>
+				<link>
+					<description>The documentation for "sshtunnel", which is a Python package for that uses Paramiko but deals exclusively in simplifying the creation of ssh tunnels. In Paramiko, ssh tunneling is a tricky business. This package is used specifically in making it simpler and easier.</description>
+					<url>https://sshtunnel.readthedocs.io/en/latest/</url>
+				</link>
+				<link>
+					<description>A Stack Overflow answer that has code that fixes the problem with ssh tunnels where the module hangs on stdout_read, so nothing comes back as read, no info is returned from the tunnel.</description>
+					<url>http://stackoverflow.com/questions/35266753/paramiko-python-module-hangs-at-stdout-read</url>
+				</link>
+			</links>
+		</ssh>
 	</python>
 	<sql>
 		<notes>
+			<influx>
+				<links>
+					<link>
+						<description>The documentation for Influx type databases. It guides contains guides and examples.</description>
+						<url>https://docs.influxdata.com/influxdb/v1.2/introduction/</url>
+					</link>
+				</links>
+			</influx>
 			<links>
 				<link>
 					<description>Useful example on how to join tables in sql.</description>
@@ -733,6 +811,10 @@ In addition to its role for component initialization, this annotation may also b
 					<link>
 						<description>How to make basic scripts on linux.</description>
 						<url>https://help.ubuntu.com/community/Beginners/BashScripting</url>
+					</link>
+					<link>
+						<description>The wikipedia article for cURL. It has examples and explanations that show how cURL can be used and what it is used for.</description>
+						<url>https://en.wikipedia.org/wiki/CURL</url>
 					</link>
 				</links>
 			</general>
@@ -924,6 +1006,20 @@ In addition to its role for component initialization, this annotation may also b
 			</links>
 		</ios>
 	</app_development>
+	<web_services>
+		<cgi>
+			<links>
+				<link>
+					<description>A wikipedia article on the common gateway interface (CGI)</description>
+					<url>https://en.wikipedia.org/wiki/Common_Gateway_Interface</url>
+				</link>
+				<link>
+					<description>A tutorial web site explaining CGI and cgi-bin, what it does and how to use it.</description>
+					<url>http://www.parkansky.com/tutorials/bdlogcgi.htm</url>
+				</link>
+			</links>
+		</cgi>
+	</web_services>
 	<other>
 		<notes>
 			<meetings>
@@ -933,7 +1029,7 @@ In addition to its role for component initialization, this annotation may also b
 						1. AirTies 4k.
 						2. Ráðgjafinn.
 						3. 6.000 klst af efni í Sjónvarpi Símans.
-						4. Prufanir á MiOS kerinu.
+						4. Prufanir á MiOS kerfinu.
 						5. HDM update.
 						6. Fá nýja benda.
 						7. HomeWare.
@@ -961,6 +1057,99 @@ In addition to its role for component initialization, this annotation may also b
 					</link>
 				</links>
 			</work_environments>
+			<hnm_connect>
+				<what_it_does>
+					
+				</what_it_does>
+				<what_it_uses>
+					<fastlina>
+						<notes>
+							I don't know what fastlina is but it seems to be used in HNM-Connect for the situation when you can't locate the line number of a user in LDAP. If the line number is not in LDAP, we need to look it up in ICMS (which is the same as fastlina?), we need to look up by service-ID in ICMS rather than IP-address or something else. This is used only once in the HNM-Connect code, in HnmCOnnectAppImpl there fastlina.listFastlinaServicesByService is used if no line number came from LDAP.
+						</notes>
+					</fastlina>
+					<hdm></hdm>
+					<kafka>
+						<links>
+							<link>
+								<description>A link to Apache Kafka documentation.</description>
+								<url>https://kafka.apache.org/documentation/</url>
+							</link>
+						</links>
+					</kafka>
+					<mila></mila>
+					<radius>
+						<notes>
+							Radius and Radstat seem to be roughly the same thing. One is at least connected with the other. They are used to communicate with the LDAP database.
+						</notes>
+					</radius>
+					<simnet>
+						<notes>
+							SimnetWS is a web service for the LDAP database. As far as I can tell, SimnetWS is only used at one time, it is used to get the user account info (line number, serial number, service ID etc) based on the user name. If the line number can not be found in LDAP, fastlina is checked instead.
+						</notes>
+					</simnet>
+					<ftp></ftp>
+				</what_it_uses>
+				<code_notes>
+					<application>
+						<kafkagateway>
+							<notes>
+								The only gateway in the "application" folder. The other are all services except "HnmConnectApp". Has a single method called "deviceBoot". I don't know what it does but I suspect that it has something to do with grabbing boot messages from routers when they come online. Why is Kafka being used? No idea.
+							</notes>
+							<annotations>
+								<annotation>
+									<name>@MessagingGateway</name>
+									<purpose></purpose>
+									<link>https://docs.spring.io/spring-integration/api/org/springframework/integration/annotation/MessagingGateway.html</link>
+								</annotation>
+								<annotation>
+									<name>@Gateway</name>
+									<purpose></purpose>
+								</annotation>
+								<annotation>
+									<name>@Header</name>
+									<purpose></purpose>
+								</annotation>
+								<annotation>
+									<name>@Payload</name>
+									<purpose></purpose>
+								</annotation>
+							</annotations>
+						</kafkagateway>
+					</application>
+					<config>
+						<appconfig>
+							<notes>
+								The main class for the application. Creates the hnmConnectApp bean (which returns a HnmConnectAppImpl). This is the configuration that makes everything work. I think this is the Spring Application Context.
+								It also has a bean called "mapper" that returns new DozerBeanMapper, I don't know what it does.
+							</notes>
+						</appconfig>
+						<fastlinawsconfig>
+							<notes>
+								Has three methods of note: fastlinaMarshaller, fastlinaClient and fastlinaService. fastlinaMarshaller seems to take xml documents that describe classes from fastlina web services and convert them into java classes, it sets paths to xml files that are here and there in the project and must represent some service from fastlina. fastlinaClient seems to create a generic web service template, then set fastlinaMarshaller as the marshaller for that template, then set the environment variable "fastlina.url" as the default URI of the template and return the template. fastlinaService takes in the fastlinaClient bean and returns a new FastlinaServiceImpl(template).
+							</notes>
+						</fastlinawsconfig>
+						<ftpconfig>
+							<notes>
+								Very simple class, it has a single bean which returns an FtpClientImpl with the properties of ftp.host, ftp.username and ftp.password.
+							</notes>
+						</ftpconfig>
+						<hnmcwebappinitializer>
+							<notes>
+								A class that implements WebApplicationInitializer (whatever that is). It does one thing, implements onStartup. onStartup takes in a servletContext and uses a rootContext to do something. I have no idea what is going on here. This class does not have the @Configuration annotation, which means that it does not initialize any beans, unlike every other class in the "config" folder.
+							</notes>
+						</hnmcwebappinitializer>
+					</config>
+					<domain>
+						
+					</domain>
+					<infrastructure>
+						
+					</infrastructure>
+					<interfaces>
+						
+					</interfaces>
+				</code_notes>
+			</hnm_connect>
 		</notes>
 	</other>
 </data>

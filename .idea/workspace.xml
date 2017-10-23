@@ -3,8 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="c5a0e103-b164-48df-aac3-9d6429aa815d" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/notesfromxml/templates/notesfromxml/xml-category.html" afterPath="$PROJECT_DIR$/notesfromxml/templates/notesfromxml/xml-category.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/notesfromxml/general.xml" afterPath="$PROJECT_DIR$/notesfromxml/general.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/notesfromxml/templates/notesfromxml/xml-detail-test.html" afterPath="$PROJECT_DIR$/notesfromxml/templates/notesfromxml/xml-detail-test.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/notesfromxml/views.py" afterPath="$PROJECT_DIR$/notesfromxml/views.py" />
     </list>
     <ignored path="untitled.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -42,29 +43,38 @@
           <file leaf-file-name="xml-detail.html" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/notesfromxml/templates/notesfromxml/xml-detail.html">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="0">
-                  <caret line="13" column="22" lean-forward="false" selection-start-line="13" selection-start-column="22" selection-end-line="13" selection-end-column="22" />
-                  <folding />
+                <state relative-caret-position="601">
+                  <caret line="41" column="36" lean-forward="true" selection-start-line="41" selection-start-column="36" selection-end-line="41" selection-end-column="36" />
+                  <folding>
+                    <element signature="e#2055#2092#0#HTML" expanded="true" />
+                  </folding>
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="xml-category.html" pinned="false" current-in-tab="true">
+          <file leaf-file-name="xml-category.html" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/notesfromxml/templates/notesfromxml/xml-category.html">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="16">
-                  <caret line="1" column="52" lean-forward="false" selection-start-line="1" selection-start-column="52" selection-end-line="1" selection-end-column="52" />
+                <state relative-caret-position="96">
+                  <caret line="6" column="13" lean-forward="true" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
                   <folding />
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="xml-detail-test.html" pinned="false" current-in-tab="false">
+          <file leaf-file-name="xml-detail-test.html" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/notesfromxml/templates/notesfromxml/xml-detail-test.html">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="16">
-                  <caret line="1" column="0" lean-forward="false" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="22" />
-                  <folding />
+                <state relative-caret-position="505">
+                  <caret line="56" column="38" lean-forward="false" selection-start-line="56" selection-start-column="38" selection-end-line="56" selection-end-column="38" />
+                  <folding>
+                    <element signature="e#589#634#0#HTML" expanded="true" />
+                    <element signature="e#1279#1326#0#HTML" expanded="true" />
+                    <element signature="e#1274#1972#0#HTML" expanded="false" />
+                    <element signature="e#1339#1404#0#HTML" expanded="true" />
+                    <element signature="e#2075#2121#0#HTML" expanded="true" />
+                    <element signature="e#2342#2376#0#HTML" expanded="true" />
+                  </folding>
                 </state>
               </provider>
             </entry>
@@ -72,7 +82,7 @@
           <file leaf-file-name="settings.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/notemaster/settings.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="16">
+                <state relative-caret-position="1216">
                   <caret line="76" column="0" lean-forward="false" selection-start-line="76" selection-start-column="0" selection-end-line="76" selection-end-column="0" />
                   <folding />
                 </state>
@@ -83,7 +93,7 @@
             <entry file="file://$PROJECT_DIR$/notesfromxml/templates/notesfromxml/index.html">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="64">
-                  <caret line="4" column="12" lean-forward="true" selection-start-line="4" selection-start-column="12" selection-end-line="4" selection-end-column="12" />
+                  <caret line="4" column="12" lean-forward="false" selection-start-line="4" selection-start-column="12" selection-end-line="4" selection-end-column="12" />
                   <folding />
                 </state>
               </provider>
@@ -93,17 +103,19 @@
       </split-first>
       <split-second>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
+          <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/notesfromxml/views.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="48">
-                  <caret line="3" column="35" lean-forward="false" selection-start-line="3" selection-start-column="35" selection-end-line="3" selection-end-column="35" />
-                  <folding />
+                <state relative-caret-position="167">
+                  <caret line="16" column="0" lean-forward="false" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
+                  <folding>
+                    <element signature="e#0#54#0" expanded="true" />
+                  </folding>
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="app_filters.py" pinned="false" current-in-tab="true">
+          <file leaf-file-name="app_filters.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/notesfromxml/templatetags/app_filters.py">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="144">
@@ -169,13 +181,13 @@
         <option value="$PROJECT_DIR$/notemaster/settings.py" />
         <option value="$USER_HOME$/Dropbox/Forritun/youtube_api_staging/youtube_view_count_v0.2.py" />
         <option value="$PROJECT_DIR$/notesfromxml/tests.py" />
-        <option value="$PROJECT_DIR$/notesfromxml/views.py" />
         <option value="$PROJECT_DIR$/notesfromxml/templates/notesfromxml/index.html" />
         <option value="$PROJECT_DIR$/notesfromxml/urls.py" />
         <option value="$PROJECT_DIR$/notesfromxml/templatetags/__init__.py" />
         <option value="$PROJECT_DIR$/notesfromxml/templatetags/app_filters.py" />
-        <option value="$PROJECT_DIR$/notesfromxml/templates/notesfromxml/xml-detail-test.html" />
         <option value="$PROJECT_DIR$/notesfromxml/templates/notesfromxml/xml-category.html" />
+        <option value="$PROJECT_DIR$/notesfromxml/templates/notesfromxml/xml-detail-test.html" />
+        <option value="$PROJECT_DIR$/notesfromxml/views.py" />
       </list>
     </option>
   </component>
@@ -186,8 +198,8 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-7" />
-    <option name="y" value="2" />
+    <option name="x" value="-90" />
+    <option name="y" value="-8" />
     <option name="width" value="1932" />
     <option name="height" value="1045" />
   </component>
@@ -238,6 +250,19 @@
             <path>
               <item name="notemaster" type="b2602c69:ProjectViewProjectNode" />
               <item name="notemaster" type="462c0819:PsiDirectoryNode" />
+              <item name="notesfromxml" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="notemaster" type="b2602c69:ProjectViewProjectNode" />
+              <item name="notemaster" type="462c0819:PsiDirectoryNode" />
+              <item name="notesfromxml" type="462c0819:PsiDirectoryNode" />
+              <item name="static" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="notemaster" type="b2602c69:ProjectViewProjectNode" />
+              <item name="notemaster" type="462c0819:PsiDirectoryNode" />
+              <item name="notesfromxml" type="462c0819:PsiDirectoryNode" />
+              <item name="static" type="462c0819:PsiDirectoryNode" />
               <item name="notesfromxml" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -713,15 +738,14 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.122068234" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.12313433" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32936078" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24456522" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24456522" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32936078" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
@@ -894,7 +918,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="340">
           <caret line="26" column="30" lean-forward="false" selection-start-line="26" selection-start-column="30" selection-end-line="26" selection-end-column="30" />
-          <folding />
+          <folding>
+            <element signature="e#2055#2092#0#HTML" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -932,13 +958,6 @@
     <entry file="file://$PROJECT_DIR$/notesfromxml/models.py" />
     <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python35/Lib/importlib/__init__.py" />
     <entry file="file://$PROJECT_DIR$/notesfromxml/migrations/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/notesfromxml/static/notesfromxml/style.css">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
@@ -999,18 +1018,26 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/notesfromxml/views.py">
+    <entry file="file://$PROJECT_DIR$/notemaster/settings.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="48">
-          <caret line="3" column="35" lean-forward="false" selection-start-line="3" selection-start-column="35" selection-end-line="3" selection-end-column="35" />
+        <state relative-caret-position="1216">
+          <caret line="76" column="0" lean-forward="false" selection-start-line="76" selection-start-column="0" selection-end-line="76" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/notemaster/settings.py">
+    <entry file="file://$PROJECT_DIR$/notesfromxml/templates/notesfromxml/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="16">
-          <caret line="76" column="0" lean-forward="false" selection-start-line="76" selection-start-column="0" selection-end-line="76" selection-end-column="0" />
+        <state relative-caret-position="64">
+          <caret line="4" column="12" lean-forward="false" selection-start-line="4" selection-start-column="12" selection-end-line="4" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/notesfromxml/static/notesfromxml/style.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -1025,33 +1052,44 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/notesfromxml/templates/notesfromxml/xml-detail.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="13" column="22" lean-forward="false" selection-start-line="13" selection-start-column="22" selection-end-line="13" selection-end-column="22" />
-          <folding />
+        <state relative-caret-position="601">
+          <caret line="41" column="36" lean-forward="true" selection-start-line="41" selection-start-column="36" selection-end-line="41" selection-end-column="36" />
+          <folding>
+            <element signature="e#2055#2092#0#HTML" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/notesfromxml/templates/notesfromxml/index.html">
+    <entry file="file://$PROJECT_DIR$/notesfromxml/templates/notesfromxml/xml-category.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="64">
-          <caret line="4" column="12" lean-forward="true" selection-start-line="4" selection-start-column="12" selection-end-line="4" selection-end-column="12" />
+        <state relative-caret-position="96">
+          <caret line="6" column="13" lean-forward="true" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/notesfromxml/templates/notesfromxml/xml-detail-test.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="16">
-          <caret line="1" column="0" lean-forward="false" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="22" />
-          <folding />
+        <state relative-caret-position="505">
+          <caret line="56" column="38" lean-forward="false" selection-start-line="56" selection-start-column="38" selection-end-line="56" selection-end-column="38" />
+          <folding>
+            <element signature="e#589#634#0#HTML" expanded="true" />
+            <element signature="e#1279#1326#0#HTML" expanded="true" />
+            <element signature="e#1274#1972#0#HTML" expanded="false" />
+            <element signature="e#1339#1404#0#HTML" expanded="true" />
+            <element signature="e#2075#2121#0#HTML" expanded="true" />
+            <element signature="e#2342#2376#0#HTML" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/notesfromxml/templates/notesfromxml/xml-category.html">
+    <entry file="file://$PROJECT_DIR$/notesfromxml/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="16">
-          <caret line="1" column="52" lean-forward="false" selection-start-line="1" selection-start-column="52" selection-end-line="1" selection-end-column="52" />
-          <folding />
+        <state relative-caret-position="167">
+          <caret line="16" column="0" lean-forward="false" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#54#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

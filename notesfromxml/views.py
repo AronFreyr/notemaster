@@ -25,7 +25,7 @@ def get_xml_file():
     :return: the root of a Python dictionary that represents the data in an xml file.
     """
     module_dir = os.path.dirname(__file__)  # Gets the current path.
-    file_path = os.path.join(module_dir, 'general-test.xml')  # This is so we can open general.xml in the current path.
+    file_path = os.path.join(module_dir, 'general.xml')  # This is so we can open general.xml in the current path.
     data = etree.parse(file_path)  # Creates a tree structure from general.xml.
     root_dict = etree_to_dict(data.getroot())  # Converts the tree structure into a dictionary.
     return root_dict
