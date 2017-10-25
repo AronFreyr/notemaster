@@ -47,14 +47,33 @@
     <!-- It's possible that value itself is a dict. -->
 {% elif value|get_type == "dict" %}
     <div style="border: 1px solid blue; padding: 25px;">
-        <!--<p style="text-decoration: underline; text-decoration-color: blue"> value is of type dict.</p>-->
         {% for key, value in value.items %}
-            {% if value|get_type != "str" %}
-                <h4 style="text-decoration: underline">{{ key }}</h4>
-                {% include 'notesfromxml/xml-detail-test.html' %}
+
+            <!-- display links in a special manner -->
+            {% if key == "links" %}
+                <div style="border: 1px solid black; padding: 10px;">
+                <h4>Further Reading</h4>
+                <!-- Value here can either be a single link or a list of links -->
+                {% if value.link|get_type == "list"%}
+                    {% for link_item in value.link %}
+                        <p> <b>description:</b> {{ link_item.description }} - {{ link_item.url|urlize }}</p>
+                    {% endfor %}
+                {% else %}
+                    <p> <b>description:</b> {{ value.link.description }} - {{ value.link.url|urlize }}</p>
+                {% endif %}
+                </div>
+
+            {% elif key == "name" or key == "purpose" %}
+                <p><b>{{ key }}</b>: {{ value }}</p>
+
             {% else %}
-                <!--<p style="text-decoration: underline">key = {{ key }} - value = {{ value }}</p>-->
-                <p>{{ key }}: {{ value }}</p>
+                {% if value|get_type != "str" %}
+                    <h4 style="text-decoration: underline">{{ key }}</h4>
+                    {% include 'notesfromxml/xml-detail-test.html' %}
+                {% else %}
+                    <!--<p style="text-decoration: underline">key = {{ key }} - value = {{ value }}</p>-->
+                    <p>{{ key }}: {{ value }}</p>
+                {% endif %}
             {% endif %}
         {% endfor %}
     </div>

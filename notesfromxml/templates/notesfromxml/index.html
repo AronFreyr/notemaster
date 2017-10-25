@@ -1,5 +1,9 @@
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'notesfromxml/index.css' %}" />
 {% for note in notes.items %}
     {% for chapter in note.1.items %}
-        <h2><a href="{% url 'notesfromxml:xml_detail-test' chapter.0 %}"> {{ chapter.0 }}</a></h2>
+        <div class="category">
+            <h2><a href="{% url 'notesfromxml:xml_detail-test' chapter.0 %}"> {{ chapter.0 }}</a></h2>
+        </div>
     {% endfor %}
 {% endfor %}
