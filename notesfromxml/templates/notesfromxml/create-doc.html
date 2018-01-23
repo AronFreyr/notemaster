@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document Creation</title>
+</head>
+<body>
+    <form action="{% url 'notesfromxml:create_doc'%}" method="post">
+        {% csrf_token %}
+        <input type="text" id="docNameId" name="docName">
+        <input type="text" id="docTextId" name="docText">
+        <input type="submit" />
+    </form>
+</body>
+</html>

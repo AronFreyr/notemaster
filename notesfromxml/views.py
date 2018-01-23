@@ -3,13 +3,22 @@ from django.http import HttpResponse
 from lxml import etree
 from collections import defaultdict
 
-from django.template import loader
-from django.core import serializers
+from .models import Document, Tag, Tagmap
 import os
 
 
 def index(request):
-    return render(request, 'notesfromxml/index.html', {'notes': get_xml_file()})
+    document = Document.objects.get(document_name='JAXB')
+    return render(request, 'notesfromxml/index.html', {'document': document})
+
+
+def create_doc(request):
+    if request.method == 'POST':
+        doc_name = request.POST['docName']
+        doc_text = request.POST['docText']
+        print('doc_name: ', doc_name)
+        print('doc_text: ', doc_text)
+    return render(request, 'notesfromxml/create-doc.html')
 
 
 def xml_detail(request, detail):

@@ -1,9 +1,22 @@
 {% load static %}
 <link rel="stylesheet" type="text/css" href="{% static 'notesfromxml/index.css' %}" />
-{% for note in notes.items %}
-    {% for chapter in note.1.items %}
-        <div class="category">
-            <h2><a href="{% url 'notesfromxml:xml_detail-test' chapter.0 %}"> {{ chapter.0 }}</a></h2>
-        </div>
+{{ document.document_name }}
+<br/>
+{{ document.document_text }}
+<br/>>
+<div style="border: 1px solid #ff2400">
+    <h3>All tags connected to the document: {{ document.document_name }}</h3>
+    {% for mapset in document.tagmap_set.all %}
+        {{ mapset.tag.tag_name }}
     {% endfor %}
-{% endfor %}
+</div>
+<div style="border: 1px solid blue">
+
+    {% for mapset in document.tagmap_set.all %}
+        <h3> All documents with the tag: {{ mapset.tag.tag_name }}</h3>
+        {% for tagtest in mapset.tag.tagmap_set.all %}
+            <p>tagtest.document.document_name: {{ tagtest.document.document_name }}</p>
+            <br/>
+        {% endfor %}
+    {% endfor %}
+</div>
