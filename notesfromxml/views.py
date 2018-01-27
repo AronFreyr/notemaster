@@ -12,13 +12,53 @@ def index(request):
     return render(request, 'notesfromxml/index.html', {'document': document})
 
 
+# A test function to see what is required to create a document and potentially store it in a database.
 def create_doc(request):
+    if request.method == 'GET':
+        tags = Tag.objects.all()
+        documents = Document.objects.all()
+        tagmaps = Tagmap.objects.all()
+        return render(request, 'notesfromxml/create-doc.html', {'tags': tags, 'tagmaps': tagmaps, 'documents': documents})
+
     if request.method == 'POST':
-        doc_name = request.POST['docName']
-        doc_text = request.POST['docText']
-        print('doc_name: ', doc_name)
-        print('doc_text: ', doc_text)
+        # TODO: throw an error if the document name is blank.
+        if 'docName' in request.POST:  # Document name can't be blank.
+            doc_name = request.POST['docName']
+            doc_text = ''
+            if 'docText' in request.POST:  # Document text can be empty.
+                doc_text = request.POST['docText']
+            if Document.objects.filter(document_name=doc_name).exists():
+                # TODO: Throw error.
+                print('Document with that name already exists')
+            new_doc = Document(document_name=doc_name, document_text=doc_text)
+            new_doc.save()
+
+            if 'newTag' in request.POST:  # If the user is adding a tag.
+                doc_tag_name = request.POST['newTag']
+                if Tag.objects.filter(tag_name=doc_tag_name).exists():  # If the tag already exists.
+                    current_tag = Tag.objects.get(tag_name=doc_tag_name)
+                else:
+                    current_tag = Tag(tag_name=doc_tag_name)
+                    current_tag.save()
+                if not Tagmap.objects.filter(tag=current_tag, document=new_doc).exists():
+                    new_tagmap = Tagmap(document=new_doc, tag=current_tag)
+                    new_tagmap.save()
+
+            if 'tagchoice' in request.POST:
+                tag = Tag.objects.get(id=request.POST['tagchoice'])
+                print("tag: ", tag.tag_name)
+
     return render(request, 'notesfromxml/create-doc.html')
+
+
+def display_docs(request):
+    documents = Document.objects.all()
+    return render(request, 'notesfromxml/displaydocs.html', {'documents': documents})
+
+
+def display_tags(request):
+    tags = Tag.objects.all()
+    return render(request, 'notesfromxml/displaytags.html', {'tags': tags})
 
 
 def xml_detail(request, detail):

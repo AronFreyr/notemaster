@@ -1,0 +1,18 @@
+{% if tags %}
+    {% for tag in tags %}
+        <div style="border: 1px solid black">
+            <h3>{{ tag.tag_name }}</h3>
+            <div class="tabContainer">
+            <p>Documents:</p>
+                <ul>
+                    {% for mapset in tag.tagmap_set.all %}
+                        <li> {{ mapset.document.document_name}}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+    {% endfor %}
+{% else %}
+    <p>No tags found in the database.</p>
+{% endif %}
