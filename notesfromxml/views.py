@@ -21,6 +21,7 @@ def create_doc(request):
         return render(request, 'notesfromxml/create-doc.html', {'tags': tags, 'tagmaps': tagmaps, 'documents': documents})
 
     if request.method == 'POST':
+        print(request.POST)
         # TODO: throw an error if the document name is blank.
         if 'docName' in request.POST:  # Document name can't be blank.
             doc_name = request.POST['docName']
@@ -34,15 +35,7 @@ def create_doc(request):
             new_doc.save()
 
             if 'newTag' in request.POST:  # If the user is adding a tag.
-                doc_tag_name = request.POST['newTag']
-                if Tag.objects.filter(tag_name=doc_tag_name).exists():  # If the tag already exists.
-                    current_tag = Tag.objects.get(tag_name=doc_tag_name)
-                else:
-                    current_tag = Tag(tag_name=doc_tag_name)
-                    current_tag.save()
-                if not Tagmap.objects.filter(tag=current_tag, document=new_doc).exists():
-                    new_tagmap = Tagmap(document=new_doc, tag=current_tag)
-                    new_tagmap.save()
+                handle_new_tag(request.POST['newTag'], new_doc)
 
             if 'tagchoice' in request.POST:
                 tag = Tag.objects.get(id=request.POST['tagchoice'])
@@ -53,12 +46,41 @@ def create_doc(request):
 
 def display_docs(request):
     documents = Document.objects.all()
+    if request.method == 'POST':
+        doc_name = request.POST['current_document']
+        doc = Document.objects.get(document_name=doc_name)
+        tag = request.POST['newTag']
+        handle_new_tag(tag, doc)
     return render(request, 'notesfromxml/displaydocs.html', {'documents': documents})
 
 
 def display_tags(request):
     tags = Tag.objects.all()
     return render(request, 'notesfromxml/displaytags.html', {'tags': tags})
+
+
+def display_docs_with_tags(request):
+    list_of_docs_with_tags = []
+    if request.method == 'POST':
+        tag_list = [x.strip() for x in request.POST['searchTags'].split(',')]
+        for tag in tag_list:
+            if Tag.objects.filter(tag_name=tag).exists():
+                tag_object = Tag.objects.get(tag_name=tag)
+                docs_with_tag = Document.objects.filter(tagmap__tag=tag_object)
+                list_of_docs_with_tags.extend(docs_with_tag)
+    return render(request, 'notesfromxml/doc_by_tag.html', {'documents': list_of_docs_with_tags})
+
+
+def handle_new_tag(new_tag, new_doc=None):
+    if Tag.objects.filter(tag_name=new_tag).exists():  # If the tag already exists.
+        current_tag = Tag.objects.get(tag_name=new_tag)
+    else:
+        current_tag = Tag(tag_name=new_tag)
+        current_tag.save()
+    if new_doc:
+        if not Tagmap.objects.filter(tag=current_tag, document=new_doc).exists():
+            new_tagmap = Tagmap(document=new_doc, tag=current_tag)
+            new_tagmap.save()
 
 
 def xml_detail(request, detail):

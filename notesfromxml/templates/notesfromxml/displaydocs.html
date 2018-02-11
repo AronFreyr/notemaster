@@ -11,9 +11,10 @@
                     {% endfor %}
                 </ul>
             </div>
-            <form action="{% url 'notesfromxml:create_doc'%}" method="post">
+            <form action="{% url 'notesfromxml:display_docs'%}" method="post">
                 {% csrf_token %}
                 <div>
+                    <input type="hidden" name="current_document" value="{{ doc.document_name }}">
                     <input type="text" id="tagId" name="newTag">
                     <label for="tagId">Input new tag here: </label>
                     <input type="submit" />
