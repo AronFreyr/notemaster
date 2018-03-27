@@ -1,4 +1,4 @@
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, render, redirect, reverse
 from django.http import HttpResponse
 from lxml import etree
 from collections import defaultdict
@@ -8,8 +8,10 @@ import os
 
 
 def index(request):
-    document = Document.objects.get(document_name='JAXB')
-    return render(request, 'notesfromxml/index.html', {'document': document})
+    tags = Tag.objects.all()
+    documents = Document.objects.all()
+    tagmaps = Tagmap.objects.all()
+    return render(request, 'notesfromxml/index.html', {'tags': tags, 'tagmaps': tagmaps, 'documents': documents})
 
 
 # A test function to see what is required to create a document and potentially store it in a database.
@@ -37,11 +39,19 @@ def create_doc(request):
             if 'newTag' in request.POST:  # If the user is adding a tag.
                 handle_new_tag(request.POST['newTag'], new_doc)
 
-            if 'tagchoice' in request.POST:
-                tag = Tag.objects.get(id=request.POST['tagchoice'])
-                print("tag: ", tag.tag_name)
-
     return render(request, 'notesfromxml/create-doc.html')
+
+
+def display_doc(request, doc):
+    """
+    Displays a single document and all of its tags.
+    For testing purposes, also displays all documents connected to the tag og the original document.
+    :param doc: The document that is to be displayed.
+    :param request: The classic Django request object.
+    :return: renders the HTML page with the document.
+    """
+    document = Document.objects.get(document_name=doc)
+    return render(request, 'notesfromxml/display-doc.html', {'document': document})
 
 
 def display_docs(request):
@@ -52,6 +62,11 @@ def display_docs(request):
         tag = request.POST['newTag']
         handle_new_tag(tag, doc)
     return render(request, 'notesfromxml/displaydocs.html', {'documents': documents})
+
+
+def display_tag(request, tag_name):
+    tag = Tag.objects.get(tag_name=tag_name)
+    return render(request, 'notesfromxml/display-tag.html', {'tag': tag})
 
 
 def display_tags(request):
@@ -71,13 +86,71 @@ def display_docs_with_tags(request):
     return render(request, 'notesfromxml/doc_by_tag.html', {'documents': list_of_docs_with_tags})
 
 
+def delete(request, obj_name):
+    document = None
+    if request.method == 'GET':
+        # TODO: Throw error, you should never GET delete.
+        pass
+    if request.method == 'POST':
+        object_type = request.POST['object_type']
+        if object_type == 'tag':  # If we are deleting a tag.
+            tag_to_delete = Tag.objects.get(tag_name=obj_name)
+            for tagmap in tag_to_delete.tagmap_set.all():
+                tagmap.delete()
+            tag_to_delete.delete()
+            document = Document.objects.get(document_name=request.POST['currently_viewed_doc'])
+        elif object_type == 'document':  # If we are deleting a document.
+            doc_to_delete = Document.objects.get(document_name=obj_name)
+            for tagmap in doc_to_delete.tagmap_set.all():
+                tagmap.delete()
+            doc_to_delete.delete()
+    if document is not None:
+        return render(request, 'notesfromxml/display-doc.html', {'document': document})
+    # TODO: this is not really working, call index with a redirect instead.
+    tags = Tag.objects.all()
+    documents = Document.objects.all()
+    tagmaps = Tagmap.objects.all()
+    return render(request, 'notesfromxml/index.html', {'tags': tags, 'tagmaps': tagmaps, 'documents': documents})
+
+
+def remove(request, obj_name):
+    if request.method == 'GET':
+        # TODO: Throw error, you should never GET remove.
+        pass
+    if request.method == 'POST':
+        object_type = request.POST['object_type']
+        if object_type == 'tag':  # If we are removing a tag.
+            tag_to_remove = Tag.objects.get(tag_name=obj_name)
+            current_document = Document.objects.get(document_name=request.POST['currently_viewed_doc'])
+            tagmap_to_delete = tag_to_remove.tagmap_set.get(tag=tag_to_remove, document=current_document)
+            tagmap_to_delete.delete()
+        elif object_type == 'document':
+            doc_to_remove = Document.objects.get(document_name=obj_name)
+            current_tag = Tag.objects.get(tag_name=request.POST['currently_viewed_tag'])
+            tagmap_to_delete = doc_to_remove.tagmap_set.get(tag=current_tag, document=doc_to_remove)
+            tagmap_to_delete.delete()
+    tags = Tag.objects.all()
+    documents = Document.objects.all()
+    tagmaps = Tagmap.objects.all()
+    return render(request, 'notesfromxml/index.html', {'tags': tags, 'tagmaps': tagmaps, 'documents': documents})
+
+
 def handle_new_tag(new_tag, new_doc=None):
+    """
+    Function for handling the creation of new tags, adding them to the document and saving them in the database.
+    :param new_tag: A tag that is to be added to a document. The tag may already be in the database but not yet associated
+    with the document that we want to link it to.
+    :param new_doc: If we are creating a new document at the same time we are creating a new tag, we need to create a new
+    tagmap as well.
+    :return: nothing.
+    """
     if Tag.objects.filter(tag_name=new_tag).exists():  # If the tag already exists.
         current_tag = Tag.objects.get(tag_name=new_tag)
-    else:
+    else:  # Create the new tag and save it in the database.
         current_tag = Tag(tag_name=new_tag)
         current_tag.save()
-    if new_doc:
+    if new_doc:  # If we are adding a tag to a newly created document.
+        # If the tagmap for the newly created document and the tag does not exist.
         if not Tagmap.objects.filter(tag=current_tag, document=new_doc).exists():
             new_tagmap = Tagmap(document=new_doc, tag=current_tag)
             new_tagmap.save()

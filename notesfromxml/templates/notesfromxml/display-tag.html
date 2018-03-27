@@ -1,0 +1,16 @@
+{% load static %}
+<div style="border: 1px solid #ff2400">
+    <h3>All documents connected to the tag: {{ tag.tag_name}}</h3>
+    {% for mapset in tag.tagmap_set.all %}
+        <p>{{ mapset.document.document_name }}</p>
+        <form action="{% url 'notesfromxml:remove' mapset.document.document_name %}" method="post">
+        <!-- This form is for removing documents from the tag-->
+            {% csrf_token %}
+            <div>
+                <input type="hidden" name="object_type" value="document">
+                <input type="hidden" name="currently_viewed_tag" value="{{ tag.tag_name }}">
+                <input type="submit" value="Remove Document"/>
+            </div>
+        </form>
+    {% endfor %}
+</div>

@@ -1,0 +1,41 @@
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'notesfromxml/index.css' %}" />
+<div>
+    <h1>{{ document.document_name }}</h1>
+    <p>{{ document.document_text }}</p>
+</div>
+<div style="border: 1px solid #ff2400">
+    <h3>All tags connected to the document: {{ document.document_name }}</h3>
+    {% for mapset in document.tagmap_set.all %}
+        <p>{{ mapset.tag.tag_name }}</p>
+        <form action="{% url 'notesfromxml:remove' mapset.tag.tag_name %}" method="post">
+        <!-- This form is for removing tags from the document-->
+            {% csrf_token %}
+            <div>
+                <input type="hidden" name="object_type" value="tag">
+                <input type="hidden" name="currently_viewed_doc" value="{{ document.document_name }}">
+                <input type="submit" value="Remove Tag"/>
+            </div>
+        </form>
+    {% endfor %}
+    {% for mapset in document.tagmap_set.all %}
+        <div style="border: 3px solid green; padding: 10px; margin: 20px; width: 20%; box-shadow: 5px 10px #888888">
+        <h3> All documents with the tag: {{ mapset.tag.tag_name }}</h3>
+        {% for tagtest in mapset.tag.tagmap_set.all %}
+            <p>tagtest.document.document_name: {{ tagtest.document.document_name }}</p>
+        {% endfor %}
+        </div>
+    {% endfor %}
+
+</div>
+
+<div>
+    <form action="{% url 'notesfromxml:delete' document.document_name %}" method="post">
+        {% csrf_token %}
+            <div>
+                <input type="hidden" name="object_type" value="document">
+                <input type="hidden" name="currently_viewed_doc" value="{{ document.document_name }}">
+                <input type="submit" value="Delete Document"/>
+            </div>
+    </form>
+</div>
