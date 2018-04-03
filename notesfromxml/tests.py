@@ -2,7 +2,9 @@ import os
 from lxml import etree
 from collections import defaultdict
 from django.test.testcases import TestCase
+from django import forms
 from notesfromxml.models import Document, Tag, Tagmap
+from .forms import AddTagForm
 import urllib.request
 
 
@@ -123,3 +125,10 @@ class DatabaseTests(TestCase):
             print(tagmap.tag.tag_name)
             for tag in tagmap.tag.tagmap_set.all():
                 print(tag.document.document_name)
+
+
+class FormTests(TestCase):
+
+    def test_form_hidden_fields(self):
+        f = AddTagForm()
+        print(f)

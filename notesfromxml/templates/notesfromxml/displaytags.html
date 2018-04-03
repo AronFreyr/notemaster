@@ -1,3 +1,6 @@
+{% extends 'notesfromxml/base.html' %}
+
+{% block content %}
 {% if tags %}
     {% for tag in tags %}
         <div style="border: 1px solid black">
@@ -16,3 +19,4 @@
 {% else %}
     <p>No tags found in the database.</p>
 {% endif %}
+{% endblock content %}

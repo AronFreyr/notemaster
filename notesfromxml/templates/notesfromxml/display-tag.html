@@ -1,4 +1,7 @@
+{% extends 'notesfromxml/base.html' %}
 {% load static %}
+
+{% block content %}
 <div style="border: 1px solid #ff2400">
     <h3>All documents connected to the tag: {{ tag.tag_name}}</h3>
     {% for mapset in tag.tagmap_set.all %}
@@ -14,3 +17,4 @@
         </form>
     {% endfor %}
 </div>
+{% endblock content %}

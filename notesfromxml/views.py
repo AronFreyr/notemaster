@@ -2,9 +2,10 @@ from django.shortcuts import get_object_or_404, render, redirect, reverse
 from django.http import HttpResponse
 from lxml import etree
 from collections import defaultdict
+import os
 
 from .models import Document, Tag, Tagmap
-import os
+from .forms import AddTagForm
 
 
 def index(request):
@@ -16,12 +17,6 @@ def index(request):
 
 # A test function to see what is required to create a document and potentially store it in a database.
 def create_doc(request):
-    if request.method == 'GET':
-        tags = Tag.objects.all()
-        documents = Document.objects.all()
-        tagmaps = Tagmap.objects.all()
-        return render(request, 'notesfromxml/create-doc.html', {'tags': tags, 'tagmaps': tagmaps, 'documents': documents})
-
     if request.method == 'POST':
         print(request.POST)
         # TODO: throw an error if the document name is blank.
@@ -39,7 +34,7 @@ def create_doc(request):
             if 'newTag' in request.POST:  # If the user is adding a tag.
                 handle_new_tag(request.POST['newTag'], new_doc)
 
-    return render(request, 'notesfromxml/create-doc.html')
+    return redirect(reverse('notesfromxml:index'))
 
 
 def display_doc(request, doc):
@@ -57,19 +52,33 @@ def display_doc(request, doc):
 def display_docs(request):
     documents = Document.objects.all()
     if request.method == 'POST':
-        doc_name = request.POST['current_document']
-        doc = Document.objects.get(document_name=doc_name)
-        tag = request.POST['newTag']
-        handle_new_tag(tag, doc)
-    return render(request, 'notesfromxml/displaydocs.html', {'documents': documents})
+        form = AddTagForm(request.POST)
+        if form.is_valid():
+            tag = form.cleaned_data.get('tag_name')
+            doc_name = form.cleaned_data.get('current_document')
+            doc = Document.objects.get(document_name=doc_name)
+
+            handle_new_tag(tag, doc)
+    return render(request, 'notesfromxml/displaydocs.html', {'documents': documents, 'form': AddTagForm()})
 
 
 def display_tag(request, tag_name):
+    """
+    Displays a single tag.
+    :param request: The request object.
+    :param tag_name: The name of the tag to be displayed.
+    :return: render for the tag, which will be rendered with the display-tag.html file.
+    """
     tag = Tag.objects.get(tag_name=tag_name)
     return render(request, 'notesfromxml/display-tag.html', {'tag': tag})
 
 
 def display_tags(request):
+    """
+    Displays all of the tags.
+    :param request: the request object.
+    :return: render for the tags, which will be rendered with the displaytags.html file.
+    """
     tags = Tag.objects.all()
     return render(request, 'notesfromxml/displaytags.html', {'tags': tags})
 
@@ -84,6 +93,22 @@ def display_docs_with_tags(request):
                 docs_with_tag = Document.objects.filter(tagmap__tag=tag_object)
                 list_of_docs_with_tags.extend(docs_with_tag)
     return render(request, 'notesfromxml/doc_by_tag.html', {'documents': list_of_docs_with_tags})
+
+
+def edit_doc(request, doc):
+    """
+    Enables edits to the current document. TODO: currently it's only possible to edit the document text.
+    :param request: The request object.
+    :param doc: The document to be edited
+    :return: A render of the edited document.
+    """
+    document = Document.objects.get(document_name=doc)
+    if request.method == 'POST':
+        new_doc_text = request.POST['name_textarea_edit_document_text']
+        document.document_text = new_doc_text
+        document.save()
+        return redirect(reverse('notesfromxml:display_doc', kwargs={'doc': document.document_name}))
+    return render(request, 'notesfromxml/edit-doc.html', {'document': document})
 
 
 def delete(request, obj_name):
@@ -106,11 +131,7 @@ def delete(request, obj_name):
             doc_to_delete.delete()
     if document is not None:
         return render(request, 'notesfromxml/display-doc.html', {'document': document})
-    # TODO: this is not really working, call index with a redirect instead.
-    tags = Tag.objects.all()
-    documents = Document.objects.all()
-    tagmaps = Tagmap.objects.all()
-    return render(request, 'notesfromxml/index.html', {'tags': tags, 'tagmaps': tagmaps, 'documents': documents})
+    return redirect(reverse('notesfromxml:index'))
 
 
 def remove(request, obj_name):
@@ -129,10 +150,7 @@ def remove(request, obj_name):
             current_tag = Tag.objects.get(tag_name=request.POST['currently_viewed_tag'])
             tagmap_to_delete = doc_to_remove.tagmap_set.get(tag=current_tag, document=doc_to_remove)
             tagmap_to_delete.delete()
-    tags = Tag.objects.all()
-    documents = Document.objects.all()
-    tagmaps = Tagmap.objects.all()
-    return render(request, 'notesfromxml/index.html', {'tags': tags, 'tagmaps': tagmaps, 'documents': documents})
+    return redirect(reverse('notesfromxml:index'))
 
 
 def handle_new_tag(new_tag, new_doc=None):
@@ -154,6 +172,11 @@ def handle_new_tag(new_tag, new_doc=None):
         if not Tagmap.objects.filter(tag=current_tag, document=new_doc).exists():
             new_tagmap = Tagmap(document=new_doc, tag=current_tag)
             new_tagmap.save()
+
+
+# TODO: Can be removed.
+def test_redirect(request):
+    return redirect(reverse('notesfromxml:index'))
 
 
 def xml_detail(request, detail):

@@ -1,0 +1,17 @@
+#div-container-edit-document-submit{
+    display: grid;
+}
+
+#id_textarea_change_document_text{
+    width: 500px;
+    height: 700px;
+    padding: 12px 20px;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    background-color: #f8f8f8;
+    /*float:left;*/
+}
+
+#div-container-edit-document-submit-button{
+    /*float:left;*/
+}

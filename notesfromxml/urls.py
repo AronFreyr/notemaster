@@ -12,6 +12,8 @@ urlpatterns = [
     path('docbytag/', views.display_docs_with_tags, name='doc_by_tag'),
     path('displaydoc/<str:doc>/', views.display_doc, name='display_doc'),
     path('displaytag/<str:tag_name>/', views.display_tag, name='display_tag'),
+    path('displaydoc/<str:doc>/editdoc/', views.edit_doc, name='edit_doc'),
     path('delete/<str:obj_name>/', views.delete, name='delete'),
-    path('remove/<str:obj_name>/', views.remove, name='remove')
+    path('remove/<str:obj_name>/', views.remove, name='remove'),
+    path('testredirect/', views.test_redirect, name='test_redirect')  # TODO: can be removed.
 ]

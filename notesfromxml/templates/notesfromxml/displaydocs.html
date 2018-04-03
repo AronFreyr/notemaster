@@ -12,11 +12,11 @@
                 </ul>
             </div>
             <form action="{% url 'notesfromxml:display_docs'%}" method="post">
+                <!-- This form is for adding a tag to the displayed document -->
                 {% csrf_token %}
                 <div>
+                    {{ form.as_p }}
                     <input type="hidden" name="current_document" value="{{ doc.document_name }}">
-                    <input type="text" id="tagId" name="newTag">
-                    <label for="tagId">Input new tag here: </label>
                     <input type="submit" />
                 </div>
             </form>

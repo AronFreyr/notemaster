@@ -1,0 +1,26 @@
+{% extends 'notesfromxml/base.html' %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'notesfromxml/edit-doc.css' %}" />
+<div>
+    <h1>{{ document.document_name }}</h1>
+</div>
+<div>
+    <form action="{% url 'notesfromxml:edit_doc' document.document_name %}" method="post" id="id_form_change_document_text">
+        {% csrf_token %}
+        <div id="div-container-document-submit">
+            <input type="hidden" name="currently_viewed_doc" value="{{ document.document_name }}">
+            {% comment %}
+            <input type="text" id="input-edit-document-text" name="edit-document-text" value="{{ document.document_text }}">
+            {% endcomment %}
+            <label>
+                <textarea id="id_textarea_change_document_text" form="id_form_change_document_text" name="name_textarea_edit_document_text" >{{ document.document_text }}</textarea>
+            </label>
+            <div id="div-container-edit-document-submit-button">
+                <label for="input-edit-document-text"></label>
+                <input type="submit" value="Submit">
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock content %}

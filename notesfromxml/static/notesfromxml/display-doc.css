@@ -1,0 +1,32 @@
+#id_label_textarea_display_document_text{
+    height: auto;
+}
+
+#id_textarea_display_document_text{
+    height: 500px;
+    width: 700px;
+}
+
+#id_div_tag_container{
+    border: 3px solid green;
+    padding: 5px;
+    margin: 20px;
+    width: 15%;
+    box-shadow: 5px 10px #888888;
+    display: inline-flex;
+    /*display: inline-flex;*/
+}
+
+#id_div_tag_remove_button_container{
+    width: 15%;
+    float: left;
+    margin: 20px 10px;
+}
+
+#id_div_tag_name{
+    margin-left: 15%;
+}
+
+#id_div_container_delete_document{
+    float: right;
+}

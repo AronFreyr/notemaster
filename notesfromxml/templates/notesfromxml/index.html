@@ -1,34 +1,98 @@
+{% extends 'notesfromxml/base.html' %}
 {% load static %}
-<!-- Display a list of all of the tags that currently exist-->
-<div>
-    {% if tags %}
-        <p>All tags in the database</p>
-        <ul>
-            {% for tag in tags %}
-                <li><a href="{% url 'notesfromxml:display_tag' tag.tag_name %}">{{ tag.tag_name }}</a></li>
-            {% endfor %}
-        </ul>
-    {% endif %}
-</div>
-<!-- Display a list of all of the documents that currently exist-->
-<div>
-    {% if documents %}
-        <p>All documents in the database</p>
-        <ul>
-            {% for doc in documents %}
-                <li><a href="{% url 'notesfromxml:display_doc' doc.document_name %}">{{ doc.document_name }}</a></li>
-            {% endfor %}
-        </ul>
-    {% endif %}
-</div>
+
+{% block title %} INDEX {% endblock title %}
+{% block nav-style %}mkt-nav{% endblock nav-style %}
+{% comment %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document Creation</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'notesfromxml/index.css' %}" />
+</head>
+<body>
+{% endcomment %}
+
+{% block content %}
+    {% comment %}
+    <div class="mkt-s1">
+        <div class="mkt-s1-body container ">
+            <div class="row">
+                <h1 class="col-md-8">Never Miss Another Opportunity</h1>
+            </div>
+            <div class="row">
+                <p class="col-md-8">A CRM application that lets you track
+                all of your customers, meetings, notes,
+                and plans. Never forget an important
+                contact or follow up task again.</p>
+            </div>
+            <div class="row">
+                {# First Signup Link #}
+                <a href=""
+                   class="sign-up btn btn-success">Sign Up Now for $15/month!
+                </a>
+            </div>
+        </div>
+    </div>
+    {% endcomment %}
+
+
+    <link rel="stylesheet" type="text/css" href="{% static 'notesfromxml/index.css' %}" />
+    <div id="div-container-create-doc">
+        <h3>Create New Document</h3>
+        <form action="{% url 'notesfromxml:create_doc'%}" method="post">
+            {% csrf_token %}
+            <div>
+                <input type="text" id="docNameId" name="docName">
+                <label for="docNameId"> Document Name</label>
+            </div>
+            <div>
+                <input type="text" id="docTextId" name="docText">
+                <label for="docTextId"> Document Text</label>
+            </div>
+            <div>
+                <input type="text" id="tagId" name="newTag">
+                <label for="tagId">Input new tag here: </label>
+            </div>
+            <input type="submit" />
+        </form>
+    </div>
+    <!-- Display a list of all of the documents that currently exist-->
+    <div id="div-container-all-docs">
+        {% if documents %}
+            <p>All documents in the database</p>
+            <ul>
+                {% for doc in documents %}
+                    <li><a href="{% url 'notesfromxml:display_doc' doc.document_name %}">{{ doc.document_name }}</a></li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+    <!-- Display a list of all of the tags that currently exist-->
+    <div id="div-container-all-tags">
+        {% if tags %}
+            <p>All tags in the database</p>
+            <ul>
+                {% for tag in tags %}
+                    <li><a href="{% url 'notesfromxml:display_tag' tag.tag_name %}">{{ tag.tag_name }}</a></li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
 <!-- Display a list of all of the tagmaps that currently exist-->
-<div>
-    {% if tagmaps %}
-        <p>All tagmaps in the database</p>
-        <ul>
-            {% for tagmap in tagmaps %}
-                <li>{{ tagmap }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
-</div>
+    <div id="div-container-all-tagmaps">
+        {% if tagmaps %}
+            <p>All tagmaps in the database</p>
+            <ul>
+                {% for tagmap in tagmaps %}
+                    <li>{{ tagmap }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+{% endblock content %}
+{% comment %}
+</body>
+</html>
+{% endcomment %}
