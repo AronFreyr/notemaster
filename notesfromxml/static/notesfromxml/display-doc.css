@@ -1,5 +1,6 @@
 #id_label_textarea_display_document_text{
     height: auto;
+    display: block;
 }
 
 #id_textarea_display_document_text{
@@ -27,6 +28,24 @@
     margin-left: 15%;
 }
 
+#id_div_container_name_and_edit_document{
+    width: 80%;
+    height: 150px;
+    margin: auto;
+
+}
+
+#id_div_document_name{
+    width: 150%;
+    margin: 2px;
+    float: left;
+}
+
 #id_div_container_delete_document{
     float: right;
 }
+
+#id_div_edit_document_button{
+    margin-left: 15%;
+}
+
