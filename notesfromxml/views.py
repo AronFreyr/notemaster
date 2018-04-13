@@ -43,10 +43,12 @@ def display_doc(request, doc):
     For testing purposes, also displays all documents connected to the tag og the original document.
     :param doc: The document that is to be displayed.
     :param request: The classic Django request object.
-    :return: renders the HTML page with the document.
+    :return: renders the HTML page with the document and the document text paragraphs in a list for easy display
+    in the HTML.
     """
     document = Document.objects.get(document_name=doc)
-    return render(request, 'notesfromxml/display-doc.html', {'document': document})
+    return render(request, 'notesfromxml/display-doc.html',
+                  {'document': document, 'document_paragraphs': document.document_text.split('\n')})
 
 
 def display_docs(request):
@@ -104,11 +106,18 @@ def edit_doc(request, doc):
     """
     document = Document.objects.get(document_name=doc)
     if request.method == 'POST':
-        new_doc_text = request.POST['name_textarea_edit_document_text']
-        document.document_text = new_doc_text
-        document.save()
+        form = AddTagForm(request.POST)
+        print(form)
+        if form.is_valid():
+            tag = form.cleaned_data.get('tag_name')
+            print(tag)
+            handle_new_tag(tag, document)
+        if 'name_textarea_edit_document_text' in request.POST:
+            new_doc_text = request.POST['name_textarea_edit_document_text']
+            document.document_text = new_doc_text
+            document.save()
         return redirect(reverse('notesfromxml:display_doc', kwargs={'doc': document.document_name}))
-    return render(request, 'notesfromxml/edit-doc.html', {'document': document})
+    return render(request, 'notesfromxml/edit-doc.html', {'document': document, 'form': AddTagForm()})
 
 
 def delete(request, obj_name):
@@ -123,7 +132,8 @@ def delete(request, obj_name):
             for tagmap in tag_to_delete.tagmap_set.all():
                 tagmap.delete()
             tag_to_delete.delete()
-            document = Document.objects.get(document_name=request.POST['currently_viewed_doc'])
+            if 'currently_viewed_doc' in request.POST:
+                document = Document.objects.get(document_name=request.POST['currently_viewed_doc'])
         elif object_type == 'document':  # If we are deleting a document.
             doc_to_delete = Document.objects.get(document_name=obj_name)
             for tagmap in doc_to_delete.tagmap_set.all():

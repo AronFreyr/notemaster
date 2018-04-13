@@ -5,9 +5,16 @@
     <link rel="stylesheet" type="text/css" href="{% static 'notesfromxml/display-doc.css' %}" />
 <div>
     <h1>{{ document.document_name }}</h1>
-    <label id="id_label_textarea_display_document_text">
-        <textarea id="id_textarea_display_document_text" readonly>{{ document.document_text }}</textarea>
-    </label>
+    <div style="padding: 45px;">
+        <label id="id_label_textarea_display_document_text">
+            {% comment %}
+            <textarea id="id_textarea_display_document_text" readonly>{{ document.document_text }}</textarea>
+            {% endcomment %}
+            {% for paragraph in document_paragraphs %}
+                <p>{{ paragraph }}</p>
+            {% endfor %}
+        </label>
+    </div>
 </div>
 <div style="border: 1px solid #ff2400">
     <h3>Tags</h3>

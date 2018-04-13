@@ -15,3 +15,19 @@
 #div-container-edit-document-submit-button{
     /*float:left;*/
 }
+
+#div_container_edit_document{
+    display: inline-block;
+}
+
+#div_container_edit_document_text{
+    float:left;
+    padding: 5px;
+}
+
+#id_container_add_tag{
+    float:right;
+    padding: 15px;
+    border: 2px solid grey;
+    border-radius: 3px;
+}
