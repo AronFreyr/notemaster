@@ -27,13 +27,13 @@
     recursively go through. -->
     {% elif value.0 == 'notes'%}
         {% for value in value.1.items %}
-            {% include 'notesfromxml/xml-detail.html' %}
+            {% include 'notesfromxml/old_xml_templates/xml-detail.html' %}
         {% endfor %}
     {% else %}
         <h2>{{ value.0 }}</h2>
         {% if value.1.items %}
             {% for value in value.1.items %}
-                {% include 'notesfromxml/xml-detail.html' %}
+                {% include 'notesfromxml/old_xml_templates/xml-detail.html' %}
             {% endfor %}
         {% endif %}
     {% endif %}
@@ -51,7 +51,7 @@
                     </div>
                 {% else %}
                     {% for value in value.items %}
-                        {% include 'notesfromxml/xml-detail.html' %}
+                        {% include 'notesfromxml/old_xml_templates/xml-detail.html' %}
                     {% endfor %}
                 {% endif %}
             {% endfor %}

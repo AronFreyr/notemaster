@@ -1,38 +1,47 @@
 from django.shortcuts import get_object_or_404, render, redirect, reverse
 from django.http import HttpResponse
-from lxml import etree
-from collections import defaultdict
-import os
 
 from .models import Document, Tag, Tagmap
-from .forms import AddTagForm
+from .forms import AddTagForm, CreateDocumentForm
+from .services import handle_new_tag
 
 
 def index(request):
     tags = Tag.objects.all()
     documents = Document.objects.all()
     tagmaps = Tagmap.objects.all()
-    return render(request, 'notesfromxml/index.html', {'tags': tags, 'tagmaps': tagmaps, 'documents': documents})
+    form = CreateDocumentForm()
+    return render(request, 'notesfromxml/index.html', {'tags': tags, 'tagmaps': tagmaps, 'documents': documents, 'form': form})
 
 
 # A test function to see what is required to create a document and potentially store it in a database.
 def create_doc(request):
     if request.method == 'POST':
         print(request.POST)
-        # TODO: throw an error if the document name is blank.
-        if 'docName' in request.POST:  # Document name can't be blank.
-            doc_name = request.POST['docName']
-            doc_text = ''
-            if 'docText' in request.POST:  # Document text can be empty.
-                doc_text = request.POST['docText']
+        form = CreateDocumentForm(request.POST)
+        if form.is_valid():
+            doc_name = form.cleaned_data.get('document_name')
+            doc_text = form.cleaned_data.get('document_text')
+            new_tag = form.cleaned_data.get('new_tag')
             if Document.objects.filter(document_name=doc_name).exists():
-                # TODO: Throw error.
-                print('Document with that name already exists')
+                pass
             new_doc = Document(document_name=doc_name, document_text=doc_text)
             new_doc.save()
-
-            if 'newTag' in request.POST:  # If the user is adding a tag.
-                handle_new_tag(request.POST['newTag'], new_doc)
+            handle_new_tag(new_tag, new_doc)
+        # # TODO: throw an error if the document name is blank.
+        # if 'docName' in request.POST:  # Document name can't be blank.
+        #     doc_name = request.POST['docName']
+        #     doc_text = ''
+        #     if 'docText' in request.POST:  # Document text can be empty.
+        #         doc_text = request.POST['docText']
+        #     if Document.objects.filter(document_name=doc_name).exists():
+        #         # TODO: Throw error.
+        #         print('Document with that name already exists')
+        #     new_doc = Document(document_name=doc_name, document_text=doc_text)
+        #     new_doc.save()
+        #
+        #     if 'newTag' in request.POST:  # If the user is adding a tag.
+        #         handle_new_tag(request.POST['newTag'], new_doc)
 
     return redirect(reverse('notesfromxml:index'))
 
@@ -56,8 +65,8 @@ def display_docs(request):
     if request.method == 'POST':
         form = AddTagForm(request.POST)
         if form.is_valid():
-            tag = form.cleaned_data.get('tag_name')
-            doc_name = form.cleaned_data.get('current_document')
+            doc_name = form.cleaned_document()
+            tag = form.cleaned_tag()
             doc = Document.objects.get(document_name=doc_name)
 
             handle_new_tag(tag, doc)
@@ -86,6 +95,12 @@ def display_tags(request):
 
 
 def display_docs_with_tags(request):
+    """
+    Takes string from the template, that string is a comma separated list of tag names, and searches for any
+    documents that have those tags. Then sends the document list to the template for display.
+    :param request: The request object, has the comma separated string that comes from the template.
+    :return: A list of all of the documents that have the tags that were in the comma separated string.
+    """
     list_of_docs_with_tags = []
     if request.method == 'POST':
         tag_list = [x.strip() for x in request.POST['searchTags'].split(',')]
@@ -163,68 +178,6 @@ def remove(request, obj_name):
     return redirect(reverse('notesfromxml:index'))
 
 
-def handle_new_tag(new_tag, new_doc=None):
-    """
-    Function for handling the creation of new tags, adding them to the document and saving them in the database.
-    :param new_tag: A tag that is to be added to a document. The tag may already be in the database but not yet associated
-    with the document that we want to link it to.
-    :param new_doc: If we are creating a new document at the same time we are creating a new tag, we need to create a new
-    tagmap as well.
-    :return: nothing.
-    """
-    if Tag.objects.filter(tag_name=new_tag).exists():  # If the tag already exists.
-        current_tag = Tag.objects.get(tag_name=new_tag)
-    else:  # Create the new tag and save it in the database.
-        current_tag = Tag(tag_name=new_tag)
-        current_tag.save()
-    if new_doc:  # If we are adding a tag to a newly created document.
-        # If the tagmap for the newly created document and the tag does not exist.
-        if not Tagmap.objects.filter(tag=current_tag, document=new_doc).exists():
-            new_tagmap = Tagmap(document=new_doc, tag=current_tag)
-            new_tagmap.save()
-
-
 # TODO: Can be removed.
 def test_redirect(request):
     return redirect(reverse('notesfromxml:index'))
-
-
-def xml_detail(request, detail):
-    root_dict = get_xml_file()
-    detail_dict = root_dict['data'][detail]
-    return render(request, 'notesfromxml/xml-category.html', {'notes': detail_dict})
-
-
-# Technically this function can only get a single xml file: 'general.xml'.
-def get_xml_file():
-    """
-    Gets the 'general.xml' file in the current directory and converts it to a Python dictionary.
-    :return: the root of a Python dictionary that represents the data in an xml file.
-    """
-    module_dir = os.path.dirname(__file__)  # Gets the current path.
-    file_path = os.path.join(module_dir, 'general.xml')  # This is so we can open general.xml in the current path.
-    data = etree.parse(file_path)  # Creates a tree structure from general.xml.
-    root_dict = etree_to_dict(data.getroot())  # Converts the tree structure into a dictionary.
-    return root_dict
-
-
-# This function was acquired from the internet.
-def etree_to_dict(t):
-    d = {t.tag: {} if t.attrib else None}
-    children = list(t)
-    if children:
-        dd = defaultdict(list)
-        for dc in map(etree_to_dict, children):
-            for k, v in dc.items():
-                dd[k].append(v)
-        d = {t.tag: {k: v[0] if len(v) == 1 else v for k, v in dd.items()}}
-    if t.attrib:
-        d[t.tag].update(('@' + k, v) for k, v in t.attrib.items())
-    if t.text:
-        text = t.text.strip()
-        if children or t.attrib:
-            if text:
-                d[t.tag]['#text'] = text
-        else:
-            d[t.tag] = text
-    return d

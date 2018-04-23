@@ -1,5 +1,6 @@
 {% extends 'notesfromxml/base.html' %}
 {% load static %}
+{% load app_filters %}
 
 {% block title %} INDEX {% endblock title %}
 {% block nav-style %}mkt-nav{% endblock nav-style %}
@@ -44,6 +45,19 @@
         <form action="{% url 'notesfromxml:create_doc'%}" method="post">
             {% csrf_token %}
             <div>
+                {{ form.document_name.label }}
+                {{ form.document_name|add_class:'form_doc_name' }}
+            </div>
+            <div>
+                {{ form.document_text.label }}
+                {{ form.document_text|add_class:'form_doc_text' }}
+            </div>
+            <div>
+                {{ form.new_tag.label }}
+                {{ form.new_tag|add_class:'form_new_tag' }}
+            </div>
+            {% comment %}
+            <div>
                 <input type="text" id="docNameId" name="docName">
                 <label for="docNameId"> Document Name</label>
             </div>
@@ -55,6 +69,8 @@
                 <input type="text" id="tagId" name="newTag">
                 <label for="tagId">Input new tag here: </label>
             </div>
+            {% endcomment %}
+
             <input type="submit" />
         </form>
     </div>

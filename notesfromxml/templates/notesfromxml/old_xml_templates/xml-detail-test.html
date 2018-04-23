@@ -19,7 +19,7 @@
             {% comment %}
             <p style="text-decoration: underline; text-decoration-color: red">the value in value when value is list (hehe): {{ value }}</p>
             {% endcomment %}
-            {% include 'notesfromxml/xml-detail-test.html' %}
+            {% include 'notesfromxml/old_xml_templates/xml-detail-test.html' %}
         {% endfor %}
     </div>
 
@@ -40,7 +40,7 @@
 
         {% for value in value.1.items %}
             <p>value right before recursion in value.1=dict: {{ value }}</p>
-            {% include 'notesfromxml/xml-detail-test.html' %}
+            {% include 'notesfromxml/old_xml_templates/xml-detail-test.html' %}
         {% endfor %}
     </div>
 
@@ -69,7 +69,7 @@
             {% else %}
                 {% if value|get_type != "str" %}
                     <h4 style="text-decoration: underline">{{ key }}</h4>
-                    {% include 'notesfromxml/xml-detail-test.html' %}
+                    {% include 'notesfromxml/old_xml_templates/xml-detail-test.html' %}
                 {% else %}
                     <!--<p style="text-decoration: underline">key = {{ key }} - value = {{ value }}</p>-->
                     <p>{{ key }}: {{ value }}</p>
