@@ -4,12 +4,15 @@ a {
 
 #div-container-create-doc{
     border: 1px solid black;
+    border-radius: 4px;
     padding: 10px;
+    margin: 50px;
     float: right;
     display: block;
 }
 
-#div-container-create-doc div{
+.create_doc_input{
+    text-align: right
 }
 
 #div-container-all-tags{
