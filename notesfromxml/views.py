@@ -7,27 +7,26 @@ from .services import handle_new_tag
 
 
 def index(request):
-    tags = Tag.objects.all()
-    documents = Document.objects.all()
-    tagmaps = Tagmap.objects.all()
-    form = CreateDocumentForm()
-    return render(request, 'notesfromxml/index.html', {'tags': tags, 'tagmaps': tagmaps, 'documents': documents, 'form': form})
+    return render(request, 'notesfromxml/index.html', {'tags': Tag.objects.all(),
+                                                       'tagmaps': Tagmap.objects.all(),
+                                                       'documents': Document.objects.all(),
+                                                       'form': CreateDocumentForm()})
 
 
-# A test function to see what is required to create a document and potentially store it in a database.
 def create_doc(request):
     if request.method == 'POST':
         print(request.POST)
         form = CreateDocumentForm(request.POST)
         if form.is_valid():
+            # TODO: throw an error if the document name is blank.
             doc_name = form.cleaned_data.get('document_name')
             doc_text = form.cleaned_data.get('document_text')
             new_tag = form.cleaned_data.get('new_tag')
-            if Document.objects.filter(document_name=doc_name).exists():
-                pass
-            new_doc = Document(document_name=doc_name, document_text=doc_text)
-            new_doc.save()
-            handle_new_tag(new_tag, new_doc)
+            # TODO: Throw error if the document already exists.
+            if not Document.objects.filter(document_name=doc_name).exists():
+                new_doc = Document(document_name=doc_name, document_text=doc_text)
+                new_doc.save()
+                handle_new_tag(new_tag, new_doc)
         # # TODO: throw an error if the document name is blank.
         # if 'docName' in request.POST:  # Document name can't be blank.
         #     doc_name = request.POST['docName']
