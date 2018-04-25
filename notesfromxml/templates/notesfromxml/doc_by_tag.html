@@ -1,24 +1,32 @@
-<form action="{% url 'notesfromxml:doc_by_tag'%}" method="post">
-    {% csrf_token %}
-    <div>
-        <!-- intended as a comma separated list of tags -->
-        <input type="text" id="tagId" name="searchTags">
-        <label for="tagId">Search for documents with these tags: </label>
-        <input type="submit" />
-    </div>
-</form>
+{% extends 'notesfromxml/base.html' %}
+{% load static %}
 
-{% for doc in documents %}
-    <div style="border: 1px solid black">
-        <h3>{{ doc.document_name }}</h3>
-        <p>{{ doc.document_text }}</p>
-        <div class="tabContainer">
-        <p>Tags:</p>
-            <ul>
-                {% for mapset in doc.tagmap_set.all %}
-                    <li> {{ mapset.tag.tag_name }}</li>
-                {% endfor %}
-            </ul>
-        </div>
+{% block content %}
+    <link rel="stylesheet" type="text/css" href="{% static 'notesfromxml/doc_by_tag.css' %}" />
+    <div class="search-container">
+        <form action="{% url 'notesfromxml:doc_by_tag'%}" method="post">
+            {% csrf_token %}
+            <div>
+                <!-- intended as a comma separated list of tags -->
+                <input type="text" id="tagId" name="searchTags">
+                <label for="tagId">Search for documents with these tags: </label>
+                <input type="submit" />
+            </div>
+        </form>
+
+        {% for doc in documents %}
+            <div style="border: 1px solid black">
+                <h3>{{ doc.document_name }}</h3>
+                <p>{{ doc.document_text }}</p>
+                <div class="tabContainer">
+                <p>Tags:</p>
+                    <ul>
+                        {% for mapset in doc.tagmap_set.all %}
+                            <li> {{ mapset.tag.tag_name }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        {% endfor %}
     </div>
-{% endfor %}
+{% endblock content %}
