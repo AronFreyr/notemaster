@@ -8,14 +8,21 @@
     width: 700px;
 }
 
+#div-container-document-text{
+    padding: 45px;
+}
+
 #id_div_tag_container{
-    border: 3px solid green;
+    border: 3px solid black;
     padding: 5px;
     margin: 20px;
     width: 15%;
     box-shadow: 5px 10px #888888;
     display: inline-flex;
-    /*display: inline-flex;*/
+}
+
+#tag-box-container{
+    border: 1px solid black;
 }
 
 #id_div_tag_remove_button_container{

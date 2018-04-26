@@ -5,18 +5,15 @@
     <link rel="stylesheet" type="text/css" href="{% static 'notesfromxml/display-doc.css' %}" />
 <div>
     <h1>{{ document.document_name }}</h1>
-    <div style="padding: 45px;">
+    <div id="div-container-document-text">
         <label id="id_label_textarea_display_document_text">
-            {% comment %}
-            <textarea id="id_textarea_display_document_text" readonly>{{ document.document_text }}</textarea>
-            {% endcomment %}
             {% for paragraph in document_paragraphs %}
                 <p>{{ paragraph }}</p>
             {% endfor %}
         </label>
     </div>
 </div>
-<div style="border: 1px solid #ff2400">
+<div id="tag-box-container">
     <h3>Tags</h3>
     {% for mapset in document.tagmap_set.all %}
         <div  id="id_div_tag_container">
