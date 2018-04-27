@@ -13,6 +13,10 @@ def index(request):
                                                        'form': CreateDocumentForm()})
 
 
+def display_help(request):
+    return render(request, 'notesfromxml/help.html')
+
+
 def create_doc(request):
     if request.method == 'POST':
         print(request.POST)

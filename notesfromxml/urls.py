@@ -4,6 +4,7 @@ from . import views
 app_name = 'notesfromxml'
 urlpatterns = [
     path('', views.index, name='index'),
+    path('help/', views.display_help, name='display_help'),
     #url(r'^(?P<detail>\w+)/$', views.xml_detail, name='xml_detail-test'),
     #path('detail/', views.xml_detail, name='xml_detail-test'),
     path('createdoc/', views.create_doc, name='create_doc'),
