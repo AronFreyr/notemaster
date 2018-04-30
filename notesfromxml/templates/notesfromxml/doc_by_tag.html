@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block content %}
-    <link rel="stylesheet" type="text/css" href="{% static 'notesfromxml/doc_by_tag.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'notesfromxml/css/doc_by_tag.css' %}" />
     <div class="search-container">
         <form action="{% url 'notesfromxml:doc_by_tag'%}" method="post">
             {% csrf_token %}

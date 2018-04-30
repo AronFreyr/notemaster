@@ -1,70 +1,68 @@
 {% extends 'notesfromxml/base.html' %}
 {% load static %}
+{%  block head_css_page %}
+    <link rel="stylesheet" type="text/css" href="{% static 'notesfromxml/css/display-doc.css' %}" />
+ {% endblock head_css_page %}
 
 {% block content %}
-    <link rel="stylesheet" type="text/css" href="{% static 'notesfromxml/display-doc.css' %}" />
-<div>
-    <h1>{{ document.document_name }}</h1>
-    <div id="div-container-document-text">
-        <label id="id_label_textarea_display_document_text">
-            {% for paragraph in document_paragraphs %}
-                <p>{{ paragraph }}</p>
-            {% endfor %}
-        </label>
+
+<div class="container">
+    <div class="row">
+        <!-- Tags to the left side -->
+        <div class="col-sm-2">
+            <div class="sidebar-module">
+                <h3>Tags</h3>
+                {% for mapset in document.tagmap_set.all %}
+                    <div  id="id_div_tag_container">
+                        <div id="id_div_tag_name">
+                            <a href="{% url 'notesfromxml:display_tag' mapset.tag.tag_name %}">{{ mapset.tag.tag_name }}</a>
+                        </div>
+                        <form action="{% url 'notesfromxml:remove' mapset.tag.tag_name %}" method="post">
+                        <!-- This form is for removing tags from the document-->
+                            {% csrf_token %}
+                            <div id="id_div_tag_remove_button_container">
+                                <input type="hidden" name="object_type" value="tag">
+                                <input type="hidden" name="currently_viewed_doc" value="{{ document.document_name }}">
+                                <input type="submit" value="Remove Tag"/>
+                            </div>
+                        </form>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Document name and text in the middle -->
+        <div class="col-sm-8">
+            <h1>{{ document.document_name }}</h1>
+            <div id="div-container-document-text">
+                <label id="id_label_textarea_display_document_text">
+                    {% for paragraph in document_paragraphs %}
+                        <p>{{ paragraph }}</p>
+                    {% endfor %}
+                </label>
+            </div>
+        </div>
+
+        <!-- Edit and delete buttons to the right side -->
+        <div class="col-sm-2">
+            <div id="id_div_edit_document_button">
+                <a class="btn btn-outline-secondary" href="{% url 'notesfromxml:edit_doc' document.document_name %}"> edit document</a>
+            </div>
+
+            <div id="id_div_container_delete_document">
+                <form action="{% url 'notesfromxml:delete' document.document_name %}" method="post">
+                    {% csrf_token %}
+                        <div>
+                            <input type="hidden" name="object_type" value="document">
+                            <input type="hidden" name="currently_viewed_doc" value="{{ document.document_name }}">
+                            <input type="submit" value="Delete Document"/>
+                        </div>
+                </form>
+            </div>
+        </div>
     </div>
 </div>
-<div id="tag-box-container">
-    <h3>Tags</h3>
-    {% for mapset in document.tagmap_set.all %}
-        <div  id="id_div_tag_container">
-            <div id="id_div_tag_name">
-                <h4>{{ mapset.tag.tag_name }}</h4>
-            </div>
-            <form action="{% url 'notesfromxml:remove' mapset.tag.tag_name %}" method="post">
-            <!-- This form is for removing tags from the document-->
-                {% csrf_token %}
-                <div id="id_div_tag_remove_button_container">
-                    <input type="hidden" name="object_type" value="tag">
-                    <input type="hidden" name="currently_viewed_doc" value="{{ document.document_name }}">
-                    <input type="submit" value="Remove Tag"/>
-                </div>
-            </form>
-        </div>
-        {% comment %}
-        <div style="border: 3px solid green; padding: 10px; margin: 20px; width: 20%; box-shadow: 5px 10px #888888">
-            <h2>TEST</h2>
-            <h3> All documents with the tag: {{ mapset.tag.tag_name }}</h3>
-            {% for tagtest in mapset.tag.tagmap_set.all %}
-                <p>{{ tagtest.document.document_name }}</p>
-            {% endfor %}
-        </div>
-        {% endcomment %}
-    {% endfor %}
-</div>
 
-{% comment %}
-<div>
-    <form action="{% url 'notesfromxml:edit_doc' document.document_name %}" method="post">
-        {% csrf_token %}
-        <div>
-            <input type="submit" value="Edit Document"/>
-        </div>
-    </form>
-</div>
-{% endcomment %}
-<div>
-    <a href="{% url 'notesfromxml:edit_doc' document.document_name %}"> edit document</a>
-</div>
 
-<div id="id_div_container_delete_document">
-    <form action="{% url 'notesfromxml:delete' document.document_name %}" method="post">
-        {% csrf_token %}
-            <div>
-                <input type="hidden" name="object_type" value="document">
-                <input type="hidden" name="currently_viewed_doc" value="{{ document.document_name }}">
-                <input type="submit" value="Delete Document"/>
-            </div>
-    </form>
-</div>
 
 {% endblock content %}

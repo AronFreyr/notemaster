@@ -7,9 +7,9 @@ from .services import handle_new_tag
 
 
 def index(request):
-    return render(request, 'notesfromxml/index.html', {'tags': Tag.objects.all(),
+    return render(request, 'notesfromxml/index.html', {'tags': Tag.objects.all().order_by('tag_name'),
                                                        'tagmaps': Tagmap.objects.all(),
-                                                       'documents': Document.objects.all(),
+                                                       'documents': Document.objects.all().order_by('document_name'),
                                                        'form': CreateDocumentForm()})
 
 

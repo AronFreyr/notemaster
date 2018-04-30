@@ -2,15 +2,28 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <!-- A block for the title of the page -->
+    <title>{% block title %} Title {% endblock title %}</title>
+    <!-- A block for the icon of the page. -->
+    {% block head_favicon %}
+        <link rel="icon" type="image/png"
+              href="{{ STATIC_URL }}images/favicon.ico">
+    {% endblock head_favicon %}
     {% load static %}
     {% block head_css %}
         {% block head_css_site %}
+            {% comment %}
             <link href="{% static 'notesfromxml/bootstrap/bootstrap.min.css' %}"
                   rel="stylesheet" media="screen">
+             {% endcomment %}
+            <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"
+                  integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4"
+                  crossorigin="anonymous" media="screen"/>
+            {% comment %}
             <link href="{{ STATIC_URL }}css/app.css"
                   rel="stylesheet" media="screen">
-            <link href="{% static 'notesfromxml/index.css' %}" rel="stylesheet" media="screen">
+            {% endcomment %}
+            <link href="{% static 'notesfromxml/css/base.css' %}" rel="stylesheet" media="screen">
         {% endblock head_css_site %}
         {% block head_css_section %}{% endblock head_css_section %}
         {% block head_css_page %}{% endblock head_css_page %}
@@ -19,11 +32,12 @@
 <body>
 {# Navigation Menu #}
     <header>
-        <div class="navbar navbar-default navbar-static-top
+        <!--<div class="navbar navbar-default navbar-static-top-->
+        <div class="navbar navbar-dark navbar-static-top bg-dark
             {% block nav-style %}{% endblock %}">
             <div class="container p-none">
                 <div class="navbar-header">
-                    <button type="button" class="navbar-toggle"
+                    <button type="button" class="navbar-toggler"
                             data-toggle="collapse"
                             data-target=".navbar-collapse">
                         <span class="icon-bar"></span>
@@ -68,8 +82,19 @@
 {# Set of blocks that can be used to display JavaScript files #}
     {% block footer_javascript %}
         {% block footer_javascript_site %}
+            <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+                    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+                    crossorigin="anonymous"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"
+                    integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ"
+                    crossorigin="anonymous"></script>
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"
+                    integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm"
+                    crossorigin="anonymous"></script>
+            {% comment %}
             <script src="{% static 'notesfromxml/jquery/jquery.min.js' %}"></script>
             <script src="{% static 'notesfromxml/bootstrap/bootstrap.min.css' %}"></script>
+            {% endcomment %}
             {% comment %}<script src="{% static 'notesfromxml/js/app' %}js/app.js"></script> {% endcomment %}
         {% endblock footer_javascript_site %}
         {% block footer_javascript_section %}{% endblock footer_javascript_section %}
