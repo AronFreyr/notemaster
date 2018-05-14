@@ -1,0 +1,17 @@
+.view_all_docs_in_tag_wrapper{
+     padding-top: 45px;
+
+}
+
+.view_single_doc_in_tag_wrapper{
+    border: 1px solid black;
+    padding: 10px;
+}
+
+.container_remove_document{
+    float: right;
+}
+
+#id_div_container_delete_tag{
+    margin-top: 45px;
+}

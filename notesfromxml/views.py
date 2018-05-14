@@ -181,6 +181,10 @@ def remove(request, obj_name):
     return redirect(reverse('notesfromxml:index'))
 
 
+def display_tests(request):
+    return render(request, 'notesfromxml/tests.html')
+
+
 # TODO: Can be removed.
 def test_redirect(request):
     return redirect(reverse('notesfromxml:index'))

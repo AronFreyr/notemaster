@@ -1,32 +1,53 @@
 {% extends 'notesfromxml/base.html' %}
 {% load static %}
+{%  block head_css_page %}
+    <link rel="stylesheet" type="text/css" href="{% static 'notesfromxml/css/display-tag.css' %}" />
+ {% endblock head_css_page %}
 
 {% block content %}
-<div style="border: 1px solid #ff2400">
-    <h3>All documents connected to the tag: {{ tag.tag_name}}</h3>
-    {% for mapset in tag.tagmap_set.all %}
-        <p>{{ mapset.document.document_name }}</p>
-        <form action="{% url 'notesfromxml:remove' mapset.document.document_name %}" method="post">
-        <!-- This form is for removing documents from the tag-->
-            {% csrf_token %}
-            <div>
-                <input type="hidden" name="object_type" value="document">
-                <input type="hidden" name="currently_viewed_tag" value="{{ tag.tag_name }}">
-                <input type="submit" value="Remove Document"/>
+<div class="container">
+    <div class="row">
+        <!-- Empty left column for now -->
+        <div class="col-sm-2">
+            <div class="sidebar-module">
             </div>
-        </form>
-    {% endfor %}
-</div>
-<div id="id_div_container_delete_tag">
-    <form action="{% url 'notesfromxml:delete' tag.tag_name %}" method="post">
-        {% csrf_token %}
-            <div>
-                <input type="hidden" name="object_type" value="tag">
-                {% comment %}
-                <input type="hidden" name="currently_viewed_doc" value="{{ document.document_name }}">
-                {% endcomment %}
-                <input type="submit" value="Delete Tag"/>
+        </div>
+
+        <div class="col-sm-8">
+            <h3>All documents connected to the tag: {{ tag.tag_name}}</h3>
+            <div class="view_all_docs_in_tag_wrapper">
+                {% for mapset in tag.tagmap_set.all %}
+                    <div class="view_single_doc_in_tag_wrapper">
+                        <a href="{% url 'notesfromxml:display_doc' mapset.document.document_name %}">{{ mapset.document.document_name }}</a>
+                        <div class="container_remove_document">
+                            <form action="{% url 'notesfromxml:remove' mapset.document.document_name %}" method="post">
+                            <!-- This form is for removing documents from the tag-->
+                                {% csrf_token %}
+                                <div>
+                                    <input type="hidden" name="object_type" value="document">
+                                    <input type="hidden" name="currently_viewed_tag" value="{{ tag.tag_name }}">
+                                    <input type="submit" value="Remove Document"/>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                {% endfor %}
             </div>
-    </form>
+        </div>
+        <div class="col-sm-2">
+            <div id="id_div_container_delete_tag">
+                <form action="{% url 'notesfromxml:delete' tag.tag_name %}" method="post">
+                    {% csrf_token %}
+                        <div>
+                            <input type="hidden" name="object_type" value="tag">
+                            {% comment %}
+                            <input type="hidden" name="currently_viewed_doc" value="{{ document.document_name }}">
+                            {% endcomment %}
+                            <input type="submit" value="Delete Tag"/>
+                        </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock content %}

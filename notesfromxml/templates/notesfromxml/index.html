@@ -50,20 +50,6 @@
                     {{ form.new_tag|add_class:'form_new_tag' }}
                 </div>
             </div>
-            {% comment %}
-            <div>
-                <input type="text" id="docNameId" name="docName">
-                <label for="docNameId"> Document Name</label>
-            </div>
-            <div>
-                <input type="text" id="docTextId" name="docText">
-                <label for="docTextId"> Document Text</label>
-            </div>
-            <div>
-                <input type="text" id="tagId" name="newTag">
-                <label for="tagId">Input new tag here: </label>
-            </div>
-            {% endcomment %}
 
             <input type="submit" />
         </form>
@@ -71,7 +57,7 @@
     <div class="container index-container">
         <div class="row">
             <!-- Display a list of all of the documents that currently exist-->
-            <div id="div-container-all-docs" class="col-md-4">
+            <div id="div-container-all-docs" class="col-md-4 index-col-container">
                 {% if documents %}
                     <p>All documents in the database</p>
                     <ul>
@@ -82,7 +68,7 @@
                 {% endif %}
             </div>
             <!-- Display a list of all of the tags that currently exist-->
-            <div id="div-container-all-tags" class="col-md-4">
+            <div id="div-container-all-tags" class="col-md-4 index-col-container">
                 {% if tags %}
                     <p>All tags in the database</p>
                     <ul>
@@ -93,7 +79,7 @@
                 {% endif %}
             </div>
         <!-- Display a list of all of the tagmaps that currently exist-->
-            <div id="div-container-all-tagmaps" class="col-md-4">
+            <div id="div-container-all-tagmaps" class="col-md-4 index-col-container">
                 {% if tagmaps %}
                     <p>All tagmaps in the database</p>
                     <ul>
@@ -106,7 +92,3 @@
         </div>
     </div>
 {% endblock content %}
-{% comment %}
-</body>
-</html>
-{% endcomment %}

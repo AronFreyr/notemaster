@@ -33,3 +33,19 @@ class FormTests(TestCase):
     def test_form_hidden_fields(self):
         f = AddTagForm()
         print(f)
+
+
+class TagTests(TestCase):
+    """
+    General tests to see what happens when adding a tag.
+    """
+
+    def test_multi_tag_string_handling(self):
+        """
+        How should we handle inserting many tags at the same time?
+        :return: Nothing
+        """
+        tags = 'tag_1; tag_2; tag 3'
+        split_tags = tags.split(';')
+        for tag in split_tags:
+            print(tag.strip())

@@ -45,8 +45,9 @@
                         <span class="icon-bar"></span>
                     </button>
                     <a class="navbar-brand navbar-custom-btn" href={% url 'notesfromxml:index' %}>Home</a>
-                    <a class="navbar-brand navbar-custom-btn" href={% url 'notesfromxml:doc_by_tag' %}>Test</a>
+                    <a class="navbar-brand navbar-custom-btn" href={% url 'notesfromxml:display_tests' %}>Test</a>
                     <a class="navbar-brand navbar-custom-btn" href={% url 'notesfromxml:display_help' %}>Help</a>
+                    <a class="navbar-brand navbar-custom-btn" href={% url 'notesfromxml:doc_by_tag' %}>Search</a>
                 </div>
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-right">
@@ -91,6 +92,17 @@
             <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"
                     integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm"
                     crossorigin="anonymous"></script>
+
+            <!-- Testing prettyprint for codeblocks -->
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css">
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.js"></script>
+            <script>prettyPrint()</script>
+
+            <!-- testing highlightjs for codeblocks -->
+            <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
+            <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+            <script>hljs.initHighlightingOnLoad();</script>
+
             {% comment %}
             <script src="{% static 'notesfromxml/jquery/jquery.min.js' %}"></script>
             <script src="{% static 'notesfromxml/bootstrap/bootstrap.min.css' %}"></script>

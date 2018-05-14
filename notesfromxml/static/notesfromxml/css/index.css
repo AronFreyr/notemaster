@@ -15,24 +15,15 @@ a {
     text-align: right
 }
 
-#div-container-all-tags{
-    border: 1px solid black;
-    float: left;
-    padding: 10px;
-}
-
-#div-container-all-docs{
-    border: 1px solid black;
-    float: left;
-    padding: 10px;
-}
-
-#div-container-all-tagmaps{
-    border: 1px solid black;
-    float: left;
-    padding: 10px;
-}
-
 .index-container{
     padding-top: 3rem;
+}
+
+.index-col-container{
+    border: 2px solid #cccccc;
+    float: left;
+    padding: 10px;
+    margin: 10px;
+    background-color: #f2f2f2;
+    border-radius: 6px;
 }
