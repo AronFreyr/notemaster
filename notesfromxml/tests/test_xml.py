@@ -4,7 +4,7 @@ from lxml import etree
 import os
 
 
-class XMLTests(TestCase):
+class RecursiveXMLTests(TestCase):
 
     def test_recursive(self):
 
@@ -86,3 +86,60 @@ class XMLTests(TestCase):
         dict_recursion_with_html(xml_dict, html_string)
          #return_html = dict_recursion_with_html(xml_dict, html_string)
 
+
+class ParsingXMLTests(TestCase):
+
+    def test_xml_tag_in_text(self):
+        test_text = '''
+            <p>
+            Lets Spring auto-wire other beans into your classes using @Autowired annotation. 
+            Spring beans can be wired by name or by type. 
+            1) @Autowire by default is a type driven injection. @Qualifier spring annotation can be used to further fine-tune autowiring.
+            2) @Resource (javax.annotation.Resource) annotation can be used for wiring by name.
+            Beans that are themselves defined as a collection or map type cannot be injected through @Autowired, because type matching is not properly applicable to them.
+            Use @Resource for such beans, referring to the specific collection or map bean by unique name.  @Autowired allows you to do a single:
+            <pre><code class="language-java" data-lang="java">@Autowired
+            public NBIServiceImpl nbiServicePort;</code></pre>
+            Instead of constantly doing:
+            
+            NBIServiceImpl nbiServiceImpl = new NBIServiceImpl(nbiServicePort, env);
+            
+            Whenever you want to make a new NBIServiceImpl object.
+            For this to work, the NBIServiceImpl class must have a constructor like so:
+            
+            @Inject     public NBIServiceImpl(NBIServicePort client, Environment env) {         this.client = client;         this.env = env;     }
+            
+            Why @Inject? I don't know. Some say that there is no difference between @Autowired and @Inject but that has yet to be confirmed.
+            </p>
+        '''
+        doc = etree.parse(test_text)
+        print(doc)
+
+
+class ThisIsNotATest:
+
+    def not_test_function(self):
+        test_text = '''
+                    <p>
+                    Lets Spring auto-wire other beans into your classes using @Autowired annotation. 
+                    Spring beans can be wired by name or by type. 
+                    1) @Autowire by default is a type driven injection. @Qualifier spring annotation can be used to further fine-tune autowiring.
+                    2) @Resource (javax.annotation.Resource) annotation can be used for wiring by name.
+                    Beans that are themselves defined as a collection or map type cannot be injected through @Autowired, because type matching is not properly applicable to them.
+                    Use @Resource for such beans, referring to the specific collection or map bean by unique name.  @Autowired allows you to do a single:
+                    <pre><code class="language-java" data-lang="java">@Autowired
+                    public NBIServiceImpl nbiServicePort;</code></pre>
+                    Instead of constantly doing:
+
+                    NBIServiceImpl nbiServiceImpl = new NBIServiceImpl(nbiServicePort, env);
+
+                    Whenever you want to make a new NBIServiceImpl object.
+                    For this to work, the NBIServiceImpl class must have a constructor like so:
+
+                    @Inject     public NBIServiceImpl(NBIServicePort client, Environment env) {         this.client = client;         this.env = env;     }
+
+                    Why @Inject? I don't know. Some say that there is no difference between @Autowired and @Inject but that has yet to be confirmed.
+                    </p>
+                '''
+        doc = etree.parse(test_text)
+        print(doc)
