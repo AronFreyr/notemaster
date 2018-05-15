@@ -10,3 +10,4 @@
 * Need to find a better way to display html tags in text.
     * Check this out!: https://stackoverflow.com/questions/14007033/django-storing-website-content
     * And this: https://docs.djangoproject.com/en/2.0/ref/contrib/flatpages/
+    * https://stackoverflow.com/questions/18539440/extract-tag-inside-text-element-of-an-xml-tag
