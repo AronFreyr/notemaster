@@ -37,7 +37,6 @@ def not_test_function():
     result = etree.tostring(tree.getroot(), pretty_print=True, method='html')
     #print(result)
 
-
     html = etree.HTML(test_text)
     result = etree.tostring(html, pretty_print=True, method='html')
     print('result: ', result)
