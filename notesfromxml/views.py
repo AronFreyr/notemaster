@@ -60,7 +60,8 @@ def display_doc(request, doc):
     """
     document = Document.objects.get(document_name=doc)
     return render(request, 'notesfromxml/display-doc.html',
-                  {'document': document, 'document_paragraphs': document.document_text.split('\n')})
+                  {'document': document, 'document_paragraphs': document.document_text})
+                  # {'document': document, 'document_paragraphs': document.document_text.split('\n')})
 
 
 def display_docs(request):
@@ -182,7 +183,33 @@ def remove(request, obj_name):
 
 
 def display_tests(request):
-    return render(request, 'notesfromxml/tests.html')
+    test_text = """
+        <p>Lets Spring auto-wire other beans into your classes using <code>@Autowired</code> annotation. 
+        Spring beans can be wired by name or by type.</p> 
+        <ul>
+        <li>
+        <code>@Autowire</code> by default is a type driven injection. <code>@Qualifier</code> spring annotation can be used to further fine-tune autowiring.
+        </li>
+        <li>
+        <code>@Resource</code> (javax.annotation.Resource) annotation can be used for wiring by name.
+        </li>
+        </ul>
+        <p>Beans that are themselves defined as a collection or map type cannot be injected through @Autowired, because type matching is not properly applicable to them.
+        Use @Resource for such beans, referring to the specific collection or map bean by unique name.  @Autowired allows you to do a single:</p>
+        <pre><code class="language-java" data-lang="java">@Autowired
+public NBIServiceImpl nbiServicePort;</code></pre>
+        
+        <p>Instead of constantly doing:</p>
+        
+        <pre><code class="language-java" data-lang="java">NBIServiceImpl nbiServiceImpl = new NBIServiceImpl(nbiServicePort, env);</code></pre>
+        
+        <p>Whenever you want to make a new NBIServiceImpl object.
+        For this to work, the NBIServiceImpl class must have a constructor like so:</p>
+        <pre><code class="language-java" data-lang="java">@Inject     public NBIServiceImpl(NBIServicePort client, Environment env) {         this.client = client;         this.env = env;     }</code></pre>
+        
+        <p>Why <code>@Inject</code>? I don't know. Some say that there is no difference between <code>@Autowired</code> and <code>@Inject</code> but that has yet to be confirmed.</p>
+        """
+    return render(request, 'notesfromxml/tests.html', {'test_text': test_text})
 
 
 # TODO: Can be removed.

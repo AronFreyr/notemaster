@@ -3,7 +3,7 @@
 }
 
 #id_textarea_change_document_text{
-    width: 500px;
+    width: 700px;
     height: 700px;
     padding: 12px 20px;
     border: 2px solid #ccc;
@@ -22,7 +22,8 @@
 
 #div_container_edit_document_text{
     float:left;
-    padding: 5px;
+    padding-left: 15px;
+    padding-right: 15px;
 }
 
 #id_container_add_tag{
