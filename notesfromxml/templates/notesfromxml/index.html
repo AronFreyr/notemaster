@@ -31,7 +31,8 @@
     </div>
     {% endcomment %}
 
-
+    {% include "notesfromxml/create-doc.html" %}
+    {% comment %}
     <div id="div-container-create-doc">
         <h3>Create New Document</h3>
         <form action="{% url 'notesfromxml:create_doc'%}" method="post">
@@ -54,6 +55,7 @@
             <input type="submit" />
         </form>
     </div>
+    {% endcomment %}
     <div class="container index-container">
         <div class="row">
             <!-- Display a list of all of the documents that currently exist-->

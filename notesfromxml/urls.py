@@ -16,6 +16,7 @@ urlpatterns = [
     path('displaydoc/<str:doc>/editdoc/', views.edit_doc, name='edit_doc'),
     path('delete/<str:obj_name>/', views.delete, name='delete'),
     path('remove/<str:obj_name>/', views.remove, name='remove'),
+    path('showviews/', views.display_all_pages, name='show_views'),  # development stuff
     path('tests/', views.display_tests, name='display_tests'),
     path('testredirect/', views.test_redirect, name='test_redirect')  # TODO: can be removed.
 ]

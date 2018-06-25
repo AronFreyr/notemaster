@@ -1,0 +1,25 @@
+{% load static %}
+{% load app_filters %}
+
+<div id="div-container-create-doc">
+    <h3>Create New Document</h3>
+    <form action="{% url 'notesfromxml:create_doc'%}" method="post">
+        {% csrf_token %}
+        <div class="create_doc_input">
+            <div>
+                {{ form.document_name.label }}
+                {{ form.document_name|add_class:'form_doc_name' }}
+            </div>
+            <div>
+                {{ form.document_text.label }}
+                {{ form.document_text|add_class:'form_doc_text' }}
+            </div>
+            <div>
+                {{ form.new_tag.label }}
+                {{ form.new_tag|add_class:'form_new_tag' }}
+            </div>
+        </div>
+
+        <input type="submit" />
+    </form>
+</div>

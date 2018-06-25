@@ -182,6 +182,13 @@ def remove(request, obj_name):
     return redirect(reverse('notesfromxml:index'))
 
 
+# A view that displays links to all of the pages/templates that have been created in this project, this is
+# for development purposes only.
+def display_all_pages(request):
+    return render(request, 'notesfromxml/display-all-pages.html')
+
+
+# A test view that displays the stuff behind the "Test" button in the navigation bar.
 def display_tests(request):
     test_text = """
         <p>Lets Spring auto-wire other beans into your classes using <code>@Autowired</code> annotation. 
