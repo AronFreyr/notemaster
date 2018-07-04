@@ -7,10 +7,11 @@ from .services import handle_new_tag
 
 
 def index(request):
-    return render(request, 'notesfromxml/index.html', {'tags': Tag.objects.all().order_by('tag_name'),
-                                                       'tagmaps': Tagmap.objects.all(),
-                                                       'documents': Document.objects.all().order_by('document_name'),
-                                                       'form': CreateDocumentForm()})
+    return render(request, 'notesfromxml/index.html',
+                  {'tags': Tag.objects.all().order_by('tag_name'),
+                   'tagmaps': Tagmap.objects.all(),
+                   'documents': Document.objects.all().order_by('document_name'),
+                   'form': CreateDocumentForm()})
 
 
 def display_help(request):
@@ -31,20 +32,6 @@ def create_doc(request):
                 new_doc = Document(document_name=doc_name, document_text=doc_text)
                 new_doc.save()
                 handle_new_tag(new_tag, new_doc)
-        # # TODO: throw an error if the document name is blank.
-        # if 'docName' in request.POST:  # Document name can't be blank.
-        #     doc_name = request.POST['docName']
-        #     doc_text = ''
-        #     if 'docText' in request.POST:  # Document text can be empty.
-        #         doc_text = request.POST['docText']
-        #     if Document.objects.filter(document_name=doc_name).exists():
-        #         # TODO: Throw error.
-        #         print('Document with that name already exists')
-        #     new_doc = Document(document_name=doc_name, document_text=doc_text)
-        #     new_doc.save()
-        #
-        #     if 'newTag' in request.POST:  # If the user is adding a tag.
-        #         handle_new_tag(request.POST['newTag'], new_doc)
 
     return redirect(reverse('notesfromxml:index'))
 
@@ -61,7 +48,6 @@ def display_doc(request, doc):
     document = Document.objects.get(document_name=doc)
     return render(request, 'notesfromxml/display-doc.html',
                   {'document': document, 'document_paragraphs': document.document_text})
-                  # {'document': document, 'document_paragraphs': document.document_text.split('\n')})
 
 
 def display_docs(request):
@@ -72,9 +58,10 @@ def display_docs(request):
             doc_name = form.cleaned_document()
             tag = form.cleaned_tag()
             doc = Document.objects.get(document_name=doc_name)
-
             handle_new_tag(tag, doc)
-    return render(request, 'notesfromxml/displaydocs.html', {'documents': documents, 'form': AddTagForm()})
+
+    return render(request, 'notesfromxml/displaydocs.html',
+                  {'documents': documents, 'form': AddTagForm()})
 
 
 def display_tag(request, tag_name):
@@ -217,8 +204,3 @@ public NBIServiceImpl nbiServicePort;</code></pre>
         <p>Why <code>@Inject</code>? I don't know. Some say that there is no difference between <code>@Autowired</code> and <code>@Inject</code> but that has yet to be confirmed.</p>
         """
     return render(request, 'notesfromxml/tests.html', {'test_text': test_text})
-
-
-# TODO: Can be removed.
-def test_redirect(request):
-    return redirect(reverse('notesfromxml:index'))
