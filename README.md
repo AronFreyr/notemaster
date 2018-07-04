@@ -1,6 +1,4 @@
-##test
-
-###TODO
+## TODO
 * Search bar
 * Possibility for adding multiple tags at a time to a document.
 * Safety prompt when using the delete or remove buttons.
