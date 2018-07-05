@@ -13,20 +13,12 @@
                 <input type="submit" />
             </div>
         </form>
-
-        {% for doc in documents %}
-            <div style="border: 1px solid black">
-                <h3>{{ doc.document_name }}</h3>
-                <p>{{ doc.document_text }}</p>
-                <div class="tabContainer">
-                <p>Tags:</p>
-                    <ul>
-                        {% for mapset in doc.tagmap_set.all %}
-                            <li> {{ mapset.tag.tag_name }}</li>
-                        {% endfor %}
-                    </ul>
-                </div>
-            </div>
-        {% endfor %}
+    </div>
+    <div class="document_list_container">
+        {% if documents %}
+            {% include 'notesfromxml/snippets/display-docs.html' %}
+        {% else %}
+            <p>No documents found in the database</p>
+        {% endif %}
     </div>
 {% endblock content %}

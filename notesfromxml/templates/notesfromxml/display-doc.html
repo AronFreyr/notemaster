@@ -37,11 +37,6 @@
             <div id="div-container-document-text">
                 <label id="id_label_textarea_display_document_text">
                     {{ document_paragraphs|safe }}
-                    {% comment %}
-                    {% for paragraph in document_paragraphs %}
-                        <p>{{ paragraph |safe }}</p>
-                    {% endfor %}
-                    {% endcomment %}
                 </label>
             </div>
         </div>
