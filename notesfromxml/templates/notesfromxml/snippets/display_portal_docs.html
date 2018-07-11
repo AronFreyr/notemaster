@@ -1,0 +1,6 @@
+{% for doc in documents %}
+    <div class="document_wrapper">
+        <h3><a href="{% url 'notesfromxml:display_doc' doc.document_name %}">{{ doc.document_name }}</a></h3>
+        <p>{{ doc.document_text| safe| truncatewords_html:50}}</p>
+    </div>
+{% endfor %}

@@ -1,5 +1,6 @@
 from django.shortcuts import get_object_or_404, render, redirect, reverse
 from django.http import HttpResponse
+from django.db.models import Q
 
 from .models import Document, Tag, Tagmap
 from .forms import AddTagForm, CreateDocumentForm
@@ -7,7 +8,27 @@ from .services import handle_new_tag
 
 
 def index(request):
+    portal_tags = Tag.objects.filter(Q(tag_name='Programming') | Q(tag_name='History')
+                                     | Q(tag_name='Spring') | Q(tag_name='Spring Annotations')).order_by('tag_name')
     return render(request, 'notesfromxml/index.html',
+                  {'tags': portal_tags,
+                   'form': CreateDocumentForm()})
+
+
+def display_portal(request, tag):
+    portal_docs = Document.objects.filter(tagmap__tag__tag_name=tag).order_by('document_name')
+    return render(request, 'notesfromxml/display_portal.html',
+                  {'documents': portal_docs})
+
+
+def list_docs_tags_tagmaps(request):
+    """
+    Shows a list of all of the documents, tags and tagmaps currently in the database.
+    :param request: The classic Django request object.
+    :return: renders the HTML page with three lists, one list of every document, one list of every tag and
+    one list of every tagmap.
+    """
+    return render(request, 'notesfromxml/list_docs_tags_tagmaps.html',
                   {'tags': Tag.objects.all().order_by('tag_name'),
                    'tagmaps': Tagmap.objects.all(),
                    'documents': Document.objects.all().order_by('document_name'),

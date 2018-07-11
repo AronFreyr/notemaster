@@ -1,0 +1,29 @@
+a {
+    color: blue;
+}
+
+#div-container-create-doc{
+    border: 1px solid black;
+    border-radius: 4px;
+    padding: 10px;
+    margin: 50px;
+    float: right;
+    display: block;
+}
+
+.create_doc_input{
+    text-align: right
+}
+
+.main-container{
+    padding-top: 3rem;
+}
+
+.main-col-container{
+    border: 2px solid #cccccc;
+    float: left;
+    padding: 10px;
+    margin: 10px;
+    background-color: #f2f2f2;
+    border-radius: 6px;
+}

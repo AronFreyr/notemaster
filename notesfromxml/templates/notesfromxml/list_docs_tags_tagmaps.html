@@ -1,0 +1,52 @@
+{% extends 'notesfromxml/base.html' %}
+{% load static %}
+{% load app_filters %}
+
+{% block title %} LIST {% endblock title %}
+{% block nav-style %}mkt-nav{% endblock nav-style %}
+{% block head_css_page %}
+    <link href="{% static 'notesfromxml/css/list_docs_tags_tagmaps.css' %}" rel="stylesheet" media="screen">
+{% endblock head_css_page %}
+
+{% block content %}
+
+    {% include "notesfromxml/snippets/create-doc.html" %}
+
+    <div class="container main-container">
+        <div class="row">
+            <!-- Display a list of all of the documents that currently exist-->
+            <div id="div-container-all-docs" class="col-md-4 main-col-container">
+                {% if documents %}
+                    <p>All documents in the database</p>
+                    <ul>
+                        {% for doc in documents %}
+                            <li><a href="{% url 'notesfromxml:display_doc' doc.document_name %}">{{ doc.document_name }}</a></li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+            <!-- Display a list of all of the tags that currently exist-->
+            <div id="div-container-all-tags" class="col-md-4 main-col-container">
+                {% if tags %}
+                    <p>All tags in the database</p>
+                    <ul>
+                        {% for tag in tags %}
+                            <li><a href="{% url 'notesfromxml:display_tag' tag.tag_name %}">{{ tag.tag_name }}</a></li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+        <!-- Display a list of all of the tagmaps that currently exist-->
+            <div id="div-container-all-tagmaps" class="col-md-4 main-col-container">
+                {% if tagmaps %}
+                    <p>All tagmaps in the database</p>
+                    <ul>
+                        {% for tagmap in tagmaps %}
+                            <li>{{ tagmap }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock content %}
