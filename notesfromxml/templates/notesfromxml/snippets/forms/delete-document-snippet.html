@@ -1,0 +1,9 @@
+<form action="{% url 'notesfromxml:remove' document.document_name %}" method="post">
+    {% csrf_token %}
+        <div>
+            <input type="hidden" name="object_type" value="document">
+            <input type="hidden" name="action_type" value="delete">
+            <input type="hidden" name="currently_viewed_doc" value="{{ document.document_name }}">
+            <input type="submit" value="Delete Document"/>
+        </div>
+</form>

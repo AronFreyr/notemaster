@@ -20,15 +20,7 @@
                     <div class="view_single_doc_in_tag_wrapper">
                         <a href="{% url 'notesfromxml:display_doc' mapset.document.document_name %}">{{ mapset.document.document_name }}</a>
                         <div class="container_remove_document">
-                            <form action="{% url 'notesfromxml:remove' mapset.document.document_name %}" method="post">
-                            <!-- This form is for removing documents from the tag-->
-                                {% csrf_token %}
-                                <div>
-                                    <input type="hidden" name="object_type" value="document">
-                                    <input type="hidden" name="currently_viewed_tag" value="{{ tag.tag_name }}">
-                                    <input type="submit" value="Remove Document"/>
-                                </div>
-                            </form>
+                            {% include 'notesfromxml/snippets/forms/remove-document-snippet.html' %}
                         </div>
                     </div>
                 {% endfor %}
@@ -36,16 +28,7 @@
         </div>
         <div class="col-sm-2">
             <div id="id_div_container_delete_tag">
-                <form action="{% url 'notesfromxml:delete' tag.tag_name %}" method="post">
-                    {% csrf_token %}
-                        <div>
-                            <input type="hidden" name="object_type" value="tag">
-                            {% comment %}
-                            <input type="hidden" name="currently_viewed_doc" value="{{ document.document_name }}">
-                            {% endcomment %}
-                            <input type="submit" value="Delete Tag"/>
-                        </div>
-                </form>
+                {% include 'notesfromxml/snippets/forms/delete-tag-snippet.html' %}
             </div>
         </div>
     </div>

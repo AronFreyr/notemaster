@@ -4,12 +4,12 @@
 {% if tags %}
     {% for tag in tags %}
         <div style="border: 1px solid black">
-            <h3>{{ tag.tag_name }}</h3>
+            <h3>Tag: <a href="{% url 'notesfromxml:display_tag' tag.tag_name %}"> {{ tag.tag_name }} </a></h3>
             <div class="tabContainer">
             <p>Documents:</p>
                 <ul>
                     {% for mapset in tag.tagmap_set.all %}
-                        <li> {{ mapset.document.document_name}}</li>
+                        <li> <a href="{% url 'notesfromxml:display_doc' mapset.document.document_name %}"> {{ mapset.document.document_name }}</a></li>
                     {% endfor %}
                 </ul>
             </div>

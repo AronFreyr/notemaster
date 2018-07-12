@@ -1,0 +1,10 @@
+<form action="{% url 'notesfromxml:remove' mapset.tag.tag_name %}" method="post">
+<!-- This form is for removing tags from the document-->
+    {% csrf_token %}
+    <div id="id_div_tag_remove_button_container">
+        <input type="hidden" name="object_type" value="tag">
+        <input type="hidden" name="action_type" value="remove">
+        <input type="hidden" name="currently_viewed_doc" value="{{ document.document_name }}">
+        <input type="submit" value="Remove Tag"/>
+    </div>
+</form>

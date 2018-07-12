@@ -5,12 +5,12 @@
 {% block title %} PORTAL {% endblock title %}
 {% block nav-style %}mkt-nav{% endblock nav-style %}
 {% block head_css_page %}
-    <link href="{% static 'notesfromxml/css/display_portal.css' %}" rel="stylesheet" media="screen">
+    <link href="{% static 'notesfromxml/css/display-portal.css' %}" rel="stylesheet" media="screen">
 {% endblock head_css_page %}
 
 {% block content %}
     <div class="row">
-        {% comment %}{% include "notesfromxml/snippets/display_portal_docs.html" %}{% endcomment %}
+        {% comment %}{% include "notesfromxml/snippets/display-portal-docs.html" %}{% endcomment %}
 
         {% for doc in documents %}
             <div class="document_wrapper col-md-4">

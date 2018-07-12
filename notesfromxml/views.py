@@ -4,12 +4,14 @@ from django.db.models import Q
 
 from .models import Document, Tag, Tagmap
 from .forms import AddTagForm, CreateDocumentForm
-from .services import handle_new_tag
+from .services import handle_new_tag, remove_object, delete_object
 
 
 def index(request):
-    portal_tags = Tag.objects.filter(Q(tag_name='Programming') | Q(tag_name='History')
-                                     | Q(tag_name='Spring') | Q(tag_name='Spring Annotations')).order_by('tag_name')
+    portal_tags = Tag.objects.filter(Q(tag_name='Programming')
+                                     | Q(tag_name='History')
+                                     | Q(tag_name='Spring')
+                                     | Q(tag_name='Spring Annotations')).order_by('tag_name')
     return render(request, 'notesfromxml/index.html',
                   {'tags': portal_tags,
                    'form': CreateDocumentForm()})
@@ -17,7 +19,7 @@ def index(request):
 
 def display_portal(request, tag):
     portal_docs = Document.objects.filter(tagmap__tag__tag_name=tag).order_by('document_name')
-    return render(request, 'notesfromxml/display_portal.html',
+    return render(request, 'notesfromxml/display-portal.html',
                   {'documents': portal_docs})
 
 
@@ -28,7 +30,7 @@ def list_docs_tags_tagmaps(request):
     :return: renders the HTML page with three lists, one list of every document, one list of every tag and
     one list of every tagmap.
     """
-    return render(request, 'notesfromxml/list_docs_tags_tagmaps.html',
+    return render(request, 'notesfromxml/list-docs-tags-tagmaps.html',
                   {'tags': Tag.objects.all().order_by('tag_name'),
                    'tagmaps': Tagmap.objects.all(),
                    'documents': Document.objects.all().order_by('document_name'),
@@ -100,10 +102,10 @@ def display_tags(request):
     """
     Displays all of the tags.
     :param request: the request object.
-    :return: render for the tags, which will be rendered with the displaytags.html file.
+    :return: render for the tags, which will be rendered with the display-tags.html file.
     """
     tags = Tag.objects.all()
-    return render(request, 'notesfromxml/displaytags.html', {'tags': tags})
+    return render(request, 'notesfromxml/display-tags.html', {'tags': tags})
 
 
 def display_docs_with_tags(request):
@@ -121,7 +123,7 @@ def display_docs_with_tags(request):
                 tag_object = Tag.objects.get(tag_name=tag)
                 docs_with_tag = Document.objects.filter(tagmap__tag=tag_object)
                 list_of_docs_with_tags.extend(docs_with_tag)
-    return render(request, 'notesfromxml/doc_by_tag.html', {'documents': list_of_docs_with_tags, 'form': AddTagForm()})
+    return render(request, 'notesfromxml/doc-by-tag.html', {'documents': list_of_docs_with_tags, 'form': AddTagForm()})
 
 
 def edit_doc(request, doc):
@@ -134,10 +136,8 @@ def edit_doc(request, doc):
     document = Document.objects.get(document_name=doc)
     if request.method == 'POST':
         form = AddTagForm(request.POST)
-        print(form)
         if form.is_valid():
             tag = form.cleaned_data.get('tag_name')
-            print(tag)
             handle_new_tag(tag, document)
         if 'name_textarea_edit_document_text' in request.POST:
             new_doc_text = request.POST['name_textarea_edit_document_text']
@@ -147,46 +147,42 @@ def edit_doc(request, doc):
     return render(request, 'notesfromxml/edit-doc.html', {'document': document, 'form': AddTagForm()})
 
 
-def delete(request, obj_name):
+def delete_or_remove(request, obj_name):
+    """
+    This function deletes or removes objects from the database. It takes in a post request that uses
+    the request object with obj_name to determine what kind of object it is working with and whether it
+    should delete it or remove it.
+    Removing an object means to disassociate it from another object, i.e. removing a tag from a document,
+    it does so by deleting the tagmap between the objects.
+    Deleting an object is the same as removing them except it also deletes of of the objects tagmaps as well
+    as deleting the object itself.
+    :param request: The Django request object. From it the function acquires the 'object_type',
+    'action_type', 'currently_viewed_doc' and possibly 'currently_viewed_tag' in the future.
+    :param obj_name: The name of the tag or document that should be deleted or removed.
+    :return: If a tag was removed from a document while the document was being viewed, the function
+    redirects to the document, else it redirects to the index.
+    """
     document = None
-    if request.method == 'GET':
-        # TODO: Throw error, you should never GET delete.
-        pass
-    if request.method == 'POST':
-        object_type = request.POST['object_type']
-        if object_type == 'tag':  # If we are deleting a tag.
-            tag_to_delete = Tag.objects.get(tag_name=obj_name)
-            for tagmap in tag_to_delete.tagmap_set.all():
-                tagmap.delete()
-            tag_to_delete.delete()
-            if 'currently_viewed_doc' in request.POST:
-                document = Document.objects.get(document_name=request.POST['currently_viewed_doc'])
-        elif object_type == 'document':  # If we are deleting a document.
-            doc_to_delete = Document.objects.get(document_name=obj_name)
-            for tagmap in doc_to_delete.tagmap_set.all():
-                tagmap.delete()
-            doc_to_delete.delete()
-    if document is not None:
-        return render(request, 'notesfromxml/display-doc.html', {'document': document})
-    return redirect(reverse('notesfromxml:index'))
-
-
-def remove(request, obj_name):
     if request.method == 'GET':
         # TODO: Throw error, you should never GET remove.
         pass
     if request.method == 'POST':
-        object_type = request.POST['object_type']
-        if object_type == 'tag':  # If we are removing a tag.
-            tag_to_remove = Tag.objects.get(tag_name=obj_name)
-            current_document = Document.objects.get(document_name=request.POST['currently_viewed_doc'])
-            tagmap_to_delete = tag_to_remove.tagmap_set.get(tag=tag_to_remove, document=current_document)
-            tagmap_to_delete.delete()
-        elif object_type == 'document':
-            doc_to_remove = Document.objects.get(document_name=obj_name)
-            current_tag = Tag.objects.get(tag_name=request.POST['currently_viewed_tag'])
-            tagmap_to_delete = doc_to_remove.tagmap_set.get(tag=current_tag, document=doc_to_remove)
-            tagmap_to_delete.delete()
+        obj_type = request.POST['object_type']  # Is it a document or a tag?
+        action_type = request.POST['action_type']  # Are we deleting or removing?
+        if 'currently_viewed_doc' in request.POST:  # If we are viewing a document.
+            if request.POST['currently_viewed_doc'] != obj_name:  # And if that doc is not the doc we are removing.
+                document = Document.objects.get(document_name=request.POST['currently_viewed_doc'])
+
+        if action_type == 'delete':
+            delete_object(obj_name, obj_type, request)
+        elif action_type == 'remove':
+            remove_object(obj_name, obj_type, request)
+        else:
+            # TODO: throw error, action_type should only be delete of remove
+            pass
+        # remove_object(obj_name, obj_type, request)
+    if document is not None:
+        return redirect(reverse('notesfromxml:display_doc', kwargs={'doc': document.document_name}))
     return redirect(reverse('notesfromxml:index'))
 
 
