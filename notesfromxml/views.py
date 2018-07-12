@@ -1,10 +1,11 @@
 from django.shortcuts import get_object_or_404, render, redirect, reverse
 from django.http import HttpResponse
 from django.db.models import Q
+import re
 
 from .models import Document, Tag, Tagmap
 from .forms import AddTagForm, CreateDocumentForm
-from .services import handle_new_tag, remove_object, delete_object
+from .services import handle_new_tag, remove_object, delete_object, hyperlink_parser
 
 
 def index(request):
@@ -69,8 +70,10 @@ def display_doc(request, doc):
     in the HTML.
     """
     document = Document.objects.get(document_name=doc)
+    parsed_text = hyperlink_parser(document.document_text)
+
     return render(request, 'notesfromxml/display-doc.html',
-                  {'document': document, 'document_paragraphs': document.document_text})
+                  {'document': document, 'document_paragraphs': parsed_text})
 
 
 def display_docs(request):

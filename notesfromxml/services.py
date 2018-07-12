@@ -1,4 +1,5 @@
 from .models import Tag, Document, Tagmap
+import re
 
 
 def handle_new_tag(new_tags, new_doc=None):
@@ -55,3 +56,20 @@ def remove_object(obj_name, obj_type, request):
         current_tag = Tag.objects.get(tag_name=request.POST['currently_viewed_tag'])
         tagmap_to_delete = doc_to_remove.tagmap_set.get(tag=current_tag, document=doc_to_remove)
         tagmap_to_delete.delete()
+
+
+def hyperlink_parser(parsed_text):
+    pattern = r'\[\[\[(.*?)\]\]\]'
+
+    matches = re.finditer(pattern, parsed_text)
+    if matches is not None:
+        for match in matches:
+            print(match)
+            output_with_brackets = match.group()
+            output_without_brackets = re.search(pattern, parsed_text).group(1).strip()
+            output_with_link = '<a href="/notesfromxml/displaydoc/' + output_without_brackets \
+                               + '">' + output_without_brackets + '</a>'
+
+            parsed_text = parsed_text.replace(output_with_brackets, output_with_link)
+
+    return parsed_text
