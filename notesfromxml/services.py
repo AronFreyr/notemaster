@@ -58,6 +58,12 @@ def remove_object(obj_name, obj_type, request):
         tagmap_to_delete.delete()
 
 
+def parser(parsed_text):
+    parsed_text = hyperlink_parser(parsed_text)
+    parsed_text = java_code_parser(parsed_text)
+    return parsed_text
+
+
 def hyperlink_parser(parsed_text):
     pattern = r'\[\[\[(.*?)\]\]\]'
 
@@ -67,9 +73,31 @@ def hyperlink_parser(parsed_text):
             print(match)
             output_with_brackets = match.group()
             output_without_brackets = re.search(pattern, parsed_text).group(1).strip()
-            output_with_link = '<a href="/notesfromxml/displaydoc/' + output_without_brackets \
-                               + '">' + output_without_brackets + '</a>'
+            if '|' in output_without_brackets:
+                split_output = output_without_brackets.split('|')
+                first_part = split_output[0].strip()
+                second_part = split_output[1].strip()
+                output_with_link = '<a href="/notesfromxml/displaydoc/' + first_part \
+                                   + '">' + second_part + '</a>'
+            else:
+                output_with_link = '<a href="/notesfromxml/displaydoc/' + output_without_brackets \
+                                   + '">' + output_without_brackets + '</a>'
 
             parsed_text = parsed_text.replace(output_with_brackets, output_with_link)
 
+    return parsed_text
+
+
+def java_code_parser(parsed_text):
+    print('in java code parser')
+    pattern = re.compile(r'\[java\[\[(.*?)\]\]\]', re.DOTALL)
+    matches = re.finditer(pattern, parsed_text)
+    if matches is not None:
+        for match in matches:
+            print(match)
+            output_with_brackets = match.group()
+            output_without_brackets = re.search(pattern, parsed_text).group(1).strip()
+            output_with_html = '<pre><code class="language-java" data-lang="java">' + output_without_brackets \
+                               + '"</code></pre>'
+            parsed_text = parsed_text.replace(output_with_brackets, output_with_html)
     return parsed_text

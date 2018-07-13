@@ -5,7 +5,7 @@ import re
 
 from .models import Document, Tag, Tagmap
 from .forms import AddTagForm, CreateDocumentForm
-from .services import handle_new_tag, remove_object, delete_object, hyperlink_parser
+from .services import handle_new_tag, remove_object, delete_object, parser
 
 
 def index(request):
@@ -70,7 +70,8 @@ def display_doc(request, doc):
     in the HTML.
     """
     document = Document.objects.get(document_name=doc)
-    parsed_text = hyperlink_parser(document.document_text)
+    #parsed_text = hyperlink_parser(document.document_text)
+    parsed_text = parser(document.document_text)
 
     return render(request, 'notesfromxml/display-doc.html',
                   {'document': document, 'document_paragraphs': parsed_text})
