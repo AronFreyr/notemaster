@@ -31,7 +31,20 @@
                     {{ document_paragraphs|safe }}
                 </label>
             </div>
+
+            <!-- A test div to see if images can be inserted into the document. -->
+            <div class="testdiv">
+                {% for mapset in document.imagedocumentmap_set.all %}
+                        <div  id="id_div_tag_container">
+                            <div id="id_div_tag_name">
+                                <img src="{{ mapset.image.image_picture.url }}" alt="{{ mapset.image.image_name }}"
+                                     class="img-responsive img-rounded">
+                            </div>
+                        </div>
+                {% endfor %}
+            </div>
         </div>
+
 
         <!-- Edit and delete buttons to the right side -->
         <div class="col-sm-2">
