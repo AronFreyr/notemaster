@@ -2,8 +2,7 @@
 * Search bar
 * Safety prompt when using the delete or remove buttons.
 * Possibility to display bold, italic and such text in the documents.
-* Possibility to display code in a special block that is not ugly in documents.
-* Image integration
+* Easier image display.
 * Actually have some help text in the help section.
 * Better bootstrap
     * Take a look at this https://getbootstrap.com/docs/4.1/getting-started/introduction/
@@ -21,3 +20,5 @@
 * Help site for the wiki (preferably as a link in the header bar)
 * Create a parser that can hyperlink from text to documents.
     * Allow the parser to insert html code tags to make Java code pretty.
+* Possibility to display code in a special block that is not ugly in documents.
+* Image integration

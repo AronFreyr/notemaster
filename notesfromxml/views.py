@@ -1,9 +1,8 @@
 from django.shortcuts import get_object_or_404, render, redirect, reverse
 from django.http import HttpResponse
 from django.db.models import Q
-import re
 
-from .models import Document, Tag, Tagmap
+from .models import Document, Tag, Tagmap, Image, ImageDocumentMap, ImageTagMap
 from .forms import AddTagForm, CreateDocumentForm
 from .services import handle_new_tag, remove_object, delete_object, parser
 
@@ -24,17 +23,21 @@ def display_portal(request, tag):
                   {'documents': portal_docs})
 
 
-def list_docs_tags_tagmaps(request):
+def list_db_content(request):
+    # TODO: Update the documentation.
     """
     Shows a list of all of the documents, tags and tagmaps currently in the database.
     :param request: The classic Django request object.
     :return: renders the HTML page with three lists, one list of every document, one list of every tag and
     one list of every tagmap.
     """
-    return render(request, 'notesfromxml/list-docs-tags-tagmaps.html',
+    return render(request, 'notesfromxml/list-db-content.html',
                   {'tags': Tag.objects.all().order_by('tag_name'),
                    'tagmaps': Tagmap.objects.all(),
                    'documents': Document.objects.all().order_by('document_name'),
+                   'images': Image.objects.all().order_by('image_name'),
+                   'image_document_maps': ImageDocumentMap.objects.all(),
+                   'image_tag_maps': ImageTagMap.objects.all(),
                    'form': CreateDocumentForm()})
 
 
@@ -75,6 +78,11 @@ def display_doc(request, doc):
 
     return render(request, 'notesfromxml/display-doc.html',
                   {'document': document, 'document_paragraphs': parsed_text})
+
+
+def display_image(request, img):
+    image = Image.objects.get(image_name=img)
+    return render(request, 'notesfromxml/display-image.html', {'image': image})
 
 
 def display_docs(request):
