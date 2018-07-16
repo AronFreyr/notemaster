@@ -1,5 +1,5 @@
 ## TODO
-* Search bar
+* Search bar in the header.
 * Safety prompt when using the delete or remove buttons.
 * Possibility to display bold, italic and such text in the documents.
 * Easier image display.
@@ -14,6 +14,8 @@
 * Improve the text parser for text in documents.
     * See examples on how Wikipedia does it: https://web.archive.org/web/20110709125138/http://musialek.org/?p=94
     * Another example: https://www.mediawiki.org/wiki/Manual:Parser.php
+* Possibility to export documents to XML.
+* Have a convenient way to display links to other pages.
 
 ## Done
 * Possibility for adding multiple tags at a time to a document.
