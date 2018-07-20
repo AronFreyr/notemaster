@@ -1,0 +1,29 @@
+{% load static %}
+{% load app_filters %}
+
+<div id="div-container-create-image">
+    <h3>Create New Image</h3>
+    <form action="{% url 'notesfromxml:create_image'%}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="create-image-input">
+            <div>
+                {{ create_image_form.image_name.label }}
+                {{ create_image_form.image_name|add_class:'form-image-name' }}
+            </div>
+            <div>
+                {{ create_image_form.image_text.label }}
+                {{ create_image_form.image_text|add_class:'form-image-text' }}
+            </div>
+            <div>
+                {{ create_image_form.image_picture.label }}
+                {{ create_image_form.image_picture|add_class:'form-image-picture' }}
+            </div>
+            <div>
+                {{ create_image_form.new_tag.label }}
+                {{ create_image_form.new_tag|add_class:'form-new-tag' }}
+            </div>
+        </div>
+
+        <input type="submit" />
+    </form>
+</div>

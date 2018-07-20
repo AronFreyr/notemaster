@@ -1,0 +1,42 @@
+{% extends 'notesfromxml/base.html' %}
+{% load static %}
+{%  block head_css_page %}
+    <link rel="stylesheet" type="text/css" href="{% static 'notesfromxml/css/edit-image.css' %}" />
+ {% endblock head_css_page %}
+
+{% block content %}
+<div>
+    <h1>{{ image.image_name }}</h1>
+</div>
+<div id="div-container-edit-image">
+    <div id="div-container-edit-image-text">
+        <form action="{% url 'notesfromxml:edit_image' image.image_name %}" method="post" id="id-form-change-image-text">
+            {% csrf_token %}
+            <div id="div-container-image-submit">
+                <input type="hidden" name="currently_viewed_image" value="{{ image.image_name }}">
+                {% comment %}
+                <input type="text" id="input-edit-document-text" name="edit-document-text" value="{{ image.image_text }}">
+                {% endcomment %}
+                <label>
+                    <textarea id="id-textarea-change-image-text" form="id_form_change_image_text" name="name_textarea_edit_image_text" >{{ image.image_text }}</textarea>
+                </label>
+                <div id="div-container-edit-image-submit-button">
+                    <label for="input-edit-image-text"></label>
+                    <input type="submit" value="Submit">
+                </div>
+            </div>
+        </form>
+    </div>
+    <div id="id-container-add-tag">
+        <form action="{% url 'notesfromxml:edit_image' image.image_name %}" method="post">
+            <!-- This form is for adding a tag to the displayed image -->
+            {% csrf_token %}
+            <div>
+                {{ form.as_p }}
+                <input type="hidden" name="current_image" value="{{ image.image_name }}">
+                <input type="submit" />
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock content %}

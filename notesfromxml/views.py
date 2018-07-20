@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.db.models import Q
 
 from .models import Document, Tag, Tagmap, Image, ImageDocumentMap, ImageTagMap
-from .forms import AddTagForm, CreateDocumentForm
+from .forms import AddTagForm, CreateDocumentForm, CreateImageForm
 from .services import handle_new_tag, remove_object, delete_object, parser
 
 
@@ -14,7 +14,8 @@ def index(request):
                                      | Q(tag_name='Spring Annotations')).order_by('tag_name')
     return render(request, 'notesfromxml/index.html',
                   {'tags': portal_tags,
-                   'form': CreateDocumentForm()})
+                   'create_document_form': CreateDocumentForm(),
+                   'create_image_form': CreateImageForm()})
 
 
 def display_portal(request, tag):
@@ -38,7 +39,7 @@ def list_db_content(request):
                    'images': Image.objects.all().order_by('image_name'),
                    'image_document_maps': ImageDocumentMap.objects.all(),
                    'image_tag_maps': ImageTagMap.objects.all(),
-                   'form': CreateDocumentForm()})
+                   'create_document_form': CreateDocumentForm()})
 
 
 def display_help(request):
@@ -63,17 +64,34 @@ def create_doc(request):
     return redirect(reverse('notesfromxml:index'))
 
 
+def create_image(request):
+    if request.method == 'POST':
+        form = CreateImageForm(request.POST, request.FILES)
+        if form.is_valid():
+            # TODO: throw an error if the document name is blank.
+            image_name = form.cleaned_data.get('image_name')
+            image_text = form.cleaned_data.get('image_text')
+            image_picture = form.cleaned_data.get('image_picture')
+            new_tag = form.cleaned_data.get('new_tag')
+            # TODO: Throw error if the document already exists.
+            if not Image.objects.filter(image_name=image_name).exists():
+                new_image = Image(image_name=image_name, image_text=image_text,
+                                  image_picture=image_picture)
+                new_image.save()
+                handle_new_tag(new_tag, new_image=new_image)
+
+    return redirect(reverse('notesfromxml:index'))
+
+
 def display_doc(request, doc):
     """
     Displays a single document and all of its tags.
-    For testing purposes, also displays all documents connected to the tag og the original document.
     :param doc: The document that is to be displayed.
     :param request: The classic Django request object.
     :return: renders the HTML page with the document and the document text paragraphs in a list for easy display
     in the HTML.
     """
     document = Document.objects.get(document_name=doc)
-    #parsed_text = hyperlink_parser(document.document_text)
     parsed_text = parser(document.document_text)
 
     return render(request, 'notesfromxml/display-doc.html',
@@ -150,13 +168,34 @@ def edit_doc(request, doc):
         form = AddTagForm(request.POST)
         if form.is_valid():
             tag = form.cleaned_data.get('tag_name')
-            handle_new_tag(tag, document)
+            handle_new_tag(tag, new_doc=document)
         if 'name_textarea_edit_document_text' in request.POST:
             new_doc_text = request.POST['name_textarea_edit_document_text']
             document.document_text = new_doc_text
             document.save()
         return redirect(reverse('notesfromxml:display_doc', kwargs={'doc': document.document_name}))
     return render(request, 'notesfromxml/edit-doc.html', {'document': document, 'form': AddTagForm()})
+
+
+def edit_image(request, image):
+    """
+    Enables edits to the current image. TODO: currently it's only possible to edit the image text.
+    :param request: The request object.
+    :param image: The image to be edited
+    :return: A render of the edited image.
+    """
+    image = Image.objects.get(image_name=image)
+    if request.method == 'POST':
+        form = AddTagForm(request.POST)
+        if form.is_valid():
+            tag = form.cleaned_data.get('tag_name')
+            handle_new_tag(tag, new_image=image)
+        if 'name-textarea-edit-image-text' in request.POST:
+            new_image_text = request.POST['name-textarea-edit-image-text']
+            image.image_text = new_image_text
+            image.save()
+        return redirect(reverse('notesfromxml:display_img', kwargs={'img': image.image_name}))
+    return render(request, 'notesfromxml/edit-image.html', {'image': image, 'form': AddTagForm()})
 
 
 def delete_or_remove(request, obj_name):
@@ -192,7 +231,6 @@ def delete_or_remove(request, obj_name):
         else:
             # TODO: throw error, action_type should only be delete of remove
             pass
-        # remove_object(obj_name, obj_type, request)
     if document is not None:
         return redirect(reverse('notesfromxml:display_doc', kwargs={'doc': document.document_name}))
     return redirect(reverse('notesfromxml:index'))

@@ -1,0 +1,34 @@
+#div-container-edit-image-submit{
+    display: grid;
+}
+
+#id-textarea-change-image-text{
+    width: 700px;
+    height: 700px;
+    padding: 12px 20px;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    background-color: #f8f8f8;
+    /*float:left;*/
+}
+
+#div-container-edit-image-submit-button{
+    /*float:left;*/
+}
+
+#div-container-edit-image{
+    display: inline-block;
+}
+
+#div-container-edit-image-text{
+    float:left;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+#id-container-add-tag{
+    float:right;
+    padding: 15px;
+    border: 2px solid grey;
+    border-radius: 3px;
+}

@@ -16,16 +16,33 @@
         </div>
 
         <div class="col-sm-8">
-            <h3>All documents connected to the tag: {{ tag.tag_name}}</h3>
-            <div class="view_all_docs_in_tag_wrapper">
-                {% for mapset in tag.tagmap_set.all %}
-                    <div class="view_single_doc_in_tag_wrapper">
-                        <a href="{% url 'notesfromxml:display_doc' mapset.document.document_name %}">{{ mapset.document.document_name }}</a>
-                        <div class="container_remove_document">
-                            {% include 'notesfromxml/snippets/forms/remove-document-snippet.html' %}
+            <div>
+                <h3>All documents connected to the tag: {{ tag.tag_name}}</h3>
+                <div class="view_all_docs_in_tag_wrapper">
+                    {% for mapset in tag.tagmap_set.all %}
+                        <div class="view_single_doc_in_tag_wrapper">
+                            <a href="{% url 'notesfromxml:display_doc' mapset.document.document_name %}">{{ mapset.document.document_name }}</a>
+                            <div class="container_remove_document">
+                                {% include 'notesfromxml/snippets/forms/remove-document-snippet.html' %}
+                            </div>
                         </div>
-                    </div>
-                {% endfor %}
+                    {% endfor %}
+                </div>
+            </div>
+            <div>
+                <h3>All images connected to the tag: {{ tag.tag_name}}</h3>
+                <div class="view-all-images-in-tag-wrapper">
+                    {% for mapset in tag.imagetagmap_set.all %}
+                        <div class="view-single-image-in-tag-wrapper">
+                            <a href="{% url 'notesfromxml:display_img' mapset.image.image_name %}">{{ mapset.image.image_name }}</a>
+                            {% comment %}
+                            <div class="container-remove-image">
+                                {% include 'notesfromxml/snippets/forms/remove-document-snippet.html' %}
+                            </div>
+                            {% endcomment %}
+                        </div>
+                    {% endfor %}
+                </div>
             </div>
         </div>
         <div class="col-sm-2">

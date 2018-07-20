@@ -1,9 +1,10 @@
-from .models import Tag, Document, Tagmap
+from .models import Tag, Document, Tagmap, ImageTagMap, Image
 import re
 
 
-def handle_new_tag(new_tags, new_doc=None):
-    # TODO: Update documentation for multi tag support.
+def handle_new_tag(new_tags, new_doc=None, new_image=None):
+    # TODO: Update documentation for multi tag support and ImageTagMaps.
+    # TODO: Create functionality for DocumentTagMaps.
     """
     Function for handling the creation of new tags, adding them to the document and saving them in the database.
     :param new_tag: A tag that is to be added to a document. The tag may already be in the database but not yet associated
@@ -28,6 +29,10 @@ def handle_new_tag(new_tags, new_doc=None):
             if not Tagmap.objects.filter(tag=current_tag, document=new_doc).exists():
                 new_tagmap = Tagmap(document=new_doc, tag=current_tag)
                 new_tagmap.save()
+        if new_image:
+            if not ImageTagMap.objects.filter(tag=current_tag, image=new_image).exists():
+                new_image_tagmap = ImageTagMap(image=new_image, tag=current_tag)
+                new_image_tagmap.save()
 
 
 def delete_object(obj_name, obj_type, request):
@@ -61,6 +66,7 @@ def remove_object(obj_name, obj_type, request):
 def parser(parsed_text):
     parsed_text = hyperlink_parser(parsed_text)
     parsed_text = java_code_parser(parsed_text)
+    parsed_text = image_insert_parser(parsed_text)
     return parsed_text
 
 
@@ -100,4 +106,21 @@ def java_code_parser(parsed_text):
             output_with_html = '<pre><code class="language-java" data-lang="java">' + output_without_brackets \
                                + '"</code></pre>'
             parsed_text = parsed_text.replace(output_with_brackets, output_with_html)
+    return parsed_text
+
+
+def image_insert_parser(parsed_text):
+    pattern = re.compile(r'\[image\[\[(.*?)\]\]\]', re.DOTALL)
+    matches = re.finditer(pattern, parsed_text)
+    if matches is not None:
+        for match in matches:
+            print(match)
+            output_with_brackets = match.group()
+            output_without_brackets = re.search(pattern, parsed_text).group(1).strip()
+            if Image.objects.filter(image_name=output_without_brackets).exists():
+                image = Image.objects.get(image_name=output_without_brackets)
+                output_with_html = '<img src="' + image.image_picture.url + '" alt="' \
+                                   + image.image_name + '"' \
+                                   + 'class="img-responsive img-rounded">'
+                parsed_text = parsed_text.replace(output_with_brackets, output_with_html)
     return parsed_text

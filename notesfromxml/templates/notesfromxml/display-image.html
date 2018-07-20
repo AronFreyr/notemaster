@@ -39,17 +39,16 @@
 
 
         <!-- Edit and delete buttons to the right side -->
-        {% comment %}
         <div class="col-sm-2">
-            <div id="id_div_edit_document_button">
-                <a class="btn btn-outline-secondary" href="{% url 'notesfromxml:edit_doc' document.document_name %}"> edit document</a>
+            <div id="id-div-edit-image-button">
+                <a class="btn btn-outline-secondary" href="{% url 'notesfromxml:edit_image' image.image_name %}"> edit image</a>
             </div>
-
-            <div id="id_div_container_delete_document">
+            {% comment %}
+            <div id="id-div-container-delete-image">
                 {% include 'notesfromxml/snippets/forms/delete-document-snippet.html' %}
             </div>
+            {% endcomment %}
         </div>
-        {% endcomment %}
     </div>
 </div>
 
