@@ -115,12 +115,27 @@ def image_insert_parser(parsed_text):
     if matches is not None:
         for match in matches:
             print(match)
-            output_with_brackets = match.group()
-            output_without_brackets = re.search(pattern, parsed_text).group(1).strip()
-            if Image.objects.filter(image_name=output_without_brackets).exists():
-                image = Image.objects.get(image_name=output_without_brackets)
+            image_name = ''
+            style_string = ''  # String added to the HTML to apply style to the image.
+            output_with_brackets = match.group()  # Example: [image[[My Image]]]
+            output_without_brackets = re.search(pattern, parsed_text).group(1).strip()   # Example: My Image
+
+            if '|' in output_without_brackets:
+                split_output = output_without_brackets.split('|')
+                image_name = split_output[0].strip()
+                image_parameters = [x.strip() for x in split_output[1].split(',')]
+                for parameter in image_parameters:
+                    if 'side' in parameter:  # Which side should the image be on?
+                        style_string += 'float:' + parameter.split('=')[1].strip() + ';'
+                style_string = 'style="' + style_string + '"'
+
+            else:
+                image_name = output_without_brackets
+
+            if Image.objects.filter(image_name=image_name).exists():
+                image = Image.objects.get(image_name=image_name)
                 output_with_html = '<img src="' + image.image_picture.url + '" alt="' \
                                    + image.image_name + '"' \
-                                   + 'class="img-responsive img-rounded">'
+                                   + 'class="img-responsive img-rounded img-in-text"' + style_string + '>'
                 parsed_text = parsed_text.replace(output_with_brackets, output_with_html)
     return parsed_text
