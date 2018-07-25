@@ -8,10 +8,12 @@ from .services import handle_new_tag, remove_object, delete_object, parser
 
 
 def index(request):
-    portal_tags = Tag.objects.filter(Q(tag_name='Programming')
-                                     | Q(tag_name='History')
-                                     | Q(tag_name='Spring')
-                                     | Q(tag_name='Spring Annotations')).order_by('tag_name')
+    portal_tags = Tag.objects.filter(
+        Q(tag_name='History')
+        | Q(tag_name='Rome')
+        | Q(tag_name='Programming')
+        | Q(tag_name='Spring')
+        | Q(tag_name='Spring Annotations')).order_by('tag_name')
     return render(request, 'notesfromxml/index.html',
                   {'tags': portal_tags,
                    'create_document_form': CreateDocumentForm(),

@@ -65,3 +65,15 @@
     margin-bottom: 40px;
 }
 
+.img-in-text{
+    max-width: 200px;
+    max-height: 100%;
+}
+
+.broken-link{
+    color: red;
+}
+
+.broken-link:hover{
+    color: red;
+}

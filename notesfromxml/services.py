@@ -77,17 +77,24 @@ def hyperlink_parser(parsed_text):
     if matches is not None:
         for match in matches:
             print(match)
+            document_name = ''
+            document_parameters = ''
+            output_with_link = ''
             output_with_brackets = match.group()
             output_without_brackets = re.search(pattern, parsed_text).group(1).strip()
             if '|' in output_without_brackets:
                 split_output = output_without_brackets.split('|')
-                first_part = split_output[0].strip()
-                second_part = split_output[1].strip()
-                output_with_link = '<a href="/notesfromxml/displaydoc/' + first_part \
-                                   + '">' + second_part + '</a>'
+                document_name = split_output[0].strip()
+                document_parameters = split_output[1].strip()
             else:
-                output_with_link = '<a href="/notesfromxml/displaydoc/' + output_without_brackets \
-                                   + '">' + output_without_brackets + '</a>'
+                document_name = output_without_brackets
+                document_parameters = output_without_brackets
+            if Document.objects.filter(document_name=document_name).exists():
+                output_with_link = '<a href="/notesfromxml/displaydoc/' + document_name \
+                                   + '">' + document_parameters + '</a>'
+            else:
+                output_with_link = '<a href="/notesfromxml/displaydoc/' + document_name \
+                                   + '" class="broken-link">' + document_parameters + '</a>'
 
             parsed_text = parsed_text.replace(output_with_brackets, output_with_link)
 
