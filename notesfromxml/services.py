@@ -67,6 +67,7 @@ def parser(parsed_text):
     parsed_text = hyperlink_parser(parsed_text)
     parsed_text = java_code_parser(parsed_text)
     parsed_text = image_insert_parser(parsed_text)
+    parsed_text = links_to_table_parser(parsed_text)
     return parsed_text
 
 
@@ -109,6 +110,7 @@ def java_code_parser(parsed_text):
         for match in matches:
             print(match)
             output_with_brackets = match.group()
+            # TODO: Weird to search the text again? need to test this.
             output_without_brackets = re.search(pattern, parsed_text).group(1).strip()
             output_with_html = '<pre><code class="language-java" data-lang="java">' + output_without_brackets \
                                + '"</code></pre>'
@@ -145,4 +147,25 @@ def image_insert_parser(parsed_text):
                                    + image.image_name + '"' \
                                    + 'class="img-responsive img-rounded img-in-text"' + style_string + '>'
                 parsed_text = parsed_text.replace(output_with_brackets, output_with_html)
+    return parsed_text
+
+
+def links_to_table_parser(parsed_text):
+    pattern = re.compile(r'\[links\[\[(.*?)\]\]\]', re.DOTALL)
+    matches = re.finditer(pattern, parsed_text)
+    if matches is not None:
+        for match in matches:
+            output_with_html = '<div class="link-list"> <p class="link-list-header">Links</p> <ul>'
+            print(match)
+            output_with_brackets = match.group()
+            output_without_brackets = re.search(pattern, parsed_text).group(1).strip()
+            split_output = output_without_brackets.split(';')
+            for split in split_output:
+                desc_and_link = split.split('|')
+                description = desc_and_link[0].strip()
+                link = desc_and_link[1].strip()
+                output_with_html += '<li><a href="' + link + '">' + description + '</a></li>'
+
+            output_with_html += '</ul></div>'
+            parsed_text = parsed_text.replace(output_with_brackets, output_with_html)
     return parsed_text

@@ -77,3 +77,20 @@
 .broken-link:hover{
     color: red;
 }
+
+.link-list{
+    border: 1px solid black;
+    margin-top: 100px;
+}
+
+.link-list-header{
+    font-size: 20pt;
+}
+
+code{
+    color: #000000;
+    background-color: #f8f9fa;
+    border: 1px solid #eaecf0;
+    border-radius: 2px;
+    padding: 1px 4px;
+}
