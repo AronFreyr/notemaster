@@ -6,6 +6,10 @@ class Document(models.Model):
     document_text = models.TextField()
     document_image = models.ImageField(blank=True)  # This allows only 1 image for each document.
 
+    def get_parsed_text(self):
+        from .services import parser
+        return parser(self.document_text)
+
     def __str__(self):
         return self.document_name
 

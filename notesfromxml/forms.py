@@ -35,7 +35,6 @@ class CreateDocumentForm(forms.Form):
 class CreateImageForm(forms.Form):
     image_name = forms.CharField(label='Image name:')
     image_text = forms.CharField(label='Image text:', required=False)
-    #image_picture = forms.ImageField(label='Image picture:')
     image_picture = forms.FileField(label='Image picture:')
     new_tag = forms.CharField(label='Input new tag here:')
 

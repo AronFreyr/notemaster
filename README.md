@@ -22,8 +22,9 @@ Here is the incredibly unprofessional issue tracker!
 * Password protection.
 * Better portal ideas.
 * Find a way to display XML code examples without the <> going crazy.
+* See if there is a better way to display links related to documents.
+* Way to search for documents by tags with AND, OR, XOR etc.
 ### In Progress
-* Have a convenient way to display links to other pages.
 * Possibility to display bold, italic and such text in the documents.
 * Easier image display.
 * Need to find a better way to display html tags in text.
@@ -42,3 +43,4 @@ Here is the incredibly unprofessional issue tracker!
 * Possibility to display code in a special block that is not ugly in documents.
 * Image integration
 * Prototype for portals.
+* Have a convenient way to display links to other pages.

@@ -76,13 +76,13 @@ def hyperlink_parser(parsed_text):
 
     matches = re.finditer(pattern, parsed_text)
     if matches is not None:
-        for match in matches:
+        for match in set(matches):
             print(match)
             document_name = ''
             document_parameters = ''
             output_with_link = ''
             output_with_brackets = match.group()
-            output_without_brackets = re.search(pattern, parsed_text).group(1).strip()
+            output_without_brackets = match.group(1)
             if '|' in output_without_brackets:
                 split_output = output_without_brackets.split('|')
                 document_name = split_output[0].strip()
@@ -96,14 +96,12 @@ def hyperlink_parser(parsed_text):
             else:
                 output_with_link = '<a href="/notesfromxml/displaydoc/' + document_name \
                                    + '" class="broken-link">' + document_parameters + '</a>'
-
             parsed_text = parsed_text.replace(output_with_brackets, output_with_link)
 
     return parsed_text
 
 
 def java_code_parser(parsed_text):
-    print('in java code parser')
     pattern = re.compile(r'\[java\[\[(.*?)\]\]\]', re.DOTALL)
     matches = re.finditer(pattern, parsed_text)
     if matches is not None:
@@ -113,7 +111,7 @@ def java_code_parser(parsed_text):
             # TODO: Weird to search the text again? need to test this.
             output_without_brackets = re.search(pattern, parsed_text).group(1).strip()
             output_with_html = '<pre><code class="language-java" data-lang="java">' + output_without_brackets \
-                               + '"</code></pre>'
+                               + '</code></pre>'
             parsed_text = parsed_text.replace(output_with_brackets, output_with_html)
     return parsed_text
 
