@@ -17,6 +17,9 @@ class Document(models.Model):
 class Tag(models.Model):
     tag_name = models.TextField()
 
+    def get_nr_of_docs_with_tag(self):
+        return self.tagmap_set.count()
+
     def __str__(self):
         return self.tag_name
 

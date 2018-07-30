@@ -33,19 +33,22 @@
                 </div>
             </div>
             <div>
-                <h3>All images connected to the tag: {{ tag.tag_name}}</h3>
-                <div class="view-all-images-in-tag-wrapper">
-                    {% for mapset in tag.imagetagmap_set.all %}
-                        <div class="view-single-image-in-tag-wrapper">
-                            <a href="{% url 'notesfromxml:display_img' mapset.image.image_name %}">{{ mapset.image.image_name }}</a>
-                            {% comment %}
-                            <div class="container-remove-image">
-                                {% include 'notesfromxml/snippets/forms/remove-document-snippet.html' %}
+                <!-- If there are any images connected to the tag -->
+                {% if tag.imagetagmap_set.all %}
+                    <h3>All images connected to the tag: {{ tag.tag_name}}</h3>
+                    <div class="view-all-images-in-tag-wrapper">
+                        {% for mapset in tag.imagetagmap_set.all %}
+                            <div class="view-single-image-in-tag-wrapper">
+                                <a href="{% url 'notesfromxml:display_img' mapset.image.image_name %}">{{ mapset.image.image_name }}</a>
+                                {% comment %}
+                                <div class="container-remove-image">
+                                    {% include 'notesfromxml/snippets/forms/remove-document-snippet.html' %}
+                                </div>
+                                {% endcomment %}
                             </div>
-                            {% endcomment %}
-                        </div>
-                    {% endfor %}
-                </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
             </div>
         </div>
         <div class="col-sm-2">

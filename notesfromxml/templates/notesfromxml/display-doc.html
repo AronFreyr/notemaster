@@ -16,7 +16,12 @@
                 {% for mapset in document.tagmap_set.all|sort_list:"tag__tag_name" %}
                     <div  id="id_div_tag_container">
                         <div id="id_div_tag_name">
-                            <a href="{% url 'notesfromxml:display_tag' mapset.tag.tag_name %}">{{ mapset.tag.tag_name }}</a>
+                            <p>
+                                <a href="{% url 'notesfromxml:display_tag' mapset.tag.tag_name %}">
+                                    {{ mapset.tag.tag_name }}
+                                </a>
+                                ({{ mapset.tag.get_nr_of_docs_with_tag }})
+                            </p>
                         </div>
                         {% include 'notesfromxml/snippets/forms/remove-tag-snippet.html' %}
                     </div>
