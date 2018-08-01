@@ -33,8 +33,10 @@
 {# Navigation Menu #}
     <header>
         <!--<div class="navbar navbar-default navbar-static-top-->
-        <div class="navbar navbar-dark navbar-static-top bg-dark
-            {% block nav-style %}{% endblock %}">
+        <!--<nav class="navbar navbar-dark navbar-static-top bg-dark-->
+        <nav class="navbar navbar-dark bg-dark navbar-fixed-top
+            {% block nav-style %}{% endblock %}" role="navigation"
+        >
             <div class="container p-none">
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggler"
@@ -44,13 +46,13 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
+                </div>
                     <a class="navbar-brand navbar-custom-btn" href={% url 'notesfromxml:index' %}>Home</a>
                     <a class="navbar-brand navbar-custom-btn" href={% url 'notesfromxml:display_tests' %}>Test</a>
                     <a class="navbar-brand navbar-custom-btn" href={% url 'notesfromxml:display_help' %}>Help</a>
                     <a class="navbar-brand navbar-custom-btn" href={% url 'notesfromxml:doc_by_tag' %}>Search</a>
                     <a class="navbar-brand navbar-custom-btn" href={% url 'notesfromxml:list_db_content' %}>All Item List</a>
                     <a class="navbar-brand navbar-custom-btn" href={% url 'notesfromxml:show_views' %}>DEV:all_views</a>
-                </div>
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-right">
                         {% if user.is_authenticated %}
@@ -64,7 +66,7 @@
                     </ul>
                 </div>
             </div>
-        </div>
+        </nav>
     </header>
     {# The Document Body #}
     <div id="site-wrapper">
