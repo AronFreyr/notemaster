@@ -159,10 +159,11 @@ def links_to_table_parser(parsed_text):
             output_without_brackets = re.search(pattern, parsed_text).group(1).strip()
             split_output = output_without_brackets.split(';')
             for split in split_output:
-                desc_and_link = split.split('|')
-                description = desc_and_link[0].strip()
-                link = desc_and_link[1].strip()
-                output_with_html += '<li><a href="' + link + '">' + description + '</a></li>'
+                if split is not '':  # If ; is at the end of the entire link list.
+                    desc_and_link = split.split('|')
+                    description = desc_and_link[0].strip()
+                    link = desc_and_link[1].strip()
+                    output_with_html += '<li><a href="' + link + '">' + description + '</a></li>'
 
             output_with_html += '</ul></div>'
             parsed_text = parsed_text.replace(output_with_brackets, output_with_html)
