@@ -13,6 +13,7 @@ def index(request):
         | Q(tag_name='Rome')
         | Q(tag_name='Programming')
         | Q(tag_name='Javascript')
+        | Q(tag_name='Angular')
         | Q(tag_name='Spring')
         | Q(tag_name='Spring Annotations')).order_by('tag_name')
     return render(request, 'notesfromxml/index.html',
