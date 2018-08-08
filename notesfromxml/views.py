@@ -51,6 +51,8 @@ def display_help(request):
 
 
 def create_doc(request):
+    if request.method == 'GET':
+        return render(request, 'notesfromxml/create-document.html', {'create_document_form': CreateDocumentForm()})
     if request.method == 'POST':
         print(request.POST)
         form = CreateDocumentForm(request.POST)

@@ -1,0 +1,11 @@
+{% extends 'notesfromxml/base.html' %}
+{% load static %}
+
+{% block title %} DISPLAY ALL DOCUMENTS {% endblock title %}
+{% block head_css_page %}
+    <link href="{% static 'notesfromxml/css/create-document.css' %}" rel="stylesheet" media="screen">
+{% endblock head_css_page %}
+
+{% block content %}
+    {% include 'notesfromxml/snippets/create-doc-snippet.html' %}
+{% endblock content %}
