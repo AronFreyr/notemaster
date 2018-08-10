@@ -1,10 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'notesfromxml/base.html' %}
+{% load static %}
 
-</body>
-</html>
+{% block title %} CREATE IMAGE {% endblock title %}
+{% block head_css_page %}
+    <link href="{% static 'notesfromxml/css/create-image.css' %}" rel="stylesheet" media="screen">
+{% endblock head_css_page %}
+
+{% block content %}
+    {% include 'notesfromxml/snippets/create-image-snippet.html' %}
+{% endblock content %}

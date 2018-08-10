@@ -54,7 +54,6 @@ def create_doc(request):
     if request.method == 'GET':
         return render(request, 'notesfromxml/create-document.html', {'create_document_form': CreateDocumentForm()})
     if request.method == 'POST':
-        print(request.POST)
         form = CreateDocumentForm(request.POST)
         if form.is_valid():
             # TODO: throw an error if the document name is blank.
@@ -71,6 +70,8 @@ def create_doc(request):
 
 
 def create_image(request):
+    if request.method == 'GET':
+        return render(request, 'notesfromxml/create-image.html', {'create_image_form': CreateImageForm()})
     if request.method == 'POST':
         form = CreateImageForm(request.POST, request.FILES)
         if form.is_valid():

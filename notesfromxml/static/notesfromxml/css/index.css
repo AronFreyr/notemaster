@@ -1,7 +1,7 @@
 a {
     color: blue;
 }
-
+/*
 #div-container-create-doc, #div-container-create-image{
     border: 1px solid black;
     border-radius: 4px;
@@ -14,7 +14,7 @@ a {
 .create_doc_input, .create-image-input{
     text-align: right;
 }
-
+*/
 .index-container{
     padding-top: 3rem;
 }

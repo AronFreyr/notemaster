@@ -11,8 +11,6 @@ Here is the incredibly unprofessional issue tracker!
 ### Backlog
 * Search bar in the header.
 * Safety prompt when using the delete or remove buttons.
-* Better bootstrap
-    * Take a look at this https://getbootstrap.com/docs/4.1/getting-started/introduction/
 * Actually have some help text in the help section.
 * Possibility to export documents to XML.
 * Way to delete images.
@@ -24,9 +22,12 @@ Here is the incredibly unprofessional issue tracker!
 * Find a way to display XML code examples without the <> going crazy.
 * See if there is a better way to display links related to documents.
 * Way to search for documents by tags with AND, OR, XOR etc.
+* Remove all of the old XML test code from the project.
+* Reorganize the git branches.
 ### In Progress
 * Possibility to display bold, italic and such text in the documents.
 * Easier image display.
+* Have specific pages for creating documents and images.
 * Need to find a better way to display html tags in text.
     * Check this out!: https://stackoverflow.com/questions/14007033/django-storing-website-content
     * And this: https://docs.djangoproject.com/en/2.0/ref/contrib/flatpages/
@@ -44,3 +45,5 @@ Here is the incredibly unprofessional issue tracker!
 * Image integration
 * Prototype for portals.
 * Have a convenient way to display links to other pages.
+* Better bootstrap
+    * Take a look at this https://getbootstrap.com/docs/4.1/getting-started/introduction/
