@@ -22,5 +22,6 @@ urlpatterns = [
     path('displayimg/<str:image>/editimg/', views.edit_image, name='edit_image'),
     path('remove/<str:obj_name>/', views.delete_or_remove, name='remove'),
     path('showviews/', views.display_all_pages, name='show_views'),  # development stuff
-    path('tests/', views.display_tests, name='display_tests')  # development stuff
+    path('tests/', views.display_tests, name='display_tests'),  # development stuff
+    path('springportal/', views.display_spring_portal, name='display_spring_portal')  # development stuff
 ]

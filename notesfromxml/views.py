@@ -28,6 +28,20 @@ def display_portal(request, tag):
                   {'documents': portal_docs})
 
 
+# A test function for seeing how individual portals could work.
+def display_spring_portal(request):
+    spring_docs = Document.objects.filter(tagmap__tag__tag_name='Spring').order_by('document_name')
+    document_list = list(spring_docs)
+    for document in spring_docs:
+        for tagmaps in document.tagmap_set.all():
+            if tagmaps.tag.tag_name == 'Spring Annotations' and document.document_name != 'Spring Annotations':
+                document_list.remove(document)
+                break
+            # print('tagmaps', tagmaps.tag.tag_name)
+    print(document_list)
+    return render(request, 'notesfromxml/spring-portal.html', {'documents': document_list})
+
+
 def list_db_content(request):
     # TODO: Update the documentation.
     """
