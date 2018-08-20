@@ -9,18 +9,21 @@
 {% endblock head_css_page %}
 
 {% block content %}
-    {% comment %}
-    <div>
-        {% include "notesfromxml/snippets/create-doc-snippet.html" %}
-        {% include "notesfromxml/snippets/create-image-snippet.html" %}
-    </div>
-    {% endcomment %}
     <div class="container">
         <div class="row">
             <div id="div-container-all-tags" class="col-md-4 index-col-container">
-                {% if tags %}
+                {% if programming_portal_tags %}
                     <ul>
-                        {% for tag in tags %}
+                        {% for tag in programming_portal_tags %}
+                            <li><a href="{% url 'notesfromxml:display_portal' tag.tag_name %}">{{ tag.tag_name }}</a></li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+            <div id="div-container-all-tags" class="col-md-4 index-col-container">
+                {% if history_portal_tags %}
+                    <ul>
+                        {% for tag in history_portal_tags %}
                             <li><a href="{% url 'notesfromxml:display_portal' tag.tag_name %}">{{ tag.tag_name }}</a></li>
                         {% endfor %}
                     </ul>

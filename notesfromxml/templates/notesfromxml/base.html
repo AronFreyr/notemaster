@@ -49,11 +49,22 @@
                             <a class="dropdown-item" href={% url 'notesfromxml:create_image' %}>New Image</a>
                         </div>
                     </div>
-                    <a class="navbar-brand navbar-custom-btn" href={% url 'notesfromxml:display_tests' %}>Test</a>
                     <a class="navbar-brand navbar-custom-btn" href={% url 'notesfromxml:display_help' %}>Help</a>
                     <a class="navbar-brand navbar-custom-btn" href={% url 'notesfromxml:doc_by_tag' %}>Search</a>
                     <a class="navbar-brand navbar-custom-btn" href={% url 'notesfromxml:list_db_content' %}>All Item List</a>
-                    <a class="navbar-brand navbar-custom-btn" href={% url 'notesfromxml:show_views' %}>DEV:all_views</a>
+                    <!-- Dev Stuff dropdown -->
+                    <div class="dropdown show">
+                        <a class="btn btn-secondary dropdown-toggle" role="button"
+                           data-toggle="dropdown" href="#"
+                           aria-haspopup="true" aria-expanded="false">Dev Stuff</a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            <a class="dropdown-item" href={% url 'notesfromxml:display_tests' %}>Test Page</a>
+                            <a class="dropdown-item" href={% url 'notesfromxml:show_views' %}>All Views</a>
+                            <a class="dropdown-item" href={% url 'notesfromxml:display_spring_portal' %}>Spring Portal</a>
+                            <a class="dropdown-item" href={% url 'notesfromxml:display_programming_portal' %}>Programming Portal</a>
+                            <a class="dropdown-item" href={% url 'notesfromxml:display_angular_portal' %}>Angular Portal</a>
+                        </div>
+                    </div>
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-right">
                         {% if user.is_authenticated %}

@@ -23,5 +23,7 @@ urlpatterns = [
     path('remove/<str:obj_name>/', views.delete_or_remove, name='remove'),
     path('showviews/', views.display_all_pages, name='show_views'),  # development stuff
     path('tests/', views.display_tests, name='display_tests'),  # development stuff
-    path('springportal/', views.display_spring_portal, name='display_spring_portal')  # development stuff
+    path('springportal/', views.display_spring_portal, name='display_spring_portal'),  # development stuff
+    path('angularportal/', views.display_angular_portal, name='display_angular_portal'),  # development stuff
+    path('programmingportal/', views.display_programming_portal, name='display_programming_portal')  # development stuff
 ]

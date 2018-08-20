@@ -8,18 +8,24 @@ from .services import handle_new_tag, remove_object, delete_object, parser
 
 
 def index(request):
-    portal_tags = Tag.objects.filter(
+    programming_portal_tags = Tag.objects.filter(
+      Q(tag_name='Programming')
+      | Q(tag_name='Javascript')
+      | Q(tag_name='Angular')
+      | Q(tag_name='Python')
+      | Q(tag_name='Amazon Web Services')
+      | Q(tag_name='Spring')
+      | Q(tag_name='Spring Annotations')).order_by('tag_name')
+    history_portal_tags = Tag.objects.filter(
         Q(tag_name='History')
         | Q(tag_name='Rome')
-        | Q(tag_name='Programming')
-        | Q(tag_name='Javascript')
-        | Q(tag_name='Angular')
-        | Q(tag_name='Spring')
-        | Q(tag_name='Spring Annotations')).order_by('tag_name')
+        | Q(tag_name='Seven Kings of Rome')
+        | Q(tag_name='Roman Republic')
+        | Q(tag_name='Roman Empire')
+    ).order_by('tag_name')
     return render(request, 'notesfromxml/index.html',
-                  {'tags': portal_tags,
-                   'create_document_form': CreateDocumentForm(),
-                   'create_image_form': CreateImageForm()})
+                  {'programming_portal_tags': programming_portal_tags,
+                   'history_portal_tags': history_portal_tags})
 
 
 def display_portal(request, tag):
@@ -37,9 +43,28 @@ def display_spring_portal(request):
             if tagmaps.tag.tag_name == 'Spring Annotations' and document.document_name != 'Spring Annotations':
                 document_list.remove(document)
                 break
-            # print('tagmaps', tagmaps.tag.tag_name)
-    print(document_list)
     return render(request, 'notesfromxml/spring-portal.html', {'documents': document_list})
+
+
+# A test function for seeing how individual portals could work.
+def display_programming_portal(request):
+    programming_languages_docs = Document.objects.filter(tagmap__tag__tag_name='Programming Language').order_by('document_name')
+    return render(request, 'notesfromxml/programming-portal.html',
+                  {'programming_languages_docs': programming_languages_docs})
+
+
+# A test function for seeing how individual portals could work.
+def display_angular_portal(request):
+    angular_docs = Document.objects.filter(tagmap__tag__tag_name='Angular').order_by(
+        'document_name')
+    document_list = list(angular_docs)
+    for document in angular_docs:
+        for tagmaps in document.tagmap_set.all():
+            if tagmaps.tag.tag_name == 'Angular Decorator' and document.document_name != 'Angular Decorators':
+                document_list.remove(document)
+                break
+    return render(request, 'notesfromxml/angular-portal.html',
+                  {'angular_docs': document_list})
 
 
 def list_db_content(request):

@@ -9,4 +9,45 @@
 
 .create-image-input{
     text-align: right;
+    float: left;
+}
+
+.create-image-title-container{
+    font-size: 20pt;
+    font-weight: bold;
+    text-align: center;
+}
+
+.create-image-name-container{
+    /*text-align: center;
+    padding-top: 15px;
+    padding-bottom: 15px;*/
+    display: block;
+    float: left;
+    /*width: 100px;*/
+}
+
+.create-image-text-container{
+    display: block;
+    float: left;
+    /*width: 100px;*/
+}
+
+.create-image-image-upload-container{
+    /*padding-top: 15px;
+    padding-bottom: 15px;*/
+    display: block;
+    float: left;
+    /*width: 100px;*/
+}
+
+.create-image-tag-container{
+    display: block;
+    float: left;
+    /*width: 100px;*/
+}
+
+.create-image-submit-btn-container{
+    display: block;
+    float: left;
 }
