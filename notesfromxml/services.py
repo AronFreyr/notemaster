@@ -185,7 +185,6 @@ def tagged_docs_to_list_parser(parsed_text):
                 split_output = output_without_brackets.split('|')
                 matched_tag_name = split_output[0].strip()
                 excluded_tags = [x.strip() for x in split_output[1].split(',')]
-                print(excluded_tags)
             else:
                 matched_tag_name = output_without_brackets
             if Tag.objects.filter(tag_name=matched_tag_name).exists():
@@ -203,5 +202,4 @@ def tagged_docs_to_list_parser(parsed_text):
                                             + '">' + name + '</a></li>'
             output_with_html += '</ul></div>'
             parsed_text = parsed_text.replace(output_with_brackets, output_with_html)
-            # print(parsed_text)
     return parsed_text
