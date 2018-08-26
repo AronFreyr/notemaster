@@ -78,12 +78,12 @@
     color: red;
 }
 
-.link-list{
+.link-list, .document-list{
     border: 1px solid black;
     margin-top: 100px;
 }
 
-.link-list-header{
+.link-list-header, .document-list-header{
     font-size: 20pt;
 }
 

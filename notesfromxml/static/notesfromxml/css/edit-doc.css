@@ -2,7 +2,7 @@
     display: grid;
 }
 
-#id_textarea_change_document_text{
+#id-textarea-change-document-text{
     width: 700px;
     height: 700px;
     padding: 12px 20px;
@@ -16,19 +16,20 @@
     /*float:left;*/
 }
 
-#div_container_edit_document{
+#div-container-edit-document{
     display: inline-block;
 }
 
-#div_container_edit_document_text{
+#div-container-edit-document-text{
     float:left;
     padding-left: 15px;
     padding-right: 15px;
 }
 
-#id_container_add_tag{
+#id-container-add-tag{
     float:right;
     padding: 15px;
     border: 2px solid grey;
     border-radius: 3px;
+    margin-top: 60px;
 }
