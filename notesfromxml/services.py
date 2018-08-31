@@ -107,7 +107,6 @@ def java_code_parser(parsed_text):
     matches = re.finditer(pattern, parsed_text)
     if matches is not None:
         for match in matches:
-            #print(match)
             output_with_brackets = match.group()
             # TODO: Weird to search the text again? need to test this.
             output_without_brackets = re.search(pattern, parsed_text).group(1).strip()
@@ -122,7 +121,6 @@ def image_insert_parser(parsed_text):
     matches = re.finditer(pattern, parsed_text)
     if matches is not None:
         for match in matches:
-            #print(match)
             image_name = ''
             style_string = ''  # String added to the HTML to apply style to the image.
             output_with_brackets = match.group()  # Example: [image[[My Image]]]
@@ -155,7 +153,6 @@ def links_to_table_parser(parsed_text):
     if matches is not None:
         for match in matches:
             output_with_html = '<div class="link-list"> <p class="link-list-header">Links</p> <ul>'
-            #print(match)
             output_with_brackets = match.group()
             output_without_brackets = re.search(pattern, parsed_text).group(1).strip()
             split_output = output_without_brackets.split(';')
