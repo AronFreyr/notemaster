@@ -14,8 +14,8 @@
             <div class="sidebar-module">
                 <h3>Tags</h3>
                 {% for mapset in document.tagmap_set.all|sort_list:"tag__tag_name" %}
-                    <div  id="id_div_tag_container">
-                        <div id="id_div_tag_name">
+                    <div  id="id-div-tag-container">
+                        <div id="id-div-tag-name">
                             <p>
                                 <a href="{% url 'notesfromxml:display_tag' mapset.tag.tag_name %}">
                                     {{ mapset.tag.tag_name }}
@@ -33,7 +33,7 @@
         <div class="col-sm-8">
             <h1>{{ document.document_name }}</h1>
             <div id="div-container-document-text">
-                <label id="id_label_textarea_display_document_text">
+                <label id="id-label-textarea-display-document-text">
                     {{ document_paragraphs|safe }}
                 </label>
             </div>
@@ -41,8 +41,8 @@
             <!-- A test div to see if images can be inserted into the document. -->
             <div class="testdiv">
                 {% for mapset in document.imagedocumentmap_set.all %}
-                        <div  id="id_div_tag_container">
-                            <div id="id_div_tag_name">
+                        <div  id="id-div-tag-container">
+                            <div id="id-div-tag-name">
                                 <img src="{{ mapset.image.image_picture.url }}" alt="{{ mapset.image.image_name }}"
                                      class="img-responsive img-rounded">
                             </div>
@@ -54,11 +54,11 @@
 
         <!-- Edit and delete buttons to the right side -->
         <div class="col-sm-2">
-            <div id="id_div_edit_document_button">
+            <div id="id-div-edit-document-button">
                 <a class="btn btn-outline-secondary" href="{% url 'notesfromxml:edit_doc' document.document_name %}"> edit document</a>
             </div>
 
-            <div id="id_div_container_delete_document">
+            <div id="id-div-container-delete-document">
                 {% include 'notesfromxml/snippets/forms/delete-document-snippet.html' %}
             </div>
         </div>

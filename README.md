@@ -22,8 +22,6 @@ Here is the incredibly unprofessional issue tracker!
 * Find a way to display XML code examples without the <> going crazy.
 * See if there is a better way to display links related to documents.
 * Way to search for documents by tags with AND, OR, XOR etc.
-* Remove all of the old XML test code from the project.
-* Reorganize the git branches.
 ### In Progress
 * Possibility to display bold, italic and such text in the documents.
 * Easier image display.
@@ -47,3 +45,5 @@ Here is the incredibly unprofessional issue tracker!
 * Have a convenient way to display links to other pages.
 * Better bootstrap
     * Take a look at this https://getbootstrap.com/docs/4.1/getting-started/introduction/
+* Reorganize the git branches.
+* Remove all of the old XML test code from the project.

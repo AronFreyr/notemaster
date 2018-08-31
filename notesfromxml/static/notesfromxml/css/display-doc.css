@@ -1,9 +1,9 @@
-#id_label_textarea_display_document_text{
+#id-label-textarea-display-document-text{
     height: auto;
     display: block;
 }
 
-#id_textarea_display_document_text{
+#id-textarea-display-document-text{
     height: 500px;
     width: 700px;
 }
@@ -13,7 +13,7 @@
     padding-top: 45px;
 }
 
-#id_div_tag_container{
+#id-div-tag-container{
     border: 1px solid black;
     /*padding-bottom: 1%;
     padding-right: 15%;
@@ -30,7 +30,7 @@
     border: 1px solid black;
 }
 
-#id_div_tag_remove_button_container{
+#id-div-tag-remove-button-container{
     /*width: 15%;*/
     /*float: left;*/
     /*margin-right: 100px;
@@ -38,28 +38,28 @@
     margin-left: 10%;*/
 }
 
-#id_div_tag_name{
+#id-div-tag-name{
     /*margin-left: 15%;*/
 }
 
-#id_div_container_name_and_edit_document{
+#id-div-container-name-and-edit-document{
     /*width: 80%;
     height: 150px;
     margin: auto;*/
 
 }
 
-#id_div_document_name{
+#id-div-document-name{
     width: 150%;
     margin: 2px;
     float: left;
 }
 
-#id_div_container_delete_document{
+#id-div-container-delete-document{
     /*float: right;*/
 }
 
-#id_div_edit_document_button{
+#id-div-edit-document-button{
     /*margin-left: 15%;*/
     margin-top: 40px;
     margin-bottom: 40px;

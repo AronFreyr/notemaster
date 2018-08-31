@@ -1,7 +1,0 @@
-{% load app_filters %}
-<a href="{% url 'notesfromxml:index' %}">Go Back</a>
-{% with notes as value %}
-    <table>
-        {% include 'notesfromxml/old_xml_templates/xml-detail-test.html' %}
-    </table>
-{% endwith %}

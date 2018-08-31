@@ -2,3 +2,13 @@
     max-width: 500px;
     max-height: 100%;
 }
+
+#id-div-tag-container{
+    border: 1px solid black;
+}
+
+#id-div-edit-image-button{
+    /*margin-left: 15%;*/
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
