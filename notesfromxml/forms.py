@@ -25,8 +25,8 @@ class AddTagForm(forms.ModelForm):
 
 class CreateDocumentForm(forms.Form):
     document_name = forms.CharField(label='Document name:')
-    document_text = forms.CharField(label='Document text:')
-    new_tag = forms.CharField(label='Input new tag here:')
+    document_text = forms.CharField(label='Document text:', widget=forms.Textarea)
+    new_tag = forms.CharField(label='Document tags:')
 
     class Meta:
         fields = ['document_name', 'document_text', 'new_tag']
@@ -36,7 +36,7 @@ class CreateImageForm(forms.Form):
     image_name = forms.CharField(label='Image name:')
     image_text = forms.CharField(label='Image text:', required=False, widget=forms.Textarea)
     image_picture = forms.FileField(label='Image picture:')
-    new_tag = forms.CharField(label='Input new tag here:')
+    new_tag = forms.CharField(label='Image tags:')
 
     class Meta:
         model = Image

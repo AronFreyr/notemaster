@@ -7,5 +7,11 @@
 {% endblock head_css_page %}
 
 {% block content %}
-    {% include 'notesfromxml/snippets/create-doc-snippet.html' %}
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-8">
+                {% include 'notesfromxml/snippets/create-doc-snippet.html' %}
+            </div>
+        </div>
+    </div>
 {% endblock content %}

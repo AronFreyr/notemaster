@@ -34,6 +34,11 @@ def display_portal(request, tag):
                   {'documents': portal_docs})
 
 
+# A test function to create a test homepage.
+def display_homepage_test(request):
+    return render(request, 'notesfromxml/homepage-test.html')
+
+
 # A test function for seeing how individual portals could work.
 def display_spring_portal(request):
     spring_docs = Document.objects.filter(tagmap__tag__tag_name='Spring').order_by('document_name')

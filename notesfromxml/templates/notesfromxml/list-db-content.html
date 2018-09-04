@@ -10,7 +10,6 @@
 
 {% block content %}
 
-    {% include "notesfromxml/snippets/create-doc-snippet.html" %}
 
     <div class="container main-container">
         <div class="row">
@@ -47,7 +46,8 @@
                     </ul>
                 {% endif %}
             </div>
-
+        </div>
+        <div class="row">
             <div id="div-container-all-images" class="col-md-4 main-col-container">
                 {% if images %}
                     <p>All images in the database</p>

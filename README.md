@@ -14,18 +14,16 @@ Here is the incredibly unprofessional issue tracker!
 * Actually have some help text in the help section.
 * Possibility to export documents to XML.
 * Way to delete images.
-* Database that is not sqlite.
-    * External database(maybe on AWS).
 * Look at this for ideas on the structure of the website, it might be useful: https://github.com/HassenPy/CRM-easy-app/blob/master/templates/base.html
 * Password protection.
 * Better portal ideas.
 * Find a way to display XML code examples without the <> going crazy.
 * See if there is a better way to display links related to documents.
 * Way to search for documents by tags with AND, OR, XOR etc.
+* Try out meta-tags for documents that should be displayed as a list.
 ### In Progress
 * Possibility to display bold, italic and such text in the documents.
 * Easier image display.
-* Have specific pages for creating documents and images.
 * Need to find a better way to display html tags in text.
     * Check this out!: https://stackoverflow.com/questions/14007033/django-storing-website-content
     * And this: https://docs.djangoproject.com/en/2.0/ref/contrib/flatpages/
@@ -33,6 +31,8 @@ Here is the incredibly unprofessional issue tracker!
 * Improve the text parser for text in documents.
     * See examples on how Wikipedia does it: https://web.archive.org/web/20110709125138/http://musialek.org/?p=94
     * Another example: https://www.mediawiki.org/wiki/Manual:Parser.php
+* Database that is not sqlite.
+    * External database(maybe on AWS).
 ### Done
 * Possibility for adding multiple tags at a time to a document.
 * Help site for the wiki (preferably as a link in the header bar)
@@ -47,3 +47,4 @@ Here is the incredibly unprofessional issue tracker!
     * Take a look at this https://getbootstrap.com/docs/4.1/getting-started/introduction/
 * Reorganize the git branches.
 * Remove all of the old XML test code from the project.
+* Have specific pages for creating documents and images.

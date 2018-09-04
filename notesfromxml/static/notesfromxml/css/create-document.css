@@ -7,6 +7,25 @@
     display: block;
 }
 
-.create_doc_input{
-    text-align: right;
+.create-doc-title-container{
+    font-size: 20pt;
+    font-weight: bold;
+    text-align: center;
+}
+
+label{
+    display: block;
+    float: left;
+    padding: 4px 10px 0 0;
+    width: 160px;
+    font-weight: bold;
+}
+
+.form-row{
+    border-bottom: 1px solid #eee;
+    padding: 10px;
+}
+
+fieldset{
+    margin-bottom: 30px;
 }
