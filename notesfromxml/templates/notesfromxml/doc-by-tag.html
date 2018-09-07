@@ -3,17 +3,6 @@
 
 {% block content %}
     <link rel="stylesheet" type="text/css" href="{% static 'notesfromxml/css/doc-by-tag.css' %}" />
-    <div class="search-container">
-        <form action="{% url 'notesfromxml:doc_by_tag'%}" method="post">
-            {% csrf_token %}
-            <div>
-                <!-- intended as a comma separated list of tags -->
-                <input type="text" id="tagId" name="searchTags">
-                <label for="tagId">Search for documents with these tags: </label>
-                <input type="submit" />
-            </div>
-        </form>
-    </div>
     <div class="document_list_container">
         {% if documents %}
             {% include 'notesfromxml/snippets/display-docs.html' %}

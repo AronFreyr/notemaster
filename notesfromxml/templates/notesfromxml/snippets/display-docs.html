@@ -1,7 +1,7 @@
 {% for doc in documents %}
     <div class="document_wrapper">
         <h3><a href="{% url 'notesfromxml:display_doc' doc.document_name %}">{{ doc.document_name }}</a></h3>
-        <p>{{ doc.document_text| safe }}</p>
+        <p>{{ doc.get_parsed_text| safe }}</p>
         <div class="tabContainer">
         <p>Tags:</p>
             <ul>
@@ -10,14 +10,5 @@
                 {% endfor %}
             </ul>
         </div>
-        <form action="{% url 'notesfromxml:display_docs'%}" method="post">
-            <!-- This form is for adding a tag to the displayed document -->
-            {% csrf_token %}
-            <div>
-                {{ form.as_p }}
-                <input type="hidden" name="current_document" value="{{ doc.document_name }}">
-                <input type="submit" />
-            </div>
-        </form>
     </div>
 {% endfor %}

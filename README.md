@@ -9,7 +9,6 @@ the entire structure of the application is tag based.
 ## TODO
 Here is the incredibly unprofessional issue tracker!
 ### Backlog
-* Search bar in the header.
 * Safety prompt when using the delete or remove buttons.
 * Actually have some help text in the help section.
 * Possibility to export documents to XML.
@@ -48,3 +47,5 @@ Here is the incredibly unprofessional issue tracker!
 * Reorganize the git branches.
 * Remove all of the old XML test code from the project.
 * Have specific pages for creating documents and images.
+* Search bar in the header.
+* Stuck Header navbar.

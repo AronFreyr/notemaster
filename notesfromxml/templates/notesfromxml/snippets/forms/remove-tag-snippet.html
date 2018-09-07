@@ -1,4 +1,4 @@
-<form action="{% url 'notesfromxml:remove' mapset.tag.tag_name %}" method="post">
+<form action="{% url 'notesfromxml:remove' tag.tag_name %}" method="post">
 <!-- This form is for removing tags from the document-->
     {% csrf_token %}
     <div id="id_div_tag_remove_button_container">

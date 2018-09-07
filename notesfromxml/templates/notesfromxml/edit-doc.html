@@ -32,9 +32,6 @@
                         {% csrf_token %}
                         <div id="div-container-document-submit">
                             <input type="hidden" name="currently_viewed_doc" value="{{ document.document_name }}">
-                            {% comment %}
-                            <input type="text" id="input-edit-document-text" name="edit-document-text" value="{{ document.document_text }}">
-                            {% endcomment %}
                             <label>
                                 <textarea id="id-textarea-change-document-text" form="id-form-change-document-text" name="name_textarea_edit_document_text" >{{ document.document_text }}</textarea>
                             </label>

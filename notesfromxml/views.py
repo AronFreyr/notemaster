@@ -4,7 +4,7 @@ from django.db.models import Q
 
 from .models import Document, Tag, Tagmap, Image, ImageDocumentMap, ImageTagMap
 from .forms import AddTagForm, CreateDocumentForm, CreateImageForm
-from .services import handle_new_tag, remove_object, delete_object, parser
+from .services import handle_new_tag, remove_object, delete_object
 
 
 def index(request):
@@ -86,8 +86,7 @@ def list_db_content(request):
                    'documents': Document.objects.all().order_by('document_name'),
                    'images': Image.objects.all().order_by('image_name'),
                    'image_document_maps': ImageDocumentMap.objects.all(),
-                   'image_tag_maps': ImageTagMap.objects.all(),
-                   'create_document_form': CreateDocumentForm()})
+                   'image_tag_maps': ImageTagMap.objects.all()})
 
 
 def display_help(request):
@@ -143,10 +142,7 @@ def display_doc(request, doc):
     in the HTML.
     """
     document = Document.objects.get(document_name=doc)
-    parsed_text = parser(document.document_text)
-
-    return render(request, 'notesfromxml/display-doc.html',
-                  {'document': document, 'document_paragraphs': parsed_text})
+    return render(request, 'notesfromxml/display-doc.html', {'document': document})
 
 
 def display_image(request, img):
@@ -154,18 +150,9 @@ def display_image(request, img):
     return render(request, 'notesfromxml/display-image.html', {'image': image})
 
 
+# TODO: This view may be unnecessary and may possible be removed.
 def display_docs(request):
-    documents = Document.objects.all()
-    if request.method == 'POST':
-        form = AddTagForm(request.POST)
-        if form.is_valid():
-            doc_name = form.cleaned_document()
-            tag = form.cleaned_tag()
-            doc = Document.objects.get(document_name=doc_name)
-            handle_new_tag(tag, doc)
-
-    return render(request, 'notesfromxml/display-all-docs.html',
-                  {'documents': documents, 'form': AddTagForm()})
+    return render(request, 'notesfromxml/display-all-docs.html', {'documents': Document.objects.all()})
 
 
 def display_tag(request, tag_name):
@@ -198,13 +185,13 @@ def display_docs_with_tags(request):
     """
     list_of_docs_with_tags = []
     if request.method == 'POST':
-        tag_list = [x.strip() for x in request.POST['searchTags'].split(',')]
+        tag_list = [x.strip() for x in request.POST['search-bar-input'].split(',')]
         for tag in tag_list:
             if Tag.objects.filter(tag_name=tag).exists():
                 tag_object = Tag.objects.get(tag_name=tag)
                 docs_with_tag = Document.objects.filter(tagmap__tag=tag_object)
                 list_of_docs_with_tags.extend(docs_with_tag)
-    return render(request, 'notesfromxml/doc-by-tag.html', {'documents': list_of_docs_with_tags, 'form': AddTagForm()})
+    return render(request, 'notesfromxml/doc-by-tag.html', {'documents': list_of_docs_with_tags})
 
 
 def edit_doc(request, doc):

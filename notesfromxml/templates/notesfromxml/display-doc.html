@@ -13,14 +13,14 @@
         <div class="col-sm-2">
             <div class="sidebar-module">
                 <h3>Tags</h3>
-                {% for mapset in document.tagmap_set.all|sort_list:"tag__tag_name" %}
-                    <div  id="id-div-tag-container">
+                {% for tag in document.get_all_tags_sorted %}
+                    <div id="id-div-tag-container">
                         <div id="id-div-tag-name">
                             <p>
-                                <a href="{% url 'notesfromxml:display_tag' mapset.tag.tag_name %}">
-                                    {{ mapset.tag.tag_name }}
+                                <a href="{% url 'notesfromxml:display_tag' tag.tag_name %}">
+                                    {{ tag.tag_name }}
                                 </a>
-                                ({{ mapset.tag.get_nr_of_docs_with_tag }})
+                                ({{ tag.get_nr_of_docs_with_tag }})
                             </p>
                         </div>
                         {% include 'notesfromxml/snippets/forms/remove-tag-snippet.html' %}
@@ -34,7 +34,7 @@
             <h1>{{ document.document_name }}</h1>
             <div id="div-container-document-text">
                 <label id="id-label-textarea-display-document-text">
-                    {{ document_paragraphs|safe }}
+                    {{ document.get_parsed_text|safe }}
                 </label>
             </div>
 

@@ -14,8 +14,8 @@ def add_class(value, arg):
     return value.as_widget(attrs={'class': arg})
 
 
-@register.filter(name='sort_list')
-def sort_list(value, arg):
+@register.filter(name='sort_queryset')
+def sort_queryset(value, arg):
     """
     Sorts a queryset in the Django template.
     Example usage: 'tag.tagmap_set.all|sort_list:"document__document_name"'

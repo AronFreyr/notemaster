@@ -10,6 +10,12 @@ class Document(models.Model):
         from .services import parser
         return parser(self.document_text)
 
+    def get_all_tags(self):
+        return [tagmap.tag for tagmap in self.tagmap_set.all()]
+
+    def get_all_tags_sorted(self):
+        return [tagmap.tag for tagmap in self.tagmap_set.all().order_by('tag__tag_name')]
+
     def __str__(self):
         return self.document_name
 
@@ -42,6 +48,12 @@ class Image(models.Model):
     image_name = models.TextField(blank=True)
     image_text = models.TextField(blank=True)
     image_picture = models.ImageField(upload_to='gallery')
+
+    def get_all_tags(self):
+        return [tagmap.tag for tagmap in self.imagetagmap_set.all()]
+
+    def get_all_tags_sorted(self):
+        return [tagmap.tag for tagmap in self.imagetagmap_set.all().order_by('tag__tag_name')]
 
     def __str__(self):
         return self.image_name

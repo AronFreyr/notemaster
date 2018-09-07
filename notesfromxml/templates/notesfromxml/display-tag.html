@@ -21,7 +21,7 @@
             <div>
                 <h3>All documents connected to the tag: {{ tag.tag_name}}</h3>
                 <div class="view_all_docs_in_tag_wrapper">
-                    {% for mapset in tag.tagmap_set.all|sort_list:"document__document_name" %}
+                    {% for mapset in tag.tagmap_set.all|sort_queryset:"document__document_name" %}
                         <div class="view_single_doc_in_tag_wrapper">
                             <a href="{% url 'notesfromxml:display_doc' mapset.document.document_name %}">{{ mapset.document.document_name }}</a>
 
