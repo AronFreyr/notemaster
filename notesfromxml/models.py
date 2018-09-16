@@ -8,7 +8,7 @@ class Document(models.Model):
 
     def get_parsed_text(self):
         from .services import parser
-        return parser(self.document_text)
+        return parser.parser_main(self.document_text)
 
     def get_all_tags(self):
         return [tagmap.tag for tagmap in self.tagmap_set.all()]
@@ -31,6 +31,9 @@ class Tag(models.Model):
 
 
 class Tagmap(models.Model):
+    """
+    Table connecting the Document table to the Tag table.
+    """
     tag = models.ForeignKey(
         'Tag',
         on_delete=models.CASCADE
@@ -60,6 +63,9 @@ class Image(models.Model):
 
 
 class ImageTagMap(models.Model):
+    """
+    Table connecting the Image table to the Tag table.
+    """
     tag = models.ForeignKey(
         'Tag',
         on_delete=models.CASCADE
@@ -74,6 +80,9 @@ class ImageTagMap(models.Model):
 
 
 class ImageDocumentMap(models.Model):
+    """
+    Table connecting the Image table to the Document table.
+    """
     document = models.ForeignKey(
         'Document',
         on_delete=models.CASCADE

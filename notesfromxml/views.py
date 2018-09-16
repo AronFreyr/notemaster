@@ -4,7 +4,7 @@ from django.db.models import Q
 
 from .models import Document, Tag, Tagmap, Image, ImageDocumentMap, ImageTagMap
 from .forms import AddTagForm, CreateDocumentForm, CreateImageForm
-from .services import handle_new_tag, remove_object, delete_object
+from .services.object_handling import handle_new_tag, remove_object, delete_object
 
 
 def index(request):

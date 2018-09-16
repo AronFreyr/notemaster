@@ -1,6 +1,6 @@
 from django.test.testcases import TestCase
 from notesfromxml.models import Document, Tag, Tagmap
-from notesfromxml.services import tagged_docs_to_list_parser
+from notesfromxml.services.parser import tagged_docs_to_list_parser
 
 
 class TaggedDocsToListTests(TestCase):

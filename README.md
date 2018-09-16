@@ -20,6 +20,8 @@ Here is the incredibly unprofessional issue tracker!
 * See if there is a better way to display links related to documents.
 * Way to search for documents by tags with AND, OR, XOR etc.
 * Try out meta-tags for documents that should be displayed as a list.
+* A better issue tracker, Trello looks promising.
+* Useful and relevant information in this readme file.
 ### In Progress
 * Possibility to display bold, italic and such text in the documents.
 * Easier image display.

@@ -27,9 +27,17 @@
 }
 
 #id-container-add-tag{
-    float:right;
+    float: left;
     padding: 15px;
     border: 2px solid grey;
     border-radius: 3px;
     margin-top: 60px;
+}
+
+#id-div-tag-container{
+    border: 1px solid black;
+}
+
+#id-div-container-delete-document{
+    padding-top: 250px;
 }
