@@ -67,7 +67,8 @@ def display_angular_portal(request):
         for tagmaps in document.tagmap_set.all():
             if tagmaps.tag.tag_name == 'Angular Decorator' and document.document_name != 'Angular Decorators':
                 document_list.remove(document)
-                break
+            if tagmaps.tag.tag_name == 'Angular Material Modules' and document.document_name != 'Angular Material Modules':
+                document_list.remove(document)
     return render(request, 'notesfromxml/angular-portal.html',
                   {'angular_docs': document_list})
 
