@@ -108,6 +108,7 @@ def create_doc(request):
             doc_name = form.cleaned_data.get('document_name')
             doc_text = form.cleaned_data.get('document_text')
             new_tag = form.cleaned_data.get('new_tag')
+            
             # TODO: Throw error if the document already exists.
             if not Document.objects.filter(document_name=doc_name).exists():
                 new_doc = Document(document_name=doc_name, document_text=doc_text)
