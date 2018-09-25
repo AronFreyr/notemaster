@@ -41,14 +41,18 @@ def display_homepage_test(request):
 
 # A test function for seeing how individual portals could work.
 def display_spring_portal(request):
+    spring_project_docs = Document.objects.filter(tagmap__tag__tag_name='Spring Project').order_by('document_name')
     spring_docs = Document.objects.filter(tagmap__tag__tag_name='Spring').order_by('document_name')
     document_list = list(spring_docs)
     for document in spring_docs:
+        if document in spring_project_docs:
+            document_list.remove(document)
         for tagmaps in document.tagmap_set.all():
             if tagmaps.tag.tag_name == 'Spring Annotations' and document.document_name != 'Spring Annotations':
                 document_list.remove(document)
                 break
-    return render(request, 'notesfromxml/spring-portal.html', {'documents': document_list})
+    return render(request, 'notesfromxml/spring-portal.html', {'documents': document_list,
+                                                               'spring_projects': spring_project_docs})
 
 
 # A test function for seeing how individual portals could work.

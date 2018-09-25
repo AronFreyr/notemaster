@@ -15,7 +15,6 @@ Here is the incredibly unprofessional issue tracker!
 * Way to delete images.
 * Look at this for ideas on the structure of the website, it might be useful: https://github.com/HassenPy/CRM-easy-app/blob/master/templates/base.html
 * Password protection.
-* Better portal ideas.
 * Find a way to display XML code examples without the <> going crazy.
 * See if there is a better way to display links related to documents.
 * Way to search for documents by tags with AND, OR, XOR etc.
@@ -34,6 +33,8 @@ Here is the incredibly unprofessional issue tracker!
     * Another example: https://www.mediawiki.org/wiki/Manual:Parser.php
 * Database that is not sqlite.
     * External database(maybe on AWS).
+* Better portal ideas.
+    * Check this out: https://en.wikipedia.org/wiki/Portal:Television_in_the_United_Kingdom
 ### Done
 * Possibility for adding multiple tags at a time to a document.
 * Help site for the wiki (preferably as a link in the header bar)
