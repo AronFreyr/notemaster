@@ -8,6 +8,7 @@ def parser_main(parsed_text):
     parsed_text = image_insert_parser(parsed_text)
     parsed_text = links_to_table_parser(parsed_text)
     parsed_text = tagged_docs_to_list_parser(parsed_text)
+    parsed_text = escape_parser(parsed_text)
     return parsed_text
 
 
@@ -139,3 +140,22 @@ def tagged_docs_to_list_parser(parsed_text):
             output_with_html += '</ul></div>'
             parsed_text = parsed_text.replace(output_with_brackets, output_with_html)
     return parsed_text
+
+
+def escape_parser(parsed_text):
+    """
+    Takes in some text and finds the pattern [esc[[]]] in it and replaces all '<' with '&lt;' and all '>'< with '&gt;'.
+    :param parsed_text: The text that needs to be parsed.
+    :return: The same text it got as input, except it has been parsed for this particular case.
+    """
+    pattern = re.compile(r'\[esc\[\[(.*?)\]\]\]', re.DOTALL)
+    matches = re.finditer(pattern, parsed_text)
+    if matches is not None:
+        for match in matches:
+            output_with_brackets = match.group()
+            output_without_brackets = re.search(pattern, parsed_text).group(1).strip()
+            output_without_brackets = output_without_brackets.replace('<', '&lt;')
+            output_without_brackets = output_without_brackets.replace('>', '&gt;')
+            parsed_text = parsed_text.replace(output_with_brackets, output_without_brackets)
+    return parsed_text
+

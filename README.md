@@ -15,7 +15,6 @@ Here is the incredibly unprofessional issue tracker!
 * Way to delete images.
 * Look at this for ideas on the structure of the website, it might be useful: https://github.com/HassenPy/CRM-easy-app/blob/master/templates/base.html
 * Password protection.
-* Find a way to display XML code examples without the <> going crazy.
 * See if there is a better way to display links related to documents.
 * Way to search for documents by tags with AND, OR, XOR etc.
 * Try out meta-tags for documents that should be displayed as a list.
@@ -52,3 +51,4 @@ Here is the incredibly unprofessional issue tracker!
 * Have specific pages for creating documents and images.
 * Search bar in the header.
 * Stuck Header navbar.
+* Find a way to display XML code examples without the <> going crazy.

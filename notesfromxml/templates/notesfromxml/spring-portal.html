@@ -35,18 +35,5 @@
                 </div>
             {% endfor %}
         </div>
-        {% comment %}
-        <div class="row">
-            <div id="programming-languages-container">
-                <h3>Spring Projects</h3>
-                {% for doc in spring_projects %}
-                    <div class="document_wrapper col-md-4">
-                        <h3><a href="{% url 'notesfromxml:display_doc' doc.document_name %}">{{ doc.document_name }}</a></h3>
-                        <p>{{ doc.get_parsed_text| safe| truncatewords_html:50}}</p>
-                    </div>
-                {% endfor %}
-            </div>
-        </div>
-        {% endcomment %}
     </div>
 {% endblock content %}
