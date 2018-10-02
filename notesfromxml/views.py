@@ -1,5 +1,4 @@
 from django.shortcuts import get_object_or_404, render, redirect, reverse
-from django.http import HttpResponse
 from django.db.models import Q
 
 from .models import Document, Tag, Tagmap, Image, ImageDocumentMap, ImageTagMap
