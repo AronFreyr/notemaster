@@ -5,6 +5,8 @@ from .models import Document, Tag, Tagmap, Image, ImageDocumentMap, ImageTagMap
 from .forms import AddTagForm, CreateDocumentForm, CreateImageForm
 from .services.object_handling import handle_new_tag, remove_object, delete_object
 
+from .tests import turtle_graphics_tests
+
 
 def index(request):
     programming_portal_tags = Tag.objects.filter(
@@ -22,6 +24,9 @@ def index(request):
         | Q(tag_name='Roman Republic')
         | Q(tag_name='Roman Empire')
     ).order_by('tag_name')
+
+    #turtle_graphics_tests.draw_document_map()
+
     return render(request, 'notesfromxml/index.html',
                   {'programming_portal_tags': programming_portal_tags,
                    'history_portal_tags': history_portal_tags})
