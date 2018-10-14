@@ -25,7 +25,7 @@ def index(request):
         | Q(tag_name='Roman Empire')
     ).order_by('tag_name')
 
-    #turtle_graphics_tests.draw_document_map()
+    # turtle_graphics_tests.draw_document_map()
 
     return render(request, 'notesfromxml/index.html',
                   {'programming_portal_tags': programming_portal_tags,
