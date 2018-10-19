@@ -1,5 +1,6 @@
 from django.shortcuts import get_object_or_404, render, redirect, reverse
 from django.db.models import Q
+from django.contrib import messages
 
 from .models import Document, Tag, Tagmap, Image, ImageDocumentMap, ImageTagMap
 from .forms import AddTagForm, CreateDocumentForm, CreateImageForm
@@ -292,4 +293,6 @@ def display_all_pages(request):
 
 # A test view that displays the stuff behind the "Test" button in the navigation bar.
 def display_tests(request):
+
+    messages.add_message(request, messages.INFO, 'test message')
     return render(request, 'notesfromxml/tests.html')

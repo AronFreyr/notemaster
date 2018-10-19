@@ -37,6 +37,8 @@
                                 </a>
                                 ({{ tag.get_nr_of_docs_with_tag }})
                             </p>
+                            <!-- TODO: What am I doing? -->
+                            <button class="close"><span style="color:red; font-size:13pt;">&times;</span></button>
                         </div>
                         {% include 'notesfromxml/snippets/forms/remove-tag-snippet.html' %}
                     </div>
@@ -79,6 +81,10 @@
                 </form>
             </div>
             <div id="id-div-container-delete-document">
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteDocumentModal">
+                    Delete Document
+                </button>
                 {% include 'notesfromxml/snippets/forms/delete-document-snippet.html' %}
             </div>
         </div>
