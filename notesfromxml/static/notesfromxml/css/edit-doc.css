@@ -41,3 +41,16 @@
 #id-div-container-delete-document{
     padding-top: 250px;
 }
+
+.div-tag-name {
+    flex: 1;
+}
+
+.div-red-x-container {
+}
+
+.div-tag-input-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}

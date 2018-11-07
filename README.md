@@ -9,7 +9,8 @@ the entire structure of the application is tag based.
 ## TODO
 Here is the incredibly unprofessional issue tracker!
 ### Backlog
-* Safety prompt when using the delete or remove buttons.
+* Rename the Django project, notesfromxml is hardly applicable anymore.
+* Easier way to add multiple tags to an existing document in the "edit-doc" view.
 * Actually have some help text in the help section.
 * Possibility to export documents to XML.
 * Way to delete images.
@@ -21,6 +22,11 @@ Here is the incredibly unprofessional issue tracker!
 * A better issue tracker, Trello looks promising.
 * Useful and relevant information in this readme file.
 ### In Progress
+* Safety prompt when using the delete or remove buttons.
+    * DONE for deleting documents.
+    * DONE for removing tags from documents.
+    * MISSING for deleting tags.
+    * MISSING for removing documents from tags.
 * Possibility to display bold, italic and such text in the documents.
 * Easier image display.
 * Need to find a better way to display html tags in text.

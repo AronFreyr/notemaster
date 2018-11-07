@@ -30,17 +30,24 @@
                 <h3>Current Tags</h3>
                 {% for tag in document.get_all_tags_sorted %}
                     <div id="id-div-tag-container">
-                        <div id="id-div-tag-name">
-                            <p>
-                                <a href="{% url 'notesfromxml:display_tag' tag.tag_name %}">
-                                    {{ tag.tag_name }}
-                                </a>
-                                ({{ tag.get_nr_of_docs_with_tag }})
-                            </p>
-                            <!-- TODO: What am I doing? -->
-                            <button class="close"><span style="color:red; font-size:13pt;">&times;</span></button>
+                        <div class="div-tag-input-container">
+                            <div class="div-tag-name">
+                                <p>
+                                    <a href="{% url 'notesfromxml:display_tag' tag.tag_name %}">
+                                        {{ tag.tag_name }}
+                                    </a>
+                                    ({{ tag.get_nr_of_docs_with_tag }})
+                                </p>
+                            </div>
+                            <div class="div-red-x-container">
+                                <!-- TODO: modal for confirmation when you press the button -->
+                                <button class="close" data-toggle="modal" data-target="#removeTagModal">
+                                    <span style="color:red; font-size:20pt;">&times;</span>
+                                </button>
+                                {% include 'notesfromxml/snippets/modals/remove-tag-modal.html' %}
+                            </div>
                         </div>
-                        {% include 'notesfromxml/snippets/forms/remove-tag-snippet.html' %}
+                        {% comment %}{% include 'notesfromxml/snippets/forms/remove-tag-snippet.html' %} {% endcomment %}
                     </div>
                 {% endfor %}
             </div>
@@ -85,7 +92,7 @@
                 <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteDocumentModal">
                     Delete Document
                 </button>
-                {% include 'notesfromxml/snippets/forms/delete-document-snippet.html' %}
+                {% include 'notesfromxml/snippets/modals/delete-document-modal.html' %}
             </div>
         </div>
     </div>
