@@ -4,7 +4,6 @@ from django.db import models
 class Document(models.Model):
     document_name = models.TextField()
     document_text = models.TextField()
-    document_image = models.ImageField(blank=True)  # This allows only 1 image for each document.
 
     def get_parsed_text(self):
         from .services import parser
@@ -21,7 +20,28 @@ class Document(models.Model):
 
 
 class Tag(models.Model):
+
+    TAG_TYPE_CHOICES = (
+        ('normal', 'Normal'),
+        ('meta', 'Meta')
+    )
+
+    META_TAG_TYPE_CHOICES = (
+        ('list', 'List'),
+        ('none', 'None')
+    )
+
     tag_name = models.TextField()
+
+    tag_type = models.TextField(
+        choices=TAG_TYPE_CHOICES,
+        default='normal'
+    )
+
+    meta_tag_type = models.TextField(
+        choices=META_TAG_TYPE_CHOICES,
+        default='none'
+    )
 
     def get_nr_of_docs_with_tag(self):
         return self.tagmap_set.count()
