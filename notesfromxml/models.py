@@ -46,6 +46,9 @@ class Tag(models.Model):
     def get_nr_of_docs_with_tag(self):
         return self.tagmap_set.count()
 
+    def get_all_docs(self):
+        return [tagmap.document for tagmap in self.tagmap_set.all()]
+
     def __str__(self):
         return self.tag_name
 

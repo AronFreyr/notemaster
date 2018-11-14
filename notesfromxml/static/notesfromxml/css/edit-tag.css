@@ -5,9 +5,15 @@
 .view_single_doc_in_tag_wrapper, .view-single-image-in-tag-wrapper{
     border: 1px solid black;
     padding: 10px;
+    display: flex;
 }
 
-.container_remove_document{
+.container-remove-document, .document-name-container{
+    flex: 1;
+    margin: 0 1%;
+}
+
+.btn-remove-doc{
     float: right;
 }
 

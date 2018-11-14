@@ -29,10 +29,15 @@
                 <div class="view_all_docs_in_tag_wrapper">
                     {% for mapset in tag.tagmap_set.all|sort_queryset:"document__document_name" %}
                         <div class="view_single_doc_in_tag_wrapper">
-                            <a href="{% url 'notesfromxml:display_doc' mapset.document.document_name %}">{{ mapset.document.document_name }}</a>
-
-                            <div class="container_remove_document">
-                                {% include 'notesfromxml/snippets/forms/remove-document-snippet.html' %}
+                            <div class="document-name-container">
+                                <a href="{% url 'notesfromxml:display_doc' mapset.document.document_name %}">{{ mapset.document.document_name }}</a>
+                            </div>
+                            <div class="container-remove-document">
+                                <!-- Button trigger modal -->
+                                <button type="button" class="btn btn-danger btn-remove-doc" data-toggle="modal" data-target="#removeDocumentModal">
+                                    Remove Document
+                                </button>
+                                {% include 'notesfromxml/snippets/modals/remove-document-modal.html' %}
                             </div>
                         </div>
                     {% endfor %}
@@ -59,9 +64,11 @@
         </div>
         <!-- Delete button to the right side -->
         <div class="col-sm-2">
-            <div id="id_div_container_delete_tag">
-                {% include 'notesfromxml/snippets/forms/delete-tag-snippet.html' %}
-            </div>
+            <!-- Button trigger modal -->
+                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteTagModal">
+                    Delete Tag
+                </button>
+                {% include 'notesfromxml/snippets/modals/delete-tag-modal.html' %}
         </div>
     </div>
 </div>
