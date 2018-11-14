@@ -187,6 +187,13 @@ def display_tags(request):
     return render(request, 'notesfromxml/display-tags.html', {'tags': tags})
 
 
+def edit_tag(request, tag_name):
+    tag = Tag.objects.get(tag_name=tag_name)
+    if request.method == 'POST':
+        return redirect(reverse('notesfromxml:display_tag', kwargs={'tag_name': tag.tag_name}))
+    return render(request, 'notesfromxml/edit-tag.html', {'tag': tag})
+
+
 def display_docs_with_tags(request):
     """
     Takes string from the template, that string is a comma separated list of tag names, and searches for any

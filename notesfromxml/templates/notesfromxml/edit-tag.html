@@ -1,17 +1,14 @@
 {% extends 'notesfromxml/base.html' %}
 {% load static %}
 {% load app_filters %}
-{% block title %} DISPLAY TAG {% endblock title %}
-
-
+{% block title %} EDIT TAG {% endblock title %}
 {%  block head_css_page %}
-    <link rel="stylesheet" type="text/css" href="{% static 'notesfromxml/css/display-tag.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'notesfromxml/css/edit-tag.css' %}" />
  {% endblock head_css_page %}
 
 {% block content %}
 <div class="container">
     <div class="row">
-        <!-- Empty left column for now -->
         <div class="col-sm-2">
             <div class="sidebar-module">
                 <div class="tag-type-container">
@@ -23,14 +20,20 @@
                 </div>
             </div>
         </div>
-
         <div class="col-sm-8">
+            <div>
+                <h1>{{ tag.tag_name }}</h1>
+            </div>
             <div>
                 <h3>All documents connected to the tag: {{ tag.tag_name}}</h3>
                 <div class="view_all_docs_in_tag_wrapper">
                     {% for mapset in tag.tagmap_set.all|sort_queryset:"document__document_name" %}
                         <div class="view_single_doc_in_tag_wrapper">
                             <a href="{% url 'notesfromxml:display_doc' mapset.document.document_name %}">{{ mapset.document.document_name }}</a>
+
+                            <div class="container_remove_document">
+                                {% include 'notesfromxml/snippets/forms/remove-document-snippet.html' %}
+                            </div>
                         </div>
                     {% endfor %}
                 </div>
@@ -54,9 +57,10 @@
                 {% endif %}
             </div>
         </div>
+        <!-- Delete button to the right side -->
         <div class="col-sm-2">
-            <div class="edit-tag-button-container">
-                <a class="btn btn-secondary" href="{% url 'notesfromxml:edit_tag' tag.tag_name %}"> edit tag</a>
+            <div id="id_div_container_delete_tag">
+                {% include 'notesfromxml/snippets/forms/delete-tag-snippet.html' %}
             </div>
         </div>
     </div>

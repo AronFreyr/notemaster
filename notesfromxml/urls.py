@@ -16,6 +16,7 @@ urlpatterns = [
     path('displaydoc/<str:doc>/', views.display_doc, name='display_doc'),
     path('displayimg/<str:img>/', views.display_image, name='display_img'),
     path('displaytag/<str:tag_name>/', views.display_tag, name='display_tag'),
+    path('displaytag/<str:tag_name>/edittag/', views.edit_tag, name='edit_tag'),
     path('displaydoc/<str:doc>/editdoc/', views.edit_doc, name='edit_doc'),
     path('displayimg/<str:image>/editimg/', views.edit_image, name='edit_image'),
     path('remove/<str:obj_name>/', views.delete_or_remove, name='remove'),
