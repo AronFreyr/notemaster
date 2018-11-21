@@ -197,8 +197,18 @@ def display_tags(request):
 
 
 def edit_tag(request, tag_name):
+    # TODO: Document.
     tag = Tag.objects.get(tag_name=tag_name)
     if request.method == 'POST':
+        if 'tag_choices' in request.POST:  # Changing the tag type.
+            tag_choice = request.POST['tag_choices']
+            if tag_choice == 'normal':  # Normal tags shouldn't have any meta type.
+                tag.meta_tag_type = 'none'
+            tag.tag_type = tag_choice
+
+        if 'meta_tag_choices' in request.POST:  # Changing the meta tag type.
+            tag.meta_tag_type = request.POST['meta_tag_choices']
+        tag.save()
         return redirect(reverse('notesfromxml:display_tag', kwargs={'tag_name': tag.tag_name}))
     return render(request, 'notesfromxml/edit-tag.html', {'tag': tag})
 

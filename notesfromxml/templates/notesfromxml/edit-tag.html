@@ -13,7 +13,7 @@
             <div class="sidebar-module">
                 <div class="tag-type-container">
                     <span><b>Tag Type:</b></span>
-                    <form action="{% url 'notesfromxml:remove' tag.tag_name %}" method="post">
+                    <form action="{% url 'notesfromxml:edit_tag' tag.tag_name %}" method="post">
                         {% csrf_token %}
                         <label>
                             <select name="tag_choices">
@@ -25,7 +25,7 @@
                         <button type="submit" class="btn btn-secondary" value="Change Tag">Submit</button>
                     </form>
                     {% if tag.tag_type == "meta" %}
-                        <form action="{% url 'notesfromxml:remove' tag.tag_name %}" method="post">
+                        <form action="{% url 'notesfromxml:edit_tag' tag.tag_name %}" method="post">
                             {% csrf_token %}
                             <label>
                                 <select name="meta_tag_choices">
