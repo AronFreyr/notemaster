@@ -1,6 +1,7 @@
 from django.shortcuts import get_object_or_404, render, redirect, reverse
 from django.db.models import Q
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
 from .models import Document, Tag, Tagmap, Image, ImageDocumentMap, ImageTagMap
 from .forms import AddTagForm, CreateDocumentForm, CreateImageForm
@@ -9,6 +10,7 @@ from .services.object_handling import handle_new_tag, remove_object, delete_obje
 from .tests import turtle_graphics_tests
 
 
+@login_required
 def index(request):
     programming_portal_tags = Tag.objects.filter(
       Q(tag_name='Programming')
@@ -33,6 +35,7 @@ def index(request):
                    'history_portal_tags': history_portal_tags})
 
 
+@login_required
 def display_portal(request, tag_name):
     portal_docs = Document.objects.filter(tagmap__tag__tag_name=tag_name).order_by('document_name')
     document_list = list(portal_docs)
@@ -49,11 +52,13 @@ def display_portal(request, tag_name):
 
 
 # A test function to create a test homepage.
+@login_required
 def display_homepage_test(request):
     return render(request, 'notesfromxml/homepage-test.html')
 
 
 # A test function for seeing how individual portals could work.
+@login_required
 def display_spring_portal(request):
     spring_project_docs = Document.objects.filter(tagmap__tag__tag_name='Spring Project').order_by('document_name')
     spring_docs = Document.objects.filter(tagmap__tag__tag_name='Spring').order_by('document_name')
@@ -70,6 +75,7 @@ def display_spring_portal(request):
 
 
 # A test function for seeing how individual portals could work.
+@login_required
 def display_programming_portal(request):
     programming_languages_docs = Document.objects.filter(tagmap__tag__tag_name='Programming Language').order_by('document_name')
     return render(request, 'notesfromxml/programming-portal.html',
@@ -77,6 +83,7 @@ def display_programming_portal(request):
 
 
 # A test function for seeing how individual portals could work.
+@login_required
 def display_angular_portal(request):
     angular_docs = Document.objects.filter(tagmap__tag__tag_name='Angular').order_by(
         'document_name')
@@ -91,6 +98,7 @@ def display_angular_portal(request):
                   {'angular_docs': document_list})
 
 
+@login_required
 def list_db_content(request):
     # TODO: Update the documentation.
     """
@@ -108,10 +116,12 @@ def list_db_content(request):
                    'image_tag_maps': ImageTagMap.objects.all()})
 
 
+@login_required
 def display_help(request):
     return render(request, 'notesfromxml/help.html')
 
 
+@login_required
 def create_doc(request):
     if request.method == 'GET':
         return render(request, 'notesfromxml/create-document.html', {'create_document_form': CreateDocumentForm()})
@@ -132,6 +142,7 @@ def create_doc(request):
     return redirect(reverse('notesfromxml:index'))
 
 
+@login_required
 def create_image(request):
     if request.method == 'GET':
         return render(request, 'notesfromxml/create-image.html', {'create_image_form': CreateImageForm()})
@@ -153,6 +164,7 @@ def create_image(request):
     return redirect(reverse('notesfromxml:index'))
 
 
+@login_required
 def display_doc(request, doc):
     """
     Displays a single document and all of its tags.
@@ -165,16 +177,19 @@ def display_doc(request, doc):
     return render(request, 'notesfromxml/display-doc.html', {'document': document})
 
 
+@login_required
 def display_image(request, img):
     image = Image.objects.get(image_name=img)
     return render(request, 'notesfromxml/display-image.html', {'image': image})
 
 
 # TODO: This view may be unnecessary and may possible be removed.
+@login_required
 def display_docs(request):
     return render(request, 'notesfromxml/display-all-docs.html', {'documents': Document.objects.all()})
 
 
+@login_required
 def display_tag(request, tag_name):
     """
     Displays a single tag.
@@ -186,6 +201,7 @@ def display_tag(request, tag_name):
     return render(request, 'notesfromxml/display-tag.html', {'tag': tag})
 
 
+@login_required
 def display_tags(request):
     """
     Displays all of the tags.
@@ -196,6 +212,7 @@ def display_tags(request):
     return render(request, 'notesfromxml/display-tags.html', {'tags': tags})
 
 
+@login_required
 def edit_tag(request, tag_name):
     # TODO: Document.
     tag = Tag.objects.get(tag_name=tag_name)
@@ -213,6 +230,7 @@ def edit_tag(request, tag_name):
     return render(request, 'notesfromxml/edit-tag.html', {'tag': tag})
 
 
+@login_required
 def display_docs_with_tags(request):
     """
     Takes string from the template, that string is a comma separated list of tag names, and searches for any
@@ -231,6 +249,7 @@ def display_docs_with_tags(request):
     return render(request, 'notesfromxml/doc-by-tag.html', {'documents': list_of_docs_with_tags})
 
 
+@login_required
 def edit_doc(request, doc):
     """
     Enables edits to the current document. TODO: currently it's only possible to edit the document text.
@@ -252,6 +271,7 @@ def edit_doc(request, doc):
     return render(request, 'notesfromxml/edit-doc.html', {'document': document, 'form': AddTagForm()})
 
 
+@login_required
 def edit_image(request, image):
     """
     Enables edits to the current image. TODO: currently it's only possible to edit the image text.
@@ -273,6 +293,7 @@ def edit_image(request, image):
     return render(request, 'notesfromxml/edit-image.html', {'image': image, 'form': AddTagForm()})
 
 
+@login_required
 def delete_or_remove(request, obj_name):
     """
     This function deletes or removes objects from the database. It takes in a post request that uses
@@ -313,11 +334,13 @@ def delete_or_remove(request, obj_name):
 
 # A view that displays links to all of the pages/templates that have been created in this project, this is
 # for development purposes only.
+@login_required
 def display_all_pages(request):
     return render(request, 'notesfromxml/display-all-pages.html')
 
 
 # A test view that displays the stuff behind the "Test" button in the navigation bar.
+@login_required
 def display_tests(request):
 
     messages.add_message(request, messages.INFO, 'test message')

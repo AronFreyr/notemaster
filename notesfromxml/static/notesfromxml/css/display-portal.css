@@ -5,11 +5,15 @@
     background-color: #d0d0d0;
     border: 5px solid #b0b0b0;
     border-radius: 6px;
+    display: flex;
+    flex-direction: row;
 }
 
-.document_wrapper{
+.document-wrapper{
     border: 1px solid black;
     border-radius: 6px;
     margin: 25px 80px;
+    padding: 10px;
     background-color: #f0f0f0;
+    flex: 1 0 30%;
 }

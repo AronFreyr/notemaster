@@ -15,18 +15,12 @@ Here is the incredibly unprofessional issue tracker!
 * Possibility to export documents to XML.
 * Way to delete images.
 * Look at this for ideas on the structure of the website, it might be useful: https://github.com/HassenPy/CRM-easy-app/blob/master/templates/base.html
-* Password protection.
 * See if there is a better way to display links related to documents.
 * Way to search for documents by tags with AND, OR, XOR etc.
-* Try out meta-tags for documents that should be displayed as a list.
 * A better issue tracker, Trello looks promising.
 * Useful and relevant information in this readme file.
+* Think about scss integration.
 ### In Progress
-* Safety prompt when using the delete or remove buttons.
-    * DONE for deleting documents.
-    * DONE for removing tags from documents.
-    * MISSING for deleting tags.
-    * MISSING for removing documents from tags.
 * Possibility to display bold, italic and such text in the documents.
 * Easier image display.
 * Need to find a better way to display html tags in text.
@@ -40,6 +34,7 @@ Here is the incredibly unprofessional issue tracker!
     * External database(maybe on AWS).
 * Better portal ideas.
     * Check this out: https://en.wikipedia.org/wiki/Portal:Television_in_the_United_Kingdom
+* Password protection.
 ### Done
 * Possibility for adding multiple tags at a time to a document.
 * Help site for the wiki (preferably as a link in the header bar)
@@ -58,3 +53,9 @@ Here is the incredibly unprofessional issue tracker!
 * Search bar in the header.
 * Stuck Header navbar.
 * Find a way to display XML code examples without the <> going crazy.
+* Try out meta-tags for documents that should be displayed as a list.
+* Safety prompt when using the delete or remove buttons.
+    * DONE for deleting documents.
+    * DONE for removing tags from documents.
+    * DONE for deleting tags.
+    * DONE for removing documents from tags.

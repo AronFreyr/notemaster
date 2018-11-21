@@ -74,11 +74,11 @@
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-right">
                         {% if user.is_authenticated %}
-                            <li><a href={% url 'notesfromxml:index' %}>Logout</a></li>
+                            <li><a href={% url 'logout' %}>Logout</a></li>
                             <li><a href=""
                                    class="p-r-none">Accounts</a></li>
                         {% else %}
-                            <li><a href="">Login</a></li>
+                            <li><a href={% url 'login' %}>Login</a></li>
                             <li><a href="" class="p-r-none">Sign Up</a></li>
                         {% endif %}
                     </ul>

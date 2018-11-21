@@ -10,10 +10,8 @@
 
 {% block content %}
     <div class="row">
-        {% comment %}{% include "notesfromxml/snippets/display-portal-docs.html" %}{% endcomment %}
-
         {% for doc in documents %}
-            <div class="document_wrapper col-md-4">
+            <div class="document-wrapper">
                 <h3><a href="{% url 'notesfromxml:display_doc' doc.document_name %}">{{ doc.document_name }}</a></h3>
                 <p>{{ doc.get_parsed_text| safe| truncatewords_html:50}}</p>
             </div>
