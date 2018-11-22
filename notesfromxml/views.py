@@ -183,12 +183,6 @@ def display_image(request, img):
     return render(request, 'notesfromxml/display-image.html', {'image': image})
 
 
-# TODO: This view may be unnecessary and may possible be removed.
-@login_required
-def display_docs(request):
-    return render(request, 'notesfromxml/display-all-docs.html', {'documents': Document.objects.all()})
-
-
 @login_required
 def display_tag(request, tag_name):
     """
@@ -199,17 +193,6 @@ def display_tag(request, tag_name):
     """
     tag = Tag.objects.get(tag_name=tag_name)
     return render(request, 'notesfromxml/display-tag.html', {'tag': tag})
-
-
-@login_required
-def display_tags(request):
-    """
-    Displays all of the tags.
-    :param request: the request object.
-    :return: render for the tags, which will be rendered with the display-tags.html file.
-    """
-    tags = Tag.objects.all()
-    return render(request, 'notesfromxml/display-tags.html', {'tags': tags})
 
 
 @login_required
@@ -311,7 +294,7 @@ def delete_or_remove(request, obj_name):
     """
     document = None
     if request.method == 'GET':
-        # TODO: Throw error, you should never GET remove.
+        # TODO: Throw error, you should never GET delete/remove.
         pass
     if request.method == 'POST':
         obj_type = request.POST['object_type']  # Is it a document or a tag?

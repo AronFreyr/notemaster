@@ -20,6 +20,12 @@ Here is the incredibly unprofessional issue tracker!
 * A better issue tracker, Trello looks promising.
 * Useful and relevant information in this readme file.
 * Think about scss integration.
+* Possible "createaccount" functionality.
+* Login and Logout pages that are not so barebones.
+* Change the default admin password.
+* Remote hosting (probably AWS).
+* Mobile friendly version.
+* Logging?
 ### In Progress
 * Possibility to display bold, italic and such text in the documents.
 * Easier image display.
@@ -34,7 +40,6 @@ Here is the incredibly unprofessional issue tracker!
     * External database(maybe on AWS).
 * Better portal ideas.
     * Check this out: https://en.wikipedia.org/wiki/Portal:Television_in_the_United_Kingdom
-* Password protection.
 ### Done
 * Possibility for adding multiple tags at a time to a document.
 * Help site for the wiki (preferably as a link in the header bar)
@@ -59,3 +64,4 @@ Here is the incredibly unprofessional issue tracker!
     * DONE for removing tags from documents.
     * DONE for deleting tags.
     * DONE for removing documents from tags.
+* Password protection.
