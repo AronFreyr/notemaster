@@ -28,6 +28,17 @@ def index(request):
         | Q(tag_name='Roman Empire')
     ).order_by('tag_name')
 
+    latest_programming_documents = Document.objects.filter(tagmap__tag__tag_name='Programming').order_by('-id')[:5]
+    latest_history_documents = Document.objects.filter(tagmap__tag__tag_name='History').order_by('-id')[:5]
+
+    print('latest_programming_documents')
+    for x in latest_programming_documents:
+        print(x.document_name)
+
+    print('latest_history_documents')
+    for x in latest_history_documents:
+        print(x.document_name)
+
     # turtle_graphics_tests.draw_document_map()
 
     return render(request, 'notesfromxml/index.html',
@@ -313,6 +324,29 @@ def delete_or_remove(request, obj_name):
     if document is not None:
         return redirect(reverse('notesfromxml:display_doc', kwargs={'doc': document.document_name}))
     return redirect(reverse('notesfromxml:index'))
+
+
+@login_required
+def display_search_results(request):
+    items_to_display = {'documents': [], 'tags': []}
+    print(request.method)
+    if request.method == 'POST':
+        item_list = [x.strip() for x in request.POST['search-bar-input'].split(',')]
+        if 'advancedsearch[]' in request.POST:
+            search_options = dict(request.POST)['advancedsearch[]']
+            if 'documents' in search_options:
+                for item in item_list:
+                    if Document.objects.filter(document_name__contains=item).exists():
+                        document_object = Document.objects.filter(document_name__contains=item)
+                        items_to_display['documents'].extend(document_object)
+
+            if 'tags' in search_options:
+                for item in item_list:
+                    if Tag.objects.filter(tag_name__contains=item).exists():
+                        tag_object = Tag.objects.filter(tag_name__contains=item)
+                        items_to_display['tags'].extend(tag_object)
+
+    return render(request, 'notesfromxml/search-results.html', {'search_results': items_to_display})
 
 
 # A view that displays links to all of the pages/templates that have been created in this project, this is

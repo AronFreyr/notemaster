@@ -1,0 +1,9 @@
+.document_list_container{
+    padding-top: 1%;
+    padding-left: 3%;
+    padding-right: 3%;
+}
+
+.document_wrapper{
+    border: 1px solid black;
+}

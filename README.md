@@ -10,6 +10,12 @@ the entire structure of the application is tag based.
 Here is the incredibly unprofessional issue tracker!
 ### Backlog
 * Rename the Django project, notesfromxml is hardly applicable anymore.
+    * new name ideas:
+        * NoteTaker
+        * Notus
+        * NoteViewer
+        * WikiWorld
+        * ????
 * Easier way to add multiple tags to an existing document in the "edit-doc" view.
 * Actually have some help text in the help section.
 * Possibility to export documents to XML.
@@ -26,6 +32,11 @@ Here is the incredibly unprofessional issue tracker!
 * Remote hosting (probably AWS).
 * Mobile friendly version.
 * Logging?
+* More meta-tag variants
+* Meta versions of documents? (Documents marked as operation notes, other as installation notes or something like that.)
+* Document(article) of the day on homepage?
+* Image of the day on homepage?
+* time created and last edited fields for the Document, Tag, Image models?
 ### In Progress
 * Possibility to display bold, italic and such text in the documents.
 * Easier image display.

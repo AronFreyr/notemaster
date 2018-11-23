@@ -11,6 +11,7 @@ urlpatterns = [
     path('createdoc/', views.create_doc, name='create_doc'),
     path('createimg/', views.create_image, name='create_image'),
     path('docbytag/', views.display_docs_with_tags, name='doc_by_tag'),
+    path('searchresults/', views.display_search_results, name='search_results'),
     path('displaydoc/<str:doc>/', views.display_doc, name='display_doc'),
     path('displayimg/<str:img>/', views.display_image, name='display_img'),
     path('displaytag/<str:tag_name>/', views.display_tag, name='display_tag'),

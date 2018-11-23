@@ -1,0 +1,27 @@
+{% extends 'notesfromxml/base.html' %}
+{% load static %}
+{% load app_filters %}
+{% block title %} DISPLAY SEARCH RESULTS{% endblock title %}
+
+
+{%  block head_css_page %}
+    <link rel="stylesheet" type="text/css" href="{% static 'notesfromxml/css/search-results.css' %}" />
+ {% endblock head_css_page %}
+
+{% block content %}
+    <h3>documents</h3>
+    {% with search_results.documents as documents %}
+        <div>
+            {% include 'notesfromxml/snippets/display-docs.html' %}
+        </div>
+    {% endwith %}
+    {% comment %}
+    {% for item in search_results.documents %}
+        <p>{{ item.document_name }}</p>
+    {% endfor %}
+    {% endcomment %}
+    <h3>tags</h3>
+    {% for item in search_results.tags %}
+        <p>{{ item.tag_name }}</p>
+    {% endfor %}
+{% endblock content %}
