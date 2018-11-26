@@ -9,13 +9,6 @@ the entire structure of the application is tag based.
 ## TODO
 Here is the incredibly unprofessional issue tracker!
 ### Backlog
-* Rename the Django project, notesfromxml is hardly applicable anymore.
-    * new name ideas:
-        * NoteTaker
-        * Notus
-        * NoteViewer
-        * WikiWorld
-        * ????
 * Easier way to add multiple tags to an existing document in the "edit-doc" view.
 * Actually have some help text in the help section.
 * Possibility to export documents to XML.
@@ -37,6 +30,7 @@ Here is the incredibly unprofessional issue tracker!
 * Document(article) of the day on homepage?
 * Image of the day on homepage?
 * time created and last edited fields for the Document, Tag, Image models?
+* Change the admin password.
 ### In Progress
 * Possibility to display bold, italic and such text in the documents.
 * Easier image display.
@@ -51,6 +45,13 @@ Here is the incredibly unprofessional issue tracker!
     * External database(maybe on AWS).
 * Better portal ideas.
     * Check this out: https://en.wikipedia.org/wiki/Portal:Television_in_the_United_Kingdom
+* Rename the Django project, notesfromxml is hardly applicable anymore.
+    * new name ideas:
+        * NoteTaker
+        * Notus
+        * NoteViewer
+        * WikiWorld
+        * ????
 ### Done
 * Possibility for adding multiple tags at a time to a document.
 * Help site for the wiki (preferably as a link in the header bar)

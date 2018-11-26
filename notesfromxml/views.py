@@ -28,17 +28,6 @@ def index(request):
         | Q(tag_name='Roman Empire')
     ).order_by('tag_name')
 
-    latest_programming_documents = Document.objects.filter(tagmap__tag__tag_name='Programming').order_by('-id')[:5]
-    latest_history_documents = Document.objects.filter(tagmap__tag__tag_name='History').order_by('-id')[:5]
-
-    print('latest_programming_documents')
-    for x in latest_programming_documents:
-        print(x.document_name)
-
-    print('latest_history_documents')
-    for x in latest_history_documents:
-        print(x.document_name)
-
     # turtle_graphics_tests.draw_document_map()
 
     return render(request, 'notesfromxml/index.html',
@@ -65,7 +54,13 @@ def display_portal(request, tag_name):
 # A test function to create a test homepage.
 @login_required
 def display_homepage_test(request):
-    return render(request, 'notesfromxml/homepage-test.html')
+
+    latest_programming_documents = Document.objects.filter(tagmap__tag__tag_name='Programming').order_by('-id')[:5]
+    latest_history_documents = Document.objects.filter(tagmap__tag__tag_name='History').order_by('-id')[:5]
+
+    return render(request, 'notesfromxml/homepage-test.html',
+                  {'latest_programming_docs': latest_programming_documents,
+                   'latest_history_docs': latest_history_documents})
 
 
 # A test function for seeing how individual portals could work.

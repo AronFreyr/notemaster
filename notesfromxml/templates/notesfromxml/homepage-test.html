@@ -11,12 +11,34 @@
     <div class="container">
         <div class="row">
             <div class="col">
-                <h1>Programming</h1>
-                <p>text in col md 4</p>
+                <section>
+                    <h1>Programming</h1>
+                    <div class="latest-docs">
+                        {% if latest_programming_docs %}
+                            <h5>5 latest programming documents</h5>
+                            <ul>
+                                {% for doc in latest_programming_docs %}
+                                    <li><a href="{% url 'notesfromxml:display_doc' doc.document_name %}">{{ doc.document_name }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </div>
+                </section>
             </div>
             <div class="col">
-                <h1>History</h1>
-                <p>text in col md 4</p>
+                <section>
+                    <h1>History</h1>
+                    <div class="latest-docs">
+                        {% if latest_history_docs %}
+                            <h5>5 latest history documents</h5>
+                            <ul>
+                                {% for doc in latest_history_docs %}
+                                    <li><a href="{% url 'notesfromxml:display_doc' doc.document_name %}">{{ doc.document_name }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </div>
+                </section>
             </div>
         </div>
     </div>
