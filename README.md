@@ -31,6 +31,8 @@ Here is the incredibly unprofessional issue tracker!
 * Image of the day on homepage?
 * time created and last edited fields for the Document, Tag, Image models?
 * Change the admin password.
+* Check out Django-Channels for asynchronous support.
+    * https://github.com/django/channels
 ### In Progress
 * Possibility to display bold, italic and such text in the documents.
 * Easier image display.
