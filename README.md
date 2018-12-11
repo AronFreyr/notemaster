@@ -30,6 +30,7 @@ Here is the incredibly unprofessional issue tracker!
 * Document(article) of the day on homepage?
 * Image of the day on homepage?
 * time created and last edited fields for the Document, Tag, Image models?
+* Possibly store edit history of documents.
 * Change the admin password.
 * Check out Django-Channels for asynchronous support.
     * https://github.com/django/channels
