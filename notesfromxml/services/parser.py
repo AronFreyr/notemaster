@@ -3,12 +3,12 @@ import re
 
 
 def parser_main(parsed_text):
+    parsed_text = escape_parser(parsed_text)
     parsed_text = hyperlink_parser(parsed_text)
     parsed_text = java_code_parser(parsed_text)
     parsed_text = image_insert_parser(parsed_text)
     parsed_text = links_to_table_parser(parsed_text)
     parsed_text = tagged_docs_to_list_parser(parsed_text)
-    parsed_text = escape_parser(parsed_text)
     return parsed_text
 
 
