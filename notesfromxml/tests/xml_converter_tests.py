@@ -1,7 +1,9 @@
 from django.test.testcases import TestCase
 from ..models import Document, Tag, Tagmap
 import turtle
-import xml.etree.ElementTree
+import xml.etree.ElementTree as ET
+from lxml import etree as LET
+from lxml import objectify
 
 
 class DocumentMapperTests(TestCase):
@@ -32,7 +34,7 @@ class DocumentMapperTests(TestCase):
 
     def test_create_xml_from_document(self):
         test_doc = Document.objects.get(document_name='JAXB')
-        xml_text = ''
+        xml_text = '<documents>\n'
         xml_text += '<document>\n'
         xml_text += '<name>' + test_doc.document_name + '</name>\n'
         xml_text += '<text>' + test_doc.document_text + '</text>\n'
@@ -40,12 +42,81 @@ class DocumentMapperTests(TestCase):
         for tag in test_doc.get_all_tags_sorted():
             xml_text += '<document_tag>' + tag.tag_name + '</document_tag>\n'
         xml_text += '</document_tags>\n'
-        xml_text += '</document>'
-        print(xml_text)
-        xml_element = xml.etree.ElementTree.fromstring(xml_text)
-        print(xml_element.tag)
-        for child in xml_element:
-            print(child.tag, child.text)
+        xml_text += '</document>\n'
+        xml_text += '</documents>'
+
+        xml_element = LET.ElementTree(objectify.fromstring(xml_text))
+
+        xml_to_string = LET.tostring(xml_element.getroot(), pretty_print=True, xml_declaration=True, encoding='UTF-8').decode()
+
+        with open('./notesfromxml/tests/test.xml', 'w') as xml_file:
+            xml_file.write(xml_to_string)
+
+    def test_create_xml_from_documents(self):
+        test_docs = Document.objects.all()
+
+        xml_text = '<documents>\n'
+        for doc in test_docs:
+            xml_text += '<document>\n'
+            xml_text += '<name>' + doc.document_name + '</name>\n'
+            xml_text += '<text>' + doc.document_text + '</text>\n'
+            xml_text += '<document_tags>\n'
+            for tag in doc.get_all_tags_sorted():
+                xml_text += '<document_tag>' + tag.tag_name + '</document_tag>\n'
+            xml_text += '</document_tags>\n'
+            xml_text += '</document>\n'
+        xml_text += '</documents>'
+
+        xml_element = LET.ElementTree(objectify.fromstring(xml_text))
+
+        xml_to_string = LET.tostring(xml_element.getroot(), pretty_print=True, xml_declaration=True,
+                                     encoding='UTF-8').decode()
+
+        with open('./notesfromxml/tests/test2.xml', 'w') as xml_file:
+            xml_file.write(xml_to_string)
+
+    def test_create_xml_from_tag(self):
+        test_tag = Tag.objects.get(tag_name='JAXB')
+
+        xml_text = '<tags>\n'
+        xml_text += '<tag>\n'
+        xml_text += '<name>' + test_tag.tag_name + '</name>\n'
+        xml_text += '<tag_type>' + test_tag.tag_type + '</tag_type>\n'
+        xml_text += '<meta_tag_type>' + test_tag.meta_tag_type + '</meta_tag_type>\n'
+        xml_text += '<tagged_documents>\n'
+        for doc in test_tag.get_all_docs():
+            xml_text += '<tagged_document>' + doc.document_name + '</tagged_document>\n'
+        xml_text += '</tagged_documents>\n'
+        xml_text += '</tag>\n'
+        xml_text += '</tags>\n'
+
+        xml_element = LET.ElementTree(objectify.fromstring(xml_text))
+
+        xml_to_string = LET.tostring(xml_element.getroot(), pretty_print=True, xml_declaration=True,
+                                     encoding='UTF-8').decode()
+        print(xml_to_string)
+
+    def test_create_xml_from_tags(self):
+        test_tags = Tag.objects.all()
+
+        xml_text = '<tags>\n'
+        for tag in test_tags:
+            xml_text += '<tag>\n'
+            xml_text += '<name>' + tag.tag_name + '</name>\n'
+            xml_text += '<tag_type>' + tag.tag_type + '</tag_type>\n'
+            xml_text += '<meta_tag_type>' + tag.meta_tag_type + '</meta_tag_type>\n'
+            xml_text += '<tagged_documents>\n'
+            for doc in tag.get_all_docs():
+                xml_text += '<tagged_document>' + doc.document_name + '</tagged_document>\n'
+            xml_text += '</tagged_documents>\n'
+            xml_text += '</tag>\n'
+        xml_text += '</tags>\n'
+
+        xml_element = LET.ElementTree(objectify.fromstring(xml_text))
+
+        xml_to_string = LET.tostring(xml_element.getroot(), pretty_print=True, xml_declaration=True,
+                                     encoding='UTF-8').decode()
+        print(xml_to_string)
 
     def test_get_document_connections(self):
         Document.objects.create(document_name="Java", document_text="Java document text test 1")
