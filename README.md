@@ -22,7 +22,6 @@ Here is the incredibly unprofessional issue tracker!
 * Possible "createaccount" functionality.
 * Login and Logout pages that are not so barebones.
 * Change the default admin password.
-* Remote hosting (probably AWS).
 * Mobile friendly version.
 * Logging?
 * More meta-tag variants
@@ -31,6 +30,7 @@ Here is the incredibly unprofessional issue tracker!
 * Image of the day on homepage?
 * time created and last edited fields for the Document, Tag, Image models?
 * Possibly store edit history of documents.
+* Display recently edited documents.
 * Change the admin password.
 * Check out Django-Channels for asynchronous support.
     * https://github.com/django/channels
@@ -55,6 +55,7 @@ Here is the incredibly unprofessional issue tracker!
         * NoteViewer
         * WikiWorld
         * ????
+* Remote hosting (probably AWS).
 ### Done
 * Possibility for adding multiple tags at a time to a document.
 * Help site for the wiki (preferably as a link in the header bar)
