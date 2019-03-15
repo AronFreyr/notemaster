@@ -324,7 +324,6 @@ def delete_or_remove(request, obj_name):
 @login_required
 def display_search_results(request):
     items_to_display = {'documents': [], 'tags': []}
-    print(request.method)
     if request.method == 'POST':
         item_list = [x.strip() for x in request.POST['search-bar-input'].split(',')]
         if 'advancedsearch[]' in request.POST:
