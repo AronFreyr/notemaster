@@ -56,6 +56,7 @@ Here is the incredibly unprofessional issue tracker!
         * WikiWorld
         * ????
 * Remote hosting (probably AWS).
+* Production environment.
 ### Done
 * Possibility for adding multiple tags at a time to a document.
 * Help site for the wiki (preferably as a link in the header bar)
@@ -81,3 +82,5 @@ Here is the incredibly unprofessional issue tracker!
     * DONE for deleting tags.
     * DONE for removing documents from tags.
 * Password protection.
+* Nginx for production.
+* Gunicorn for production.
