@@ -100,8 +100,8 @@ def display_angular_portal(request):
                 document_list.remove(document)
             if tagmaps.tag.tag_name == 'Angular Material Modules' and document.document_name != 'Angular Material Modules':
                 document_list.remove(document)
-    return render(request, 'notesfromxml/angular-portal.html',
-                  {'angular_docs': document_list})
+
+    return render(request, 'notesfromxml/angular-portal.html', {'angular_docs': document_list})
 
 
 @login_required
