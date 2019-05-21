@@ -14,16 +14,10 @@
             <div class="sidebar-module">
                 <h3>Tags</h3>
                 {% for tag in image.get_all_tags_sorted %}
-                    <div  id="id-div-tag-container">
-                        <div id="id-div-tag-name">
-                            <p>
-                                <a href="{% url 'notesfromxml:display_tag' tag.tag_name %}">
-                                    {{ tag.tag_name }}
-                                </a>
-                                ({{ tag.get_nr_of_docs_with_tag }})
-                            </p>
-                        </div>
-                        {% include 'notesfromxml/snippets/forms/remove-tag-snippet.html' %}
+                    <div id="id-div-tag-container">
+                        <a class="btn btn-outline-secondary btn-block" href="{% url 'notesfromxml:display_tag' tag.tag_name %}" id="tag-btn-link-text">
+                            {{ tag.tag_name }} <span class="badge badge-light"> ({{ tag.get_nr_of_docs_with_tag }})</span>
+                        </a>
                     </div>
                 {% endfor %}
             </div>

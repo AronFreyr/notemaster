@@ -1,6 +1,7 @@
 {% extends 'notesfromxml/base.html' %}
 {% load static %}
 {% load app_filters %}
+{% block title %} {{ document.document_name }} {% endblock title %}
 {%  block head_css_page %}
     <link rel="stylesheet" type="text/css" href="{% static 'notesfromxml/css/display-doc.css' %}" />
  {% endblock head_css_page %}

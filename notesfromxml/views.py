@@ -144,6 +144,7 @@ def create_doc(request):
                 new_doc = Document(document_name=doc_name, document_text=doc_text)
                 new_doc.save()
                 handle_new_tag(new_tag, new_doc)
+                return render(request, 'notesfromxml/display-doc.html', {'document': new_doc})
 
     return redirect(reverse('notesfromxml:index'))
 
