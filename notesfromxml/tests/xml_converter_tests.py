@@ -9,7 +9,7 @@ from lxml import objectify
 class DocumentMapperTests(TestCase):
 
     def setUp(self):
-        Document.objects.create(document_name="Java", document_text="Java document text test 1")
+        Document.objects.create(document_name="Java", document_text="<p>Java document text test 1</p>")
         Document.objects.create(document_name="JAXB", document_text="JAXB document text test 1")
         Document.objects.create(document_name="XML", document_text="XML document text test 1")
 

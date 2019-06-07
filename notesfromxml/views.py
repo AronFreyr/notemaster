@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from .models import Document, Tag, Tagmap, Image, ImageDocumentMap, ImageTagMap
 from .forms import AddTagForm, CreateDocumentForm, CreateImageForm
 from .services.object_handling import handle_new_tag, remove_object, delete_object
+from .services.xml_converter import test_create_xml_from_documents  # Test for xml object conversion
 
 from .tests import turtle_graphics_tests
 
@@ -329,17 +330,19 @@ def display_search_results(request):
         item_list = [x.strip() for x in request.POST['search-bar-input'].split(',')]
         if 'advancedsearch[]' in request.POST:
             search_options = dict(request.POST)['advancedsearch[]']
-            if 'documents' in search_options:
+            if 'documents' in search_options:  # If the check for doc search in on. Default=True.
                 for item in item_list:
                     if Document.objects.filter(document_name__contains=item).exists():
                         document_object = Document.objects.filter(document_name__contains=item)
                         items_to_display['documents'].extend(document_object)
+                items_to_display['documents'].sort(key=lambda x: x.document_name)  # Sort the doc list.
 
-            if 'tags' in search_options:
+            if 'tags' in search_options:  # If the check for tag search is on. Default=False.
                 for item in item_list:
                     if Tag.objects.filter(tag_name__contains=item).exists():
                         tag_object = Tag.objects.filter(tag_name__contains=item)
                         items_to_display['tags'].extend(tag_object)
+                items_to_display['tags'].sort(key=lambda x: x.tag_name)  # Sort the tag list.
 
     return render(request, 'notesfromxml/search-results.html', {'search_results': items_to_display})
 
@@ -355,5 +358,6 @@ def display_all_pages(request):
 @login_required
 def display_tests(request):
 
+    test_create_xml_from_documents()
     messages.add_message(request, messages.INFO, 'test message')
     return render(request, 'notesfromxml/tests.html')

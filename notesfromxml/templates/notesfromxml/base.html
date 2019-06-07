@@ -60,11 +60,6 @@
                 <form class="form-inline" action="{% url 'notesfromxml:search_results' %}" method="post">
                     {% csrf_token %}
                     <div class="dropdown show input-group-btn search-panel">
-                        {% comment %}
-                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                            <span id="search_concept">Filter by</span> <span class="caret"></span>
-                        </button>
-                        {% endcomment %}
                         <a class="btn btn-outline-secondary dropdown-toggle" role="button"
                            data-toggle="dropdown" href="#" aria-haspopup="true" aria-expanded="false">Filter by</a>
                         <div class="dropdown-menu" role="menu">
