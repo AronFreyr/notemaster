@@ -7,6 +7,7 @@ from .models import Document, Tag, Tagmap, Image, ImageDocumentMap, ImageTagMap
 from .forms import AddTagForm, CreateDocumentForm, CreateImageForm
 from .services.object_handling import handle_new_tag, remove_object, delete_object
 from .services.xml_converter import test_create_xml_from_documents  # Test for xml object conversion
+from .services.graph_generator import test_create_graph
 
 from .tests import turtle_graphics_tests
 
@@ -358,6 +359,7 @@ def display_all_pages(request):
 @login_required
 def display_tests(request):
 
-    test_create_xml_from_documents()
+    #test_create_xml_from_documents()
+    test_create_graph()
     messages.add_message(request, messages.INFO, 'test message')
     return render(request, 'notesfromxml/tests.html')

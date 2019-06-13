@@ -15,11 +15,14 @@
         <div class="col-sm-2">
             <div class="sidebar-module">
                 <div class="tag-type-container">
-                    <span><b>Tag Type: </b>{{ tag.tag_type }}</span>
-                    {% if tag.tag_type == "meta" %}
-                        <span><b>Meta Type: </b>{{ tag.meta_tag_type }}</span>
-                    {% endif %}
-                    <span></span>
+                    <div class="tag-type-display-container">
+                        <span><b>Tag Type: </b>{{ tag.tag_type }}</span>
+                    </div>
+                    <div class="meta-tag-type-display-container">
+                        {% if tag.tag_type == "meta" %}
+                            <span><b>Meta Type: </b>{{ tag.meta_tag_type }}</span>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
         </div>

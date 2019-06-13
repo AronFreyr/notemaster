@@ -14,3 +14,9 @@
 #id_div_container_delete_tag{
     margin-top: 45px;
 }
+
+.tag-type-container {
+    border: 1px solid black;
+    border-radius: 3px;
+    padding: 10px;
+}

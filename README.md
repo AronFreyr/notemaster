@@ -11,7 +11,6 @@ Here is the incredibly unprofessional issue tracker!
 ### Backlog
 * Easier way to add multiple tags to an existing document in the "edit-doc" view.
 * Actually have some help text in the help section.
-* Possibility to export documents to XML.
 * Way to delete images.
 * Look at this for ideas on the structure of the website, it might be useful: https://github.com/HassenPy/CRM-easy-app/blob/master/templates/base.html
 * See if there is a better way to display links related to documents.
@@ -57,6 +56,7 @@ Here is the incredibly unprofessional issue tracker!
         * ????
 * Remote hosting (probably AWS).
 * Production environment.
+* Possibility to export documents to XML.
 ### Done
 * Possibility for adding multiple tags at a time to a document.
 * Help site for the wiki (preferably as a link in the header bar)
