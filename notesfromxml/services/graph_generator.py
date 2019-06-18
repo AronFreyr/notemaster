@@ -39,7 +39,7 @@ def test_create_graph():
     )
 
     for node in graph.nodes():
-        print('node:', node)
+        #print('node:', node)
         x, y = graph.node[node]['pos']
         node_trace['x'] += tuple([x])
         node_trace['y'] += tuple([y])
@@ -52,7 +52,9 @@ def test_create_graph():
     edge_trace = go.Scatter(
         x=[],
         y=[],
-        mode='lines',
+        text=[],
+        textposition='bottom center',
+        mode='lines+text',
         line=dict(
             width=0.5,
             color='#888'
@@ -69,6 +71,7 @@ def test_create_graph():
         edge_trace['x'] += tuple([x0, x1])
         #edge_trace['y'] += tuple([y0, y1, None])
         edge_trace['y'] += tuple([y0, y1])
+        edge_trace['text'] += tuple([edge])
 
     print('node_trace:', node_trace)
     print('edge_trace:', edge_trace)
