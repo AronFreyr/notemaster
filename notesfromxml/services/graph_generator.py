@@ -9,16 +9,19 @@ def test_create_graph():
 
     graph = nx.Graph()
 
-    #doc_list = Document.objects.filter(document_name__contains='Spring')
-    doc_list = Document.objects.all()
+    #doc_list = Document.objects.filter(document_name__contains='Rome')
+    doc_list = Document.objects.filter(document_name__contains='Spring')
+    #doc_list = Document.objects.all()
     #tag_exclusion_list = ['Spring Annotations', 'Programming', 'Java']
-    tag_exclusion_list = ['Programming']
+    #tag_exclusion_list = ['Programming']
+    tag_exclusion_list = []
 
     for doc in doc_list:
         graph.add_node('Doc - ' + doc.document_name)
         for tag in doc.get_all_tags():
             if tag.tag_name not in tag_exclusion_list:
-                graph.add_node('Tag - ' + tag.tag_name)
+                if not graph.has_node('Tag - ' + tag.tag_name):
+                    graph.add_node('Tag - ' + tag.tag_name)
                 graph.add_edge('Doc - ' + doc.document_name, 'Tag - ' + tag.tag_name)
 
     pos = nx.spring_layout(graph)  # Gives the node coordinates????
@@ -53,7 +56,11 @@ def test_create_graph():
         x=[],
         y=[],
         text=[],
-        textposition='bottom center',
+        textposition='bottom right',
+        textfont=dict(
+            family='sans serif',
+            size=6
+        ),
         mode='lines+text',
         line=dict(
             width=0.5,
@@ -62,25 +69,41 @@ def test_create_graph():
     )
 
     for edge in graph.edges():
-        print('edge:', edge)
-        print('graph.node[edge[0]]:', graph.node[edge[0]])
-        print('graph.node[edge[1]]:', graph.node[edge[1]])
+        #print('edge:', edge)
+        #print('graph.node[edge[0]]:', graph.node[edge[0]])
+        #print('graph.node[edge[1]]:', graph.node[edge[1]])
         x0, y0 = graph.node[edge[0]]['pos']
         x1, y1 = graph.node[edge[1]]['pos']
-        #edge_trace['x'] += tuple([x0, x1, None])
         edge_trace['x'] += tuple([x0, x1])
-        #edge_trace['y'] += tuple([y0, y1, None])
         edge_trace['y'] += tuple([y0, y1])
         edge_trace['text'] += tuple([edge])
+        #edge_trace['text'] += tuple([str(graph.node[edge[0]]) + str(graph.node[edge[1]])])
 
-    print('node_trace:', node_trace)
-    print('edge_trace:', edge_trace)
+    print('-----------')
+    for edge in graph.edges():
+        print('edge:', edge)
+        print('edge[0]:', graph.node[edge[0]])
+        print('edge[1]:', graph.node[edge[1]])
+    print('-----------')
 
+    for x in enumerate(edge_trace):
+        print(x)
+
+    """
+    for x in range(len(graph.nodes())):
+        print('----------')
+        print('x:', x)
+        print('node_trace[x]:', node_trace[x])
+        print('edge_trace[x]:', edge_trace[x])
+        print('edge_trace["text"][x]:', edge_trace['text'][x])
+        print('----------')
+    """
     fig = go.Figure(data=[edge_trace, node_trace],
                     layout=go.Layout(
                         title='<br>Network graph made with Python',
                         titlefont=dict(size=16),
-                        showlegend=False,
+                        #showlegend=False,
+                        showlegend=True,
                         hovermode='closest',
                         margin=dict(b=20, l=5, r=5, t=40),
                         annotations=[dict(
