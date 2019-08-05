@@ -22,3 +22,4 @@ class TaggedDocsToListTests(TestCase):
 
         text_to_parse = 'lorem ipsum [list[[Java]]] ipsum lorem.'
         tagged_docs_to_list_parser(text_to_parse)
+
