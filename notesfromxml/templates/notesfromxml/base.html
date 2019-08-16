@@ -14,6 +14,10 @@
         {% block head_css_site %}
             <link rel="stylesheet" href="{% static 'notesfromxml/bootstrap/bootstrap_4/bootstrap.min.css' %}"
             crossorigin="anonymous" media="screen"/>
+            <link rel="stylesheet" href="{% static 'notesfromxml/mivhak/mivhak.min.css' %}"
+                  crossorigin="anonymous" media="screen"/>
+            <!-- This font is for Mivhak -->
+            <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
             <link href="{% static 'notesfromxml/css/base.css' %}" rel="stylesheet" media="screen">
         {% endblock head_css_site %}
         {% block head_css_section %}{% endblock head_css_section %}
@@ -129,7 +133,11 @@
 {# Set of blocks that can be used to display JavaScript files #}
     {% block footer_javascript %}
         {% block footer_javascript_site %}
+            {% comment %}
             <script src="{% static 'notesfromxml/jquery/jquery.min.js' %}"
+            crossorigin="anonymous"></script>
+            {% endcomment %}
+            <script src="{% static 'notesfromxml/jquery/jquery-3.4.1.min.js' %}"
             crossorigin="anonymous"></script>
 
             <!-- Bootstrap needs to load AFTER jQuery -->
@@ -149,6 +157,11 @@
             <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
             <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
             <script>hljs.initHighlightingOnLoad();</script>
+
+            <!-- Testing mivhak for code block highlighting -->
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.3/ace.js"></script>
+            <script src="{% static 'notesfromxml/mivhak/mivhak.min.js' %}"></script>
+            <script>$('.mivhak').mivhak();</script>
 
             {% comment %}
             <script src="{% static 'notesfromxml/jquery/jquery.min.js' %}"></script>
