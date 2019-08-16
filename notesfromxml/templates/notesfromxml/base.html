@@ -61,8 +61,7 @@
                     </div>
                 </div>
                 <!--Search bar -->
-                <form class="form-inline" action="{% url 'notesfromxml:search_results' %}" method="post">
-                    {% csrf_token %}
+                <form class="form-inline" action="{% url 'notesfromxml:search_results' %}" method="get">
                     <div class="dropdown show input-group-btn search-panel">
                         <a class="btn btn-outline-secondary dropdown-toggle" role="button"
                            data-toggle="dropdown" href="#" aria-haspopup="true" aria-expanded="false">Filter by</a>

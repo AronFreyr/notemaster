@@ -327,10 +327,10 @@ def delete_or_remove(request, obj_name):
 @login_required
 def display_search_results(request):
     items_to_display = {'documents': [], 'tags': []}
-    if request.method == 'POST':
-        item_list = [x.strip() for x in request.POST['search-bar-input'].split(',')]
-        if 'advancedsearch[]' in request.POST:
-            search_options = dict(request.POST)['advancedsearch[]']
+    if request.method == 'GET':
+        item_list = [x.strip() for x in request.GET['search-bar-input'].split(',')]
+        if 'advancedsearch[]' in request.GET:
+            search_options = dict(request.GET)['advancedsearch[]']
             if 'documents' in search_options:  # If the check for doc search in on. Default=True.
                 for item in item_list:
                     if Document.objects.filter(document_name__contains=item).exists():
