@@ -223,25 +223,6 @@ def edit_tag(request, tag_name):
 
 
 @login_required
-def display_docs_with_tags(request):
-    """
-    Takes string from the template, that string is a comma separated list of tag names, and searches for any
-    documents that have those tags. Then sends the document list to the template for display.
-    :param request: The request object, has the comma separated string that comes from the template.
-    :return: A list of all of the documents that have the tags that were in the comma separated string.
-    """
-    list_of_docs_with_tags = []
-    if request.method == 'POST':
-        tag_list = [x.strip() for x in request.POST['search-bar-input'].split(',')]
-        for tag in tag_list:
-            if Tag.objects.filter(tag_name=tag).exists():
-                tag_object = Tag.objects.get(tag_name=tag)
-                docs_with_tag = Document.objects.filter(tagmap__tag=tag_object)
-                list_of_docs_with_tags.extend(docs_with_tag)
-    return render(request, 'notesfromxml/doc-by-tag.html', {'documents': list_of_docs_with_tags})
-
-
-@login_required
 def edit_doc(request, doc):
     """
     Enables edits to the current document. TODO: currently it's only possible to edit the document text.
