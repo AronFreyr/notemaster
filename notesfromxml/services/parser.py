@@ -23,6 +23,7 @@ def hyperlink_parser(parsed_text):
             document_parameters = ''
             output_with_link = ''
             output_with_brackets = match.group()
+            print(match.group(0))
             output_without_brackets = match.group(1)
             if '|' in output_without_brackets:
                 split_output = output_without_brackets.split('|')
@@ -32,10 +33,10 @@ def hyperlink_parser(parsed_text):
                 document_name = output_without_brackets
                 document_parameters = output_without_brackets
             if Document.objects.filter(document_name=document_name).exists():
-                output_with_link = '<a href="/notesfromxml/displaydoc/' + document_name \
+                output_with_link = '<a href="/notesfromxml/document/' + document_name \
                                    + '">' + document_parameters + '</a>'
             else:
-                output_with_link = '<a href="/notesfromxml/displaydoc/' + document_name \
+                output_with_link = '<a href="/notesfromxml/document/' + document_name \
                                    + '" class="broken-link">' + document_parameters + '</a>'
             parsed_text = parsed_text.replace(output_with_brackets, output_with_link)
 
@@ -89,6 +90,7 @@ def image_insert_parser(parsed_text):
 
 def links_to_table_parser(parsed_text):
     pattern = re.compile(r'\[links\[\[(.*?)\]\]\]', re.DOTALL)
+    #pattern = re.compile(r'\[(.*?)\[\[(.*?)\]\]\]', re.DOTALL)
     matches = re.finditer(pattern, parsed_text)
     if matches is not None:
         for match in matches:
@@ -132,10 +134,10 @@ def tagged_docs_to_list_parser(parsed_text):
                     if excluded_tags != '':
                         for tag in excluded_tags:
                             if tag != name:
-                                output_with_html += '<li><a href="/notesfromxml/displaydoc/' + name \
+                                output_with_html += '<li><a href="/notesfromxml/document/' + name \
                                                     + '">' + name + '</a></li>'
                     else:
-                        output_with_html += '<li><a href="/notesfromxml/displaydoc/' + name \
+                        output_with_html += '<li><a href="/notesfromxml/document/' + name \
                                             + '">' + name + '</a></li>'
             output_with_html += '</ul></div>'
             parsed_text = parsed_text.replace(output_with_brackets, output_with_html)
