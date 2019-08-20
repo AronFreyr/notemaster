@@ -103,4 +103,3 @@ A good Stack Overflow question and answer on what is going wrong when the autowi
         matches = re.finditer(pattern, input_text)
         # Returns true if there is any element in the iterator without removing the element.
         return any(True for _ in matches)
-
