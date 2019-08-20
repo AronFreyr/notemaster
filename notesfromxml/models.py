@@ -6,8 +6,6 @@ class Document(models.Model):
     document_text = models.TextField()
 
     def get_parsed_text(self):
-        #from .services import parser
-        #return parser.parser_main(self.document_text)
         from .services.parser import TextParser
         parser = TextParser()
         return parser.perform_parse(self.document_text)

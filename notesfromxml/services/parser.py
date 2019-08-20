@@ -12,7 +12,6 @@ class TextParser:
     def perform_parse(self, input_text):
         parsed_text = input_text
         while self.is_match(parsed_text):
-            print('match!!!')
             parsed_text = self.find_match(parsed_text)
         return parsed_text
 
@@ -21,7 +20,6 @@ class TextParser:
         if matches is not None:  # If match is found.
             for match in matches:
                 entire_match = match.group()
-                print(entire_match)
                 matched_type = match.group(1)
                 matched_text = match.group(2)
                 string_to_cut = '[' + matched_type + '[['  # Cut the [[[ in front but not the ]]] in back
@@ -29,28 +27,19 @@ class TextParser:
 
                 if self.is_match(cut_string):  # If a match is found inside the match.
                     new_matched_text = self.find_match(cut_string)  # Recurse
-                    print('matched_text: ' + matched_text)
                     # Replace the text plus ]]] and return it so the match inside the match is properly parsed.
                     input_text = input_text.replace(matched_text + ']]]', new_matched_text)
                     return input_text
 
-                #new_text = '<' + matched_type + '>' + matched_text + '</' + matched_type + '>'
-                #input_text = input_text.replace(entire_match, new_text)
-
                 input_text = self.handle_parsing(input_text, entire_match, matched_text, matched_type)
                 return input_text
 
-        return input_text
+        return input_text  # Todo: I don't know if this is ever reached.
 
     def handle_parsing(self, input_text, text_with_brackets, text_without_brackets, text_type):
         output_text = input_text
-        print('------text type------')
-        print(text_type)
-        print('------End text type------')
-        if 'old_install' in text_type:
-            print('bug')
+
         if text_type.strip() == '':
-            print('text type found and is nothing')
             output_text = self.new_hyperlink_parser(input_text, text_with_brackets, text_without_brackets)
         elif text_type == 'java':
             output_text = self.new_java_code_parser(input_text, text_with_brackets, text_without_brackets)
@@ -60,7 +49,6 @@ class TextParser:
             output_text = self.new_link_to_table_parser(input_text, text_with_brackets, text_without_brackets)
         elif text_type == 'list':
             output_text = self.new_tagged_docs_to_list_parser(input_text, text_with_brackets, text_without_brackets)
-        #elif text_type is 'esc':
         elif text_type == 'esc':
             output_text = self.new_escape_parser(input_text, text_with_brackets, text_without_brackets)
 
@@ -86,8 +74,6 @@ class TextParser:
 
     def new_java_code_parser(self, input_text, text_with_brackets, text_without_brackets):
         output_text = input_text
-        # TODO: Weird to search the text again? need to test this.
-        #output_without_brackets = re.search(pattern, parsed_text).group(1).strip()
         output_with_html = '<pre><code class="language-java" data-lang="java">' + text_without_brackets \
                            + '</code></pre>'
         output_text = output_text.replace(text_with_brackets, output_with_html)
@@ -123,8 +109,6 @@ class TextParser:
     def new_link_to_table_parser(self, input_text, text_with_brackets, text_without_brackets):
         output_text = input_text
         output_with_html = '<div class="link-list"> <p class="link-list-header">Links</p> <ul>'
-        #output_with_brackets = match.group()
-        #output_without_brackets = re.search(pattern, parsed_text).group(1).strip()
         split_output = text_without_brackets.split(';')
         for split in split_output:
             if split.strip() is not '':  # If ; is at the end of the entire link list.
@@ -141,8 +125,6 @@ class TextParser:
         output_text = input_text
         excluded_tags = ''
         output_with_html = '<div class="document-list"> <p class="document-list-header">Documents</p> <ul>'
-        #output_with_brackets = match.group()
-        #output_without_brackets = re.search(pattern, parsed_text).group(1).strip()
 
         if '|' in text_without_brackets:
             split_output = text_without_brackets.split('|')
@@ -169,15 +151,12 @@ class TextParser:
 
     def new_escape_parser(self, input_text, text_with_brackets, text_without_brackets):
         output_text = input_text
-        #output_with_brackets = match.group()
-        #output_without_brackets = re.search(pattern, parsed_text).group(1).strip()
         text_without_brackets = text_without_brackets.replace('<', '&lt;')
         text_without_brackets = text_without_brackets.replace('>', '&gt;')
         output_text = output_text.replace(text_with_brackets, text_without_brackets)
         return output_text
 
     def is_match(self, input_text):
-        #pattern = re.compile(r'\[(.*?)\[\[(.*?)\]\]\]', re.DOTALL)
         matches = re.finditer(self.pattern, input_text)
         # Returns true if there is any element in the iterator without removing the element.
         return any(True for _ in matches)
