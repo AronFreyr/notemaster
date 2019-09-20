@@ -1,4 +1,7 @@
 networkx
 plotly
 django
+channels
 Pillow
+lxml
+numpy

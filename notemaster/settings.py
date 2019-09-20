@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'channels',
     'notesfromxml',
 ]
 
@@ -69,6 +70,8 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'notemaster.wsgi.application'
+
+ASGI_APPLICATION = 'notemaster.routing.application'
 
 
 # Database
