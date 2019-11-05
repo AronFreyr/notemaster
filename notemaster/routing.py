@@ -8,7 +8,7 @@ application = ProtocolTypeRouter({
         AuthMiddlewareStack(
             URLRouter(
                 [
-                    url()
+                    #url()
                 ]
             )
         )
