@@ -340,7 +340,7 @@ def display_all_pages(request):
 @login_required
 def display_tests(request):
 
-    #test_create_xml_from_documents()
-    test_create_graph()
+    test_create_xml_from_documents()
+    #test_create_graph()
     messages.add_message(request, messages.INFO, 'test message')
     return render(request, 'notesfromxml/tests.html')
