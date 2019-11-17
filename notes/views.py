@@ -9,7 +9,7 @@ from .services.object_handling import handle_new_tag, remove_object, delete_obje
 from .services.xml_converter import test_create_xml_from_documents, test_create_xml_from_tags  # Test for xml object conversion
 from .services.graph_generator import test_create_graph
 
-from .tests import turtle_graphics_tests
+#from .tests import turtle_graphics_tests
 
 
 @login_required
