@@ -20,12 +20,20 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'd3em^fux$%_2)zgm^g@fuhz@t7hxs=lvp_%0ckg!%yrs42jh$)'
+# SECRET_KEY = 'd3em^fux$%_2)zgm^g@fuhz@t7hxs=lvp_%0ckg!%yrs42jh$)'
+with open(BASE_DIR + '/notemaster/secrets/secret_key.txt') as f:
+    SECRET_KEY = f.read().strip()
+    f.close()
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+if os.environ['ENVIRONMENT'] == 'test':
+    DEBUG = True
+    ALLOWED_HOSTS = []
+else:
+    DEBUG = False
+    ALLOWED_HOSTS = ['3.18.188.55', 'einsk.is']
 
-ALLOWED_HOSTS = []
+
 
 
 # Application definition

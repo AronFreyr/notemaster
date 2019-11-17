@@ -1,6 +1,7 @@
+gunicorn
 networkx
 plotly
-django
+django==2.1.*
 channels
 Pillow
 lxml
