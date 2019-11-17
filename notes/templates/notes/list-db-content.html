@@ -1,0 +1,83 @@
+{% extends 'notes/base.html' %}
+{% load static %}
+{% load app_filters %}
+
+{% block title %} LIST {% endblock title %}
+{% block nav-style %}mkt-nav{% endblock nav-style %}
+{% block head_css_page %}
+    <link href="{% static 'notes/css/list-db-content.css' %}" rel="stylesheet" media="screen">
+{% endblock head_css_page %}
+
+{% block content %}
+    <div class="container main-container">
+        <div class="row">
+            <!-- Display a list of all of the documents that currently exist-->
+            <div id="div-container-all-docs" class="col-md-4 main-col-container">
+                {% if documents %}
+                    <p>All documents in the database</p>
+                    <ul>
+                        {% for doc in documents %}
+                            <li><a href="{% url 'notes:display_doc' doc.document_name %}">{{ doc.document_name }}</a></li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+            <!-- Display a list of all of the tags that currently exist-->
+            <div id="div-container-all-tags" class="col-md-4 main-col-container">
+                {% if tags %}
+                    <p>All tags in the database</p>
+                    <ul>
+                        {% for tag in tags %}
+                            <li><a href="{% url 'notes:display_tag' tag.tag_name %}">{{ tag.tag_name }}</a></li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+            <!-- Display a list of all of the tagmaps that currently exist-->
+            <div id="div-container-all-tagmaps" class="col-md-4 main-col-container">
+                {% if tagmaps %}
+                    <p>All tagmaps in the database</p>
+                    <ul>
+                        {% for tagmap in tagmaps %}
+                            <li>{{ tagmap }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+        </div>
+        <div class="row">
+            <div id="div-container-all-images" class="col-md-4 main-col-container">
+                {% if images %}
+                    <p>All images in the database</p>
+                    <ul>
+                        {% for image in images %}
+                            <li><a href="{% url 'notes:display_img' image.image_name %}">{{ image.image_name }}</a></li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+
+            <div id="div-container-all-image-tagmaps" class="col-md-4 main-col-container">
+                {% if image_tag_maps %}
+                    <p>All image tagmaps in the database</p>
+                    <ul>
+                        {% for image_tag_map in image_tag_maps %}
+                            <li>{{ image_tag_map }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+
+            <div id="div-container-all-image-documentmaps" class="col-md-4 main-col-container">
+                {% if image_document_maps %}
+                    <p>All image documentmaps in the database</p>
+                    <ul>
+                        {% for image_document_map in image_document_maps %}
+                            <li>{{ image_document_map }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock content %}

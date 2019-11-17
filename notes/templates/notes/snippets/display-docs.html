@@ -1,0 +1,14 @@
+{% for doc in documents %}
+    <div class="document_wrapper">
+        <h3><a href="{% url 'notes:display_doc' doc.document_name %}">{{ doc.document_name }}</a></h3>
+        <p>{{ doc.get_parsed_text| safe }}</p>
+        <div class="tabContainer">
+        <p>Tags:</p>
+            <ul>
+                {% for mapset in doc.tagmap_set.all %}
+                    <li><a href="{% url 'notes:display_tag' mapset.tag.tag_name %}">{{ mapset.tag.tag_name }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+{% endfor %}

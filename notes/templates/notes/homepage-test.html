@@ -1,0 +1,45 @@
+{% extends 'notes/base.html' %}
+{% load static %}
+
+{% block title %} HOMEPAGE TEST {% endblock title %}
+{%  block head_css_page %}
+    <link rel="stylesheet" type="text/css" href="{% static 'notes/css/homepage-test.css' %}" />
+ {% endblock head_css_page %}
+
+{% block content %}
+
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <section>
+                    <h1>Programming</h1>
+                    <div class="latest-docs">
+                        {% if latest_programming_docs %}
+                            <h5>5 latest programming documents</h5>
+                            <ul>
+                                {% for doc in latest_programming_docs %}
+                                    <li><a href="{% url 'notes:display_doc' doc.document_name %}">{{ doc.document_name }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </div>
+                </section>
+            </div>
+            <div class="col">
+                <section>
+                    <h1>History</h1>
+                    <div class="latest-docs">
+                        {% if latest_history_docs %}
+                            <h5>5 latest history documents</h5>
+                            <ul>
+                                {% for doc in latest_history_docs %}
+                                    <li><a href="{% url 'notes:display_doc' doc.document_name %}">{{ doc.document_name }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

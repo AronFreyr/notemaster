@@ -1,0 +1,14 @@
+{% extends 'notes/base.html' %}
+{% load static %}
+{%  block head_css_page %}
+    <link rel="stylesheet" type="text/css" href="{% static 'notes/css/display-all-pages.css' %}" />
+ {% endblock head_css_page %}
+
+{% block content %}
+    <ul>
+        <li><a href="{% url 'notes:display_doc' 'Bootstrap'%}">Displays a specific document</a></li>
+        <li><a href="{% url 'notes:display_docs'%}">Displays all documents</a></li>
+        <li><a href="{% url 'notes:display_tag' 'Bootstrap'%}">Displays a specific tag</a></li>
+        <li><a href="{% url 'notes:display_tags'%}">Displays all tags</a></li>
+    </ul>
+{% endblock content %}

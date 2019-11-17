@@ -1,8 +1,0 @@
-<form action="{% url 'notesfromxml:remove' tag.tag_name %}" method="post">
-    {% csrf_token %}
-        <div>
-            <input type="hidden" name="object_type" value="tag">
-            <input type="hidden" name="action_type" value="delete">
-            <button type="submit" class="btn btn-danger" value="Delete Tag">Delete Tag</button>
-        </div>
-</form>

@@ -1,0 +1,18 @@
+{% extends 'notes/base.html' %}
+{% load static %}
+
+{% block title %} ANGULAR PORTAL {% endblock title %}
+{% block head_css_page %}
+    <link href="{% static 'notes/css/angular-portal.css' %}" rel="stylesheet" media="screen">
+{% endblock head_css_page %}
+
+{% block content %}
+    <div class="row">
+        {% for doc in angular_docs %}
+            <div class="document_wrapper col-md-4">
+                <h3><a href="{% url 'notes:display_doc' doc.document_name %}">{{ doc.document_name }}</a></h3>
+                <p>{{ doc.get_parsed_text| safe| truncatewords_html:50}}</p>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock content %}

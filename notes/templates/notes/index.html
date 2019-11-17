@@ -1,0 +1,34 @@
+{% extends 'notes/base.html' %}
+{% load static %}
+{% load app_filters %}
+
+{% block title %} HOME {% endblock title %}
+{% block nav-style %}mkt-nav{% endblock nav-style %}
+{% block head_css_page %}
+    <link href="{% static 'notes/css/index.css' %}" rel="stylesheet" media="screen">
+{% endblock head_css_page %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div id="div-container-all-tags" class="col-md-4 index-col-container">
+                {% if programming_portal_tags %}
+                    <ul>
+                        {% for tag in programming_portal_tags %}
+                            <li><a href="{% url 'notes:display_portal' tag.tag_name %}">{{ tag.tag_name }}</a></li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+            <div id="div-container-all-tags" class="col-md-4 index-col-container">
+                {% if history_portal_tags %}
+                    <ul>
+                        {% for tag in history_portal_tags %}
+                            <li><a href="{% url 'notes:display_portal' tag.tag_name %}">{{ tag.tag_name }}</a></li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock content %}

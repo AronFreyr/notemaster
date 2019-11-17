@@ -23,7 +23,7 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('notemaster/', include('notesfromxml.urls')),
+    path('notemaster/', include('notes.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
     path('', TemplateView.as_view(template_name='login-screen.html'), name='login_screen')
 ]

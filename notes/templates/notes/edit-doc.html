@@ -1,0 +1,85 @@
+{% extends 'notes/base.html' %}
+{% load static %}
+{% block title %} {{ document.document_name }} {% endblock title %}
+{%  block head_css_page %}
+    <link rel="stylesheet" type="text/css" href="{% static 'notes/css/edit-doc.css' %}" />
+ {% endblock head_css_page %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-sm-2">
+            <!-- Tags that are currently associated with the document -->
+            <div class="sidebar-module">
+                <h3>Current Tags</h3>
+                {% for tag in document.get_all_tags_sorted %}
+                    <div id="id-div-tag-container">
+                        <div class="div-tag-input-container">
+                            <div class="div-tag-name">
+                                <p>
+                                    <a href="{% url 'notes:display_tag' tag.tag_name %}">
+                                        {{ tag.tag_name }}
+                                    </a>
+                                    <span class="badge badge-light"> ({{ tag.get_nr_of_docs_with_tag }})</span>
+                                    {% comment %}({{ tag.get_nr_of_docs_with_tag }}) {% endcomment %}
+                                </p>
+                            </div>
+                            <div class="div-red-x-container">
+                                <!-- TODO: modal for confirmation when you press the button -->
+                                <button class="close" data-toggle="modal" data-target="#removeTagModal">
+                                    <span style="color:red; font-size:20pt;">&times;</span>
+                                </button>
+                                {% include 'notes/snippets/modals/remove-tag-modal.html' %}
+                            </div>
+                        </div>
+                        {% comment %}{% include 'notes/snippets/forms/remove-tag-snippet.html' %} {% endcomment %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="col-sm-8">
+            <div>
+                <h1>{{ document.document_name }}</h1>
+            </div>
+            <div id="div-container-edit-document">
+                <div id="div-container-edit-document-text">
+                    <form action="{% url 'notes:edit_doc' document.document_name %}" method="post" id="id-form-change-document-text">
+                        {% csrf_token %}
+                        <div id="div-container-document-submit">
+                            <input type="hidden" name="currently_viewed_doc" value="{{ document.document_name }}">
+                            <label>
+                                <textarea id="id-textarea-change-document-text" form="id-form-change-document-text" name="name_textarea_edit_document_text" >{{ document.document_text }}</textarea>
+                            </label>
+                            <div id="div-container-edit-document-submit-button">
+                                <label for="input-edit-document-text"></label>
+                                <input type="submit" value="Submit">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- Edit and delete buttons to the right side -->
+        <div class="col-sm-2">
+            <div id="id-container-add-tag">
+                <form action="{% url 'notes:edit_doc' document.document_name %}" method="post">
+                    <!-- This form is for adding a tag to the displayed document -->
+                    {% csrf_token %}
+                    <div>
+                        {{ form.as_p }}
+                        <input type="hidden" name="current_document" value="{{ document.document_name }}">
+                        <input type="submit" />
+                    </div>
+                </form>
+            </div>
+            <div id="id-div-container-delete-document">
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteDocumentModal">
+                    Delete Document
+                </button>
+                {% include 'notes/snippets/modals/delete-document-modal.html' %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

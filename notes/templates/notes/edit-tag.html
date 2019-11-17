@@ -1,0 +1,96 @@
+{% extends 'notes/base.html' %}
+{% load static %}
+{% load app_filters %}
+{% block title %} EDIT TAG {% endblock title %}
+{%  block head_css_page %}
+    <link rel="stylesheet" type="text/css" href="{% static 'notes/css/edit-tag.css' %}" />
+ {% endblock head_css_page %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-sm-2">
+            <div class="sidebar-module">
+                <div class="tag-type-container">
+                    <span><b>Tag Type:</b></span>
+                    <form action="{% url 'notes:edit_tag' tag.tag_name %}" method="post">
+                        {% csrf_token %}
+                        <label>
+                            <select name="tag_choices">
+                                {% for choice in tag.TAG_TYPE_CHOICES %}
+                                    <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+                                {% endfor %}
+                            </select>
+                        </label>
+                        <button type="submit" class="btn btn-secondary" value="Change Tag">Submit</button>
+                    </form>
+                    {% if tag.tag_type == "meta" %}
+                        <form action="{% url 'notes:edit_tag' tag.tag_name %}" method="post">
+                            {% csrf_token %}
+                            <label>
+                                <select name="meta_tag_choices">
+                                    {% for meta_choice in tag.META_TAG_TYPE_CHOICES %}
+                                        <option value="{{ meta_choice.0 }}">{{ meta_choice.1 }}</option>
+                                    {% endfor %}
+                                </select>
+                            </label>
+                            <button type="submit" class="btn btn-secondary" value="Change Meta Tag">Submit</button>
+                        </form>
+                    {% endif %}
+                    <span></span>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-8">
+            <div>
+                <h1>{{ tag.tag_name }}</h1>
+            </div>
+            <div>
+                <h3>All documents connected to the tag: {{ tag.tag_name}}</h3>
+                <div class="view_all_docs_in_tag_wrapper">
+                    {% for mapset in tag.tagmap_set.all|sort_queryset:"document__document_name" %}
+                        <div class="view_single_doc_in_tag_wrapper">
+                            <div class="document-name-container">
+                                <a href="{% url 'notes:display_doc' mapset.document.document_name %}">{{ mapset.document.document_name }}</a>
+                            </div>
+                            <div class="container-remove-document">
+                                <!-- Button trigger modal -->
+                                <button type="button" class="btn btn-danger btn-remove-doc" data-toggle="modal" data-target="#removeDocumentModal">
+                                    Remove Document
+                                </button>
+                                {% include 'notes/snippets/modals/remove-document-modal.html' %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div>
+                <!-- If there are any images connected to the tag -->
+                {% if tag.imagetagmap_set.all %}
+                    <h3>All images connected to the tag: {{ tag.tag_name}}</h3>
+                    <div class="view-all-images-in-tag-wrapper">
+                        {% for mapset in tag.imagetagmap_set.all %}
+                            <div class="view-single-image-in-tag-wrapper">
+                                <a href="{% url 'notes:display_img' mapset.image.image_name %}">{{ mapset.image.image_name }}</a>
+                                {% comment %}
+                                <div class="container-remove-image">
+                                    {% include 'notes/snippets/forms/remove-document-snippet.html' %}
+                                </div>
+                                {% endcomment %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        <!-- Delete button to the right side -->
+        <div class="col-sm-2">
+            <!-- Button trigger modal -->
+                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteTagModal">
+                    Delete Tag
+                </button>
+                {% include 'notes/snippets/modals/delete-tag-modal.html' %}
+        </div>
+    </div>
+</div>
+{% endblock content %}

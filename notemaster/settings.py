@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'channels',
-    'notesfromxml',
+    'notes',
 ]
 
 MIDDLEWARE = [
@@ -140,5 +140,5 @@ STATIC_URL = '/static/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
-LOGIN_REDIRECT_URL = '/notesfromxml/'
+LOGIN_REDIRECT_URL = '/notes/'
 LOGOUT_REDIRECT_URL = 'login_screen'
