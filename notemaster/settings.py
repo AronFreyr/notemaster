@@ -37,9 +37,6 @@ if 'ENVIRONMENT' in os.environ:
         DEBUG = False
         ALLOWED_HOSTS = ['3.18.188.55', 'einsk.is']
 
-
-
-
 # Application definition
 
 INSTALLED_APPS = [
