@@ -27,7 +27,7 @@ def handle_new_tag(new_tags, new_doc=None, new_image=None):
             # If the tagmap for the newly created document and the tag does not exist.
             if not Tagmap.objects.filter(tag=current_tag, document=new_doc).exists():
                 new_tagmap = Tagmap(document=new_doc, tag=current_tag)
-                new_tagmap.save()
+                new_tagmap.save(using='default')
         if new_image:
             if not ImageTagMap.objects.filter(tag=current_tag, image=new_image).exists():
                 new_image_tagmap = ImageTagMap(image=new_image, tag=current_tag)

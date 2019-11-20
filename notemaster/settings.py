@@ -26,12 +26,16 @@ with open(BASE_DIR + '/notemaster/secrets/secret_key.txt') as f:
     f.close()
 
 # SECURITY WARNING: don't run with debug turned on in production!
-if os.environ['ENVIRONMENT'] == 'test':
-    DEBUG = True
-    ALLOWED_HOSTS = []
-else:
-    DEBUG = False
-    ALLOWED_HOSTS = ['3.18.188.55', 'einsk.is']
+DEBUG = True
+ALLOWED_HOSTS = []
+
+if 'ENVIRONMENT' in os.environ:
+    if os.environ['ENVIRONMENT'] == 'test':
+        DEBUG = True
+        ALLOWED_HOSTS = []
+    else:
+        DEBUG = False
+        ALLOWED_HOSTS = ['3.18.188.55', 'einsk.is']
 
 
 
@@ -148,5 +152,5 @@ STATIC_URL = '/static/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
-LOGIN_REDIRECT_URL = '/notes/'
+LOGIN_REDIRECT_URL = '/notemaster/'
 LOGOUT_REDIRECT_URL = 'login_screen'

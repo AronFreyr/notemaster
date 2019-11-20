@@ -43,14 +43,12 @@ def display_portal(request, tag_name):
     document_list = list(portal_docs)
     for document in document_list:
         for tag_in_doc in document.get_all_tags():
-            # If we find a list meta tag, go through all of the documents and remove them from our
-            # document list.
+            # If we find a list meta tag, go through all of the documents and remove them from our document list.
             if tag_in_doc.meta_tag_type == 'list' and tag_name != tag_in_doc.tag_name:
                 for doc_with_list_tag in tag_in_doc.get_all_docs():
                     if doc_with_list_tag.document_name != tag_in_doc.tag_name and doc_with_list_tag in document_list:
                         document_list.remove(doc_with_list_tag)
-    return render(request, 'notes/display-portal.html',
-                  {'documents': document_list})
+    return render(request, 'notes/display-portal.html', {'documents': document_list})
 
 
 # A test function to create a test homepage.
@@ -79,7 +77,7 @@ def display_spring_portal(request):
                 document_list.remove(document)
                 break
     return render(request, 'notes/spring-portal.html', {'documents': document_list,
-                                                               'spring_projects': spring_project_docs})
+                                                        'spring_projects': spring_project_docs})
 
 
 # A test function for seeing how individual portals could work.
