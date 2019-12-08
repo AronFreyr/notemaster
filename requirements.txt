@@ -6,3 +6,4 @@ channels
 Pillow
 lxml
 numpy
+psycopg2

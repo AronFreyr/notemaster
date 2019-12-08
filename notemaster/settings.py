@@ -46,7 +46,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'channels',
     'notes',
 ]
 
@@ -86,7 +85,7 @@ ASGI_APPLICATION = 'notemaster.routing.application'
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
 
-DATABASES = {
+"""DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
@@ -94,6 +93,17 @@ DATABASES = {
     'test': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'test.sqlite3'),
+    }
+}"""
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'postgres_notes',
+        'USER': 'aronws01',
+        'PASSWORD': 'CDCBA759EE',
+        'HOST': 'postgres-01.coq0dteq0xmn.us-east-2.rds.amazonaws.com',
+        'PORT': '5432',
     }
 }
 
