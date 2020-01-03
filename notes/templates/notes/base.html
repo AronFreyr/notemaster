@@ -75,12 +75,7 @@
                                 <input type="checkbox" name="advancedsearch[]" value="tags" title="searchtags" style="flex: 1; margin-top: 7px;">
                             </div>
 
-                            <a class="dropdown-item" href="#contains">Contains</a>
-                            <a class="dropdown-item" href="#its_equal">It's equal</a>
-                            <a class="dropdown-item" href="#greather_than">Greather than ></a>
-                            <a class="dropdown-item" href="#less_than">Less than < </a>
-                            <a class="dropdown-item divider" href="#"></a>
-                            <a class="dropdown-item" href="#all">Anything</a>
+                            <a class="dropdown-item" href={% url 'notes:advanced_search' %}>Advanced Search</a>
                         </div>
                     </div>
 
