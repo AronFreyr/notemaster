@@ -1,6 +1,7 @@
 from django.shortcuts import get_object_or_404, render, redirect, reverse
 from django.db.models import Q
 from django.contrib import messages
+from django.views.decorators.http import require_safe
 from django.contrib.auth.decorators import login_required
 
 from .models import Document, Tag, Tagmap, Image, ImageDocumentMap, ImageTagMap
@@ -12,6 +13,7 @@ from .services.graph_generator import test_create_graph
 #from .tests import turtle_graphics_tests
 
 
+@require_safe  # Only allows the GET and HEAD HTTP methods through.
 @login_required
 def index(request):
     programming_portal_tags = Tag.objects.filter(

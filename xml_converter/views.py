@@ -1,17 +1,13 @@
-from django.http import JsonResponse, HttpResponse
-from django.shortcuts import get_object_or_404, render, redirect, reverse
-from django.db.models import Q
-from django.contrib import messages
-from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
 
 from lxml import etree as LET
 from lxml import objectify
 from notes.models import Document, Tag, Tagmap, Image, ImageDocumentMap, ImageTagMap
 
-#from .tests import turtle_graphics_tests
 
 def index(request):
     pass
+
 
 def documents(request):
     return HttpResponse(test_create_xml_from_documents(), content_type='text/xml')
