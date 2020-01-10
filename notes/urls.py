@@ -18,6 +18,7 @@ urlpatterns = [
     path('document/<str:doc>/editdoc/', views.edit_doc, name='edit_doc'),
     path('image/<str:image>/editimg/', views.edit_image, name='edit_image'),
     path('remove/<str:obj_name>/', views.delete_or_remove, name='remove'),
+    path('advancedsearch/', views.advanced_search, name='advanced_search'),
     path('showviews/', views.display_all_pages, name='show_views'),  # development stuff
     path('tests/', views.display_tests, name='display_tests'),  # development stuff
     path('homepagetest/', views.display_homepage_test, name='homepage_test'),  # development stuff

@@ -329,6 +329,24 @@ def display_search_results(request):
     return render(request, 'notes/search-results.html', {'search_results': items_to_display})
 
 
+@login_required
+def advanced_search(request):
+    """
+    Returns the interface for making an advanced search. Does not return the result of the search itself.
+    :param request: The request object.
+    :return: The advanced-search view.
+    """
+    if request.method == 'GET':
+        return render(request, 'notes/advanced-search.html', {})
+    elif request.method == 'POST':
+        # TODO Return search results.
+        print('and:', request.POST['and-search'])
+        print('not:', request.POST['not-search'])
+        print('or:', request.POST['or-search'])
+    # TODO: return proper things.
+    return render(request, 'notes/search-results.html', {})
+
+
 # A view that displays links to all of the pages/templates that have been created in this project, this is
 # for development purposes only.
 @login_required
@@ -339,7 +357,6 @@ def display_all_pages(request):
 # A test view that displays the stuff behind the "Test" button in the navigation bar.
 @login_required
 def display_tests(request):
-
     #test_create_xml_from_documents()
     test_create_xml_from_tags()
     #test_create_graph()
