@@ -7,28 +7,44 @@
 {% endblock head_css_page %}
 
 {% block content %}
-  <div class="container">
-  <form class="form" action="{% url 'notes:advanced_search' %}" method="post">
-      {% csrf_token %}
-    <div class="row">
-        <div class="col-sm-2">
-            <h3>AND</h3>
-            <input name="and-search" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+<div class="container">
+    <form class="form" action="{% url 'notes:advanced_search' %}" method="get">
+        {% csrf_token %}
+        <div class="row">
+            <h3>Documents</h3>
+            <div class="col-sm-2">
+                <h3>AND</h3>
+                <input name="doc-and-search" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            </div>
+            <div class="col-sm-2">
+                <h3>NOT</h3>
+                <input name="doc-not-search" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            </div>
+            <div class="col-sm-2">
+                <h3>OR</h3>
+                <input name="doc-or-search" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            </div>
         </div>
-        <div class="col-sm-2">
-            <h3>NOT</h3>
-            <input name="not-search" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <div class="row">
+            <h3>Tags</h3>
+            <div class="col-sm-2">
+                <h3>AND</h3>
+                <input name="tag-and-search" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            </div>
+            <div class="col-sm-2">
+                <h3>NOT</h3>
+                <input name="tag-not-search" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            </div>
+            <div class="col-sm-2">
+                <h3>OR</h3>
+                <input name="tag-or-search" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            </div>
         </div>
-        <div class="col-sm-2">
-            <h3>OR</h3>
-            <input name="or-search" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <div class="row">
+            <div class="col-sm-2">
+                <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">Test submit</button>
+            </div>
         </div>
-    </div>
-    <div class="row">
-      <div class="col-sm-2">
-          <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">Test submit</button>
-      </div>
-    </div>
-  </form>
-  </div>
+    </form>
+</div>
 {% endblock content %}

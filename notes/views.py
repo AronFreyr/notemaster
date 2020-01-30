@@ -336,15 +336,26 @@ def advanced_search(request):
     :param request: The request object.
     :return: The advanced-search view.
     """
+    items_to_display = {'documents': [], 'tags': []}
     if request.method == 'GET':
-        return render(request, 'notes/advanced-search.html', {})
-    elif request.method == 'POST':
-        # TODO Return search results.
-        print('and:', request.POST['and-search'])
-        print('not:', request.POST['not-search'])
-        print('or:', request.POST['or-search'])
-    # TODO: return proper things.
-    return render(request, 'notes/search-results.html', {})
+        if 'doc-and-search' not in request.GET:
+            return render(request, 'notes/advanced-search.html', {})
+        else:
+            print('and:', request.GET['doc-and-search'])
+            doc = request.GET['doc-and-search']
+            if Document.objects.filter(document_name__contains=doc).exists():
+                document_object = Document.objects.filter(document_name__contains=doc)
+                items_to_display['documents'].extend(document_object)
+
+            print('not:', request.GET['doc-not-search'])
+            print('or:', request.GET['doc-or-search'])
+
+            tag = request.GET['tag-and-search']
+            if Tag.objects.filter(tag_name__contains=tag).exists():
+                tag_object = Tag.objects.filter(tag_name__contains=tag)
+                items_to_display['tags'].extend(tag_object)
+            # TODO: return proper things.
+            return render(request, 'notes/search-results.html', {'search_results': items_to_display})
 
 
 # A view that displays links to all of the pages/templates that have been created in this project, this is
