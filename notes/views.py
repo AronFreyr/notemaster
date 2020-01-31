@@ -23,6 +23,7 @@ def index(request):
       | Q(tag_name='Python')
       | Q(tag_name='Amazon Web Services')
       | Q(tag_name='Spring')
+      | Q(tag_name='Java')
       | Q(tag_name='Spring Annotations')).order_by('tag_name')
     history_portal_tags = Tag.objects.filter(
         Q(tag_name='History')
