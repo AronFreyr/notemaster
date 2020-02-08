@@ -344,14 +344,19 @@ def advanced_search(request):
         else:
             print('and:', request.GET['doc-and-search'])
             doc = request.GET['doc-and-search']
+            not_doc = request.GET['doc-not-search']
             if Document.objects.filter(document_name__contains=doc).exists():
-                document_object = Document.objects.filter(document_name__contains=doc)
+                document_object = Document.objects.filter(document_name__contains=doc).exclude(document_name__exact=not_doc)
                 items_to_display['documents'].extend(document_object)
 
             print('not:', request.GET['doc-not-search'])
+
             print('or:', request.GET['doc-or-search'])
 
             tag = request.GET['tag-and-search']
+            not_tag = request.GET['tag-not-search']
+            or_tag = request.GET['tag-or-search']
+            
             if Tag.objects.filter(tag_name__contains=tag).exists():
                 tag_object = Tag.objects.filter(tag_name__contains=tag)
                 items_to_display['tags'].extend(tag_object)
