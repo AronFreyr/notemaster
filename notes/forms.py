@@ -7,7 +7,7 @@ class AddTagForm(forms.ModelForm):
     current_document = forms.CharField(widget=forms.HiddenInput(),
                                        required=False)  # The document that the tag gets added to.
     current_image = forms.CharField(widget=forms.HiddenInput(),
-                                    required=False)  # The document that the tag gets added to.
+                                    required=False)  # The Image that the tag gets added to.
 
     def cleaned_tag(self):
         return self.cleaned_data['tag_name']

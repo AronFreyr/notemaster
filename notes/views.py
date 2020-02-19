@@ -7,7 +7,6 @@ from django.contrib.auth.decorators import login_required
 from .models import Document, Tag, Tagmap, Image, ImageDocumentMap, ImageTagMap
 from .forms import AddTagForm, CreateDocumentForm, CreateImageForm
 from .services.object_handling import handle_new_tag, remove_object, delete_object
-from .services.xml_converter import test_create_xml_from_documents, test_create_xml_from_tags  # Test for xml object conversion
 from .services.graph_generator import test_create_graph
 
 #from .tests import turtle_graphics_tests
@@ -94,8 +93,7 @@ def display_programming_portal(request):
 # A test function for seeing how individual portals could work.
 @login_required
 def display_angular_portal(request):
-    angular_docs = Document.objects.filter(tagmap__tag__tag_name='Angular').order_by(
-        'document_name')
+    angular_docs = Document.objects.filter(tagmap__tag__tag_name='Angular').order_by('document_name')
     document_list = list(angular_docs)
     for document in angular_docs:
         for tagmaps in document.tagmap_set.all():
@@ -141,13 +139,19 @@ def create_doc(request):
             doc_name = form.cleaned_data.get('document_name')
             doc_text = form.cleaned_data.get('document_text')
             new_tag = form.cleaned_data.get('new_tag')
-            
-            # TODO: Throw error if the document already exists.
+
             if not Document.objects.filter(document_name=doc_name).exists():
                 new_doc = Document(document_name=doc_name, document_text=doc_text)
                 new_doc.save()
                 handle_new_tag(new_tag, new_doc)
                 return render(request, 'notes/display-doc.html', {'document': new_doc})
+            else:  # There can not be multiple documents with the same name.
+                invalid_form = CreateDocumentForm(initial={'document_name': doc_name,
+                                                           'document_text': doc_text,
+                                                           'new_tag': new_tag})
+                duplicate_name_error = 'This name is already taken. Choose another one.'
+                return render(request, 'notes/create-document.html', {'create_document_form': invalid_form,
+                                                                      'duplicate_name_error': duplicate_name_error})
 
     return redirect(reverse('notes:index'))
 
@@ -356,7 +360,7 @@ def advanced_search(request):
             tag = request.GET['tag-and-search']
             not_tag = request.GET['tag-not-search']
             or_tag = request.GET['tag-or-search']
-            
+
             if Tag.objects.filter(tag_name__contains=tag).exists():
                 tag_object = Tag.objects.filter(tag_name__contains=tag)
                 items_to_display['tags'].extend(tag_object)
@@ -375,7 +379,6 @@ def display_all_pages(request):
 @login_required
 def display_tests(request):
     #test_create_xml_from_documents()
-    test_create_xml_from_tags()
     #test_create_graph()
     messages.add_message(request, messages.INFO, 'test message')
     return render(request, 'notes/tests.html')

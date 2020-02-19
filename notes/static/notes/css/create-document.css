@@ -21,6 +21,12 @@ label{
     font-weight: bold;
 }
 
+.duplicate-name-error-container{
+    font-size: 10pt;
+    float: left;
+    color: red;
+}
+
 .form-row{
     border-bottom: 1px solid #eee;
     padding: 10px;

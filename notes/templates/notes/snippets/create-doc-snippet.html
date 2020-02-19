@@ -14,7 +14,13 @@
                     <div class="create-doc-name-container">
                         <label>{{ create_document_form.document_name.label }}</label>
                         {{ create_document_form.document_name|add_class:'form-doc-name' }}
+                        <div class="duplicate-name-error-container">
+                        {% if duplicate_name_error %}
+                            {{ duplicate_name_error }}
+                        {% endif %}
+                        </div>
                     </div>
+
                 </div>
                 <div class="form-row">
                     <div class="create-doc-text-container">
