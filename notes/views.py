@@ -174,6 +174,11 @@ def create_image(request):
                                   image_picture=image_picture)
                 new_image.save()
                 handle_new_tag(new_tag, new_image=new_image)
+            else:
+                # TODO: Add functionality in the template to display the duplicate name error text.
+                duplicate_name_error = 'This name is already taken. Choose another one.'
+                return render(request, 'notes/create-image.html', {'create_image_form': form,
+                                                                   'duplicate_name_error': duplicate_name_error})
 
     return redirect(reverse('notes:index'))
 
