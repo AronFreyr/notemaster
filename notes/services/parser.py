@@ -162,6 +162,7 @@ class TextParser:
         return any(True for _ in matches)
 
 
+@DeprecationWarning
 def parser_main(parsed_text):
     parsed_text = escape_parser(parsed_text)
     parsed_text = hyperlink_parser(parsed_text)
@@ -172,6 +173,7 @@ def parser_main(parsed_text):
     return parsed_text
 
 
+@DeprecationWarning
 def hyperlink_parser(parsed_text):
     pattern = r'\[\[\[(.*?)\]\]\]'
 
@@ -203,6 +205,7 @@ def hyperlink_parser(parsed_text):
     return parsed_text
 
 
+@DeprecationWarning
 def java_code_parser(parsed_text):
     pattern = re.compile(r'\[java\[\[(.*?)\]\]\]', re.DOTALL)
     matches = re.finditer(pattern, parsed_text)
@@ -217,6 +220,7 @@ def java_code_parser(parsed_text):
     return parsed_text
 
 
+@DeprecationWarning
 def image_insert_parser(parsed_text):
     pattern = re.compile(r'\[image\[\[(.*?)\]\]\]', re.DOTALL)
     matches = re.finditer(pattern, parsed_text)
@@ -248,6 +252,7 @@ def image_insert_parser(parsed_text):
     return parsed_text
 
 
+@DeprecationWarning
 def links_to_table_parser(parsed_text):
     pattern = re.compile(r'\[links\[\[(.*?)\]\]\]', re.DOTALL)
     #pattern = re.compile(r'\[(.*?)\[\[(.*?)\]\]\]', re.DOTALL)
@@ -270,6 +275,7 @@ def links_to_table_parser(parsed_text):
     return parsed_text
 
 
+@DeprecationWarning
 def tagged_docs_to_list_parser(parsed_text):
     pattern = re.compile(r'\[list\[\[(.*?)\]\]\]', re.DOTALL)
     matches = re.finditer(pattern, parsed_text)
@@ -304,6 +310,7 @@ def tagged_docs_to_list_parser(parsed_text):
     return parsed_text
 
 
+@DeprecationWarning
 def escape_parser(parsed_text):
     """
     Takes in some text and finds the pattern [esc[[]]] in it and replaces all '<' with '&lt;' and all '>'< with '&gt;'.
