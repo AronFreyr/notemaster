@@ -64,10 +64,10 @@ class TextParser:
             document_name = text_without_brackets
             document_parameters = text_without_brackets
         if Document.objects.filter(document_name=document_name).exists():
-            output_with_link = '<a href="/notes/document/' + document_name \
+            output_with_link = '<a href="/notemaster/document/' + document_name \
                                + '">' + document_parameters + '</a>'
         else:
-            output_with_link = '<a href="/notes/document/' + document_name \
+            output_with_link = '<a href="/notemaster/document/' + document_name \
                                + '" class="broken-link">' + document_parameters + '</a>'
         output_text = output_text.replace(text_with_brackets, output_with_link)
         return output_text
@@ -140,10 +140,10 @@ class TextParser:
                 if excluded_tags != '':
                     for tag in excluded_tags:
                         if tag != name:
-                            output_with_html += '<li><a href="/notes/document/' + name \
+                            output_with_html += '<li><a href="/notemaster/document/' + name \
                                                 + '">' + name + '</a></li>'
                 else:
-                    output_with_html += '<li><a href="/notes/document/' + name \
+                    output_with_html += '<li><a href="/notemaster/document/' + name \
                                         + '">' + name + '</a></li>'
         output_with_html += '</ul></div>'
         output_text = output_text.replace(text_with_brackets, output_with_html)
