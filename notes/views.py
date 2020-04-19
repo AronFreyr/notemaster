@@ -8,6 +8,7 @@ from django.views.decorators.cache import cache_page
 from .models import Document, Tag, Tagmap, Image, ImageDocumentMap, ImageTagMap
 from .forms import AddTagForm, CreateDocumentForm, CreateImageForm
 from .services.object_handling import handle_new_tag, remove_object, delete_object
+from notemaster.settings import CACHE_TIME
 from .services.graph_generator import test_create_graph
 
 #from .tests import turtle_graphics_tests
@@ -15,7 +16,7 @@ from .services.graph_generator import test_create_graph
 
 @require_safe  # Only allows the GET and HEAD HTTP methods through.
 @login_required
-#@cache_page(200)
+@cache_page(CACHE_TIME)
 def index(request):
     programming_portal_tags = Tag.objects.filter(
       Q(tag_name='Programming')
@@ -108,7 +109,7 @@ def display_angular_portal(request):
 
 
 @login_required
-#@cache_page(200)
+@cache_page(CACHE_TIME)
 def list_db_content(request):
     # TODO: Update the documentation.
     """

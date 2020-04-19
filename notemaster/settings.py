@@ -28,14 +28,17 @@ with open(BASE_DIR + '/notemaster/secrets/secret_key.txt') as f:
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 ALLOWED_HOSTS = []
+CACHE_TIME = 0
 
 if 'ENVIRONMENT' in os.environ:
     if os.environ['ENVIRONMENT'] == 'test':
         DEBUG = True
         ALLOWED_HOSTS = []
+        CACHE_TIME = 1  # Make the cache expire immediately if we are testing.
     else:
         DEBUG = False
         ALLOWED_HOSTS = ['3.18.188.55', 'einsk.is']
+        CACHE_TIME = 60 * 30  # Half an hour of cache lifetime.
 
 # Application definition
 
@@ -175,3 +178,5 @@ CACHES = {
         'LOCATION': r'H:\temp\notemaster_cache',
     }
 }
+
+# Todo: add production cache location.
