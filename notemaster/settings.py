@@ -15,6 +15,12 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+log_location = 'logs/'
+# importing logger settings
+try:
+    from .logger_settings import LoggerSettings
+except Exception as e:
+    pass
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
@@ -35,13 +41,20 @@ if 'ENVIRONMENT' in os.environ:
         DEBUG = True
         ALLOWED_HOSTS = []
         CACHE_TIME = 1  # Make the cache expire immediately if we are testing.
+        log_location = 'logs/'  # locating the dev logs in the project, because it might not be run on a linux machine.
+        # If the debug log folder does not exists, create it.
+        if not os.path.exists(os.path.join(BASE_DIR, 'logs/')):
+            os.makedirs(os.path.join(BASE_DIR, 'logs/'))
     else:
         DEBUG = False
         ALLOWED_HOSTS = ['3.18.188.55', 'einsk.is']
         CACHE_TIME = 60 * 30  # Half an hour of cache lifetime.
+        log_location = '/var/log/notemaster/'  # locating the prod logs in the proper log place.
+
+logger_settings = LoggerSettings(log_location)
+LOGGING = logger_settings.get_logger_settings()
 
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -175,8 +188,15 @@ LOGOUT_REDIRECT_URL = 'login_screen'
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
-        'LOCATION': r'H:\temp\notemaster_cache',
+        #'LOCATION': r'H:\temp\notemaster_cache',
+        'LOCATION': r'C:\Temp\notemaster_cache',
     }
 }
+
+# This fixes a problem with the being run twice in Django when it is in debug mode.
+# The solution was found here:
+# https://stackoverflow.com/questions/26682413/django-rotating-file-handler-stuck-when-file-is-equal-to-maxbytes
+if DEBUG and os.environ.get('RUN_MAIN', None) != 'true':
+    LOGGING = {}
 
 # Todo: add production cache location.
