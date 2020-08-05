@@ -35,6 +35,7 @@ with open(BASE_DIR + '/notemaster/secrets/secret_key.txt') as f:
 DEBUG = True
 ALLOWED_HOSTS = []
 CACHE_TIME = 0
+cache_location = ''
 
 if 'ENVIRONMENT' in os.environ:
     if os.environ['ENVIRONMENT'] == 'test':
@@ -45,11 +46,14 @@ if 'ENVIRONMENT' in os.environ:
         # If the debug log folder does not exists, create it.
         if not os.path.exists(os.path.join(BASE_DIR, 'logs/')):
             os.makedirs(os.path.join(BASE_DIR, 'logs/'))
+
+        cache_location = r'C:\temp\notemaster_cache'
     else:
         DEBUG = False
         ALLOWED_HOSTS = ['3.18.188.55', 'einsk.is']
         CACHE_TIME = 60 * 30  # Half an hour of cache lifetime.
         log_location = '/var/log/notemaster/'  # locating the prod logs in the proper log place.
+        cache_location = 'tmp/notemaster_cache'
 
 logger_settings = LoggerSettings(log_location)
 LOGGING = logger_settings.get_logger_settings()
@@ -189,7 +193,8 @@ CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
         #'LOCATION': r'H:\temp\notemaster_cache',
-        'LOCATION': r'C:\Temp\notemaster_cache',
+        #'LOCATION': r'C:\temp\notemaster_cache',
+        'LOCATION': cache_location
     }
 }
 
