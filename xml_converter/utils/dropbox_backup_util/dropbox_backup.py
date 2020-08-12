@@ -12,6 +12,9 @@ def download_xml():
     xml_path = Path(this_path / 'downloaded_xml/')
     xml_doc_path = Path(xml_path / 'documents.xml')
 
+    if not xml_path.exists():
+        xml_path.mkdir()
+
     #os.system('curl -o documents.xml einsk.is:8080/notemaster/xml/documents/')
 
     os.system('curl -o ' + str(xml_doc_path) + ' einsk.is:8080/notemaster/xml/documents/')
