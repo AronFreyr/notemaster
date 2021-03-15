@@ -53,7 +53,7 @@ if 'ENVIRONMENT' in os.environ:
         ALLOWED_HOSTS = ['3.18.188.55', 'einsk.is']
         CACHE_TIME = 60 * 30  # Half an hour of cache lifetime.
         log_location = '/var/log/notemaster/'  # locating the prod logs in the proper log place.
-        cache_location = 'tmp/notemaster_cache'
+        cache_location = '/tmp/notemaster_cache/'
 
 logger_settings = LoggerSettings(log_location)
 LOGGING = logger_settings.get_logger_settings()
@@ -66,7 +66,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'channels',
     'notes',
     'xml_converter',
 ]
