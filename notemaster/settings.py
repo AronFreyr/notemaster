@@ -129,7 +129,8 @@ if 'ENVIRONMENT' in os.environ:
                 'NAME': 'postgres_notes',
                 'USER': 'aronws01',
                 'PASSWORD': 'CDCBA759EE',
-                'HOST': 'postgres-01.coq0dteq0xmn.us-east-2.rds.amazonaws.com',
+                #'HOST': 'postgres-01.coq0dteq0xmn.us-east-2.rds.amazonaws.com',
+                'HOST': 'notemaster-db.coq0dteq0xmn.us-east-2.rds.amazonaws.com',
                 'PORT': '5432',
             }
         }
