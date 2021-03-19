@@ -11,9 +11,13 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 """
 
 import os
+import configparser
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+CONFIG_DIR = BASE_DIR + '/notemaster/config/'
+config = configparser.ConfigParser(allow_no_value=True)
 
 log_location = 'logs/'
 # importing logger settings
@@ -39,21 +43,37 @@ cache_location = ''
 
 if 'ENVIRONMENT' in os.environ:
     if os.environ['ENVIRONMENT'] == 'test':
+        config.read(CONFIG_DIR + 'dev.ini')
         DEBUG = True
-        ALLOWED_HOSTS = []
-        CACHE_TIME = 1  # Make the cache expire immediately if we are testing.
-        log_location = 'logs/'  # locating the dev logs in the project, because it might not be run on a linux machine.
         # If the debug log folder does not exists, create it.
-        if not os.path.exists(os.path.join(BASE_DIR, 'logs/')):
-            os.makedirs(os.path.join(BASE_DIR, 'logs/'))
-
-        cache_location = r'C:\temp\notemaster_cache'
+        if not os.path.exists(os.path.join(BASE_DIR, config['DEFAULT']['LOG_LOCATION'])):
+            os.makedirs(os.path.join(BASE_DIR, config['DEFAULT']['LOG_LOCATION']))
     else:
+        config.read(CONFIG_DIR + 'prod.ini')
         DEBUG = False
-        ALLOWED_HOSTS = ['3.18.188.55', 'einsk.is']
-        CACHE_TIME = 60 * 30  # Half an hour of cache lifetime.
-        log_location = '/var/log/notemaster/'  # locating the prod logs in the proper log place.
-        cache_location = '/tmp/notemaster_cache/'
+    #     ALLOWED_HOSTS = [config_parser['DEFAULT']['ALLOWED_HOSTS_IP'], config_parser['DEFAULT']['ALLOWED_HOSTS_URL']]
+    #     CACHE_TIME = 1  # Make the cache expire immediately if we are testing.
+    #     log_location = 'logs/'  # locating the dev logs in the project, because it might not be run on a linux machine.
+    #     # If the debug log folder does not exists, create it.
+    #     if not os.path.exists(os.path.join(BASE_DIR, 'logs/')):
+    #         os.makedirs(os.path.join(BASE_DIR, 'logs/'))
+    #
+    #     cache_location = r'C:\temp\notemaster_cache'
+    # else:
+    #     config_parser.read(CONFIG_DIR + 'prod.ini')
+    #     DEBUG = False
+    #    #ALLOWED_HOSTS = ['3.18.188.55', 'einsk.is']
+    #     ALLOWED_HOSTS = [config_parser['DEFAULT']['ALLOWED_HOSTS_IP'], config_parser['DEFAULT']['ALLOWED_HOSTS_URL']]
+    #     CACHE_TIME = 60 * 30  # Half an hour of cache lifetime.
+    #     #log_location = '/var/log/notemaster/'  # locating the prod logs in the proper log place.
+    #     #cache_location = '/tmp/notemaster_cache/'
+    #     log_location = config_parser['DEFAULT']['LOG_LOCATION']
+    #     cache_location = config_parser['DEFAULT']['CACHE_LOCATION']
+
+ALLOWED_HOSTS = [config['DEFAULT']['ALLOWED_HOSTS_IP'], config['DEFAULT']['ALLOWED_HOSTS_URL']]
+CACHE_TIME = int(config['DEFAULT']['CACHE_TIME_MINUTES']) * int(config['DEFAULT']['CACHE_TIME_SECONDS'])
+cache_location = config['DEFAULT']['CACHE_LOCATION']
+log_location = config['DEFAULT']['LOG_LOCATION']
 
 logger_settings = LoggerSettings(log_location)
 LOGGING = logger_settings.get_logger_settings()
@@ -122,15 +142,26 @@ if 'ENVIRONMENT' in os.environ:
     # If the environment is prod, use prod database, else use the default test database.
     if os.environ['ENVIRONMENT'] == 'prod':
 
+        # DATABASES = {
+        #     'default': {
+        #         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        #         'NAME': 'postgres_notes',
+        #         'USER': 'aronws01',
+        #         'PASSWORD': 'CDCBA759EE',
+        #         #'HOST': 'postgres-01.coq0dteq0xmn.us-east-2.rds.amazonaws.com',
+        #         'HOST': 'notemaster-db.coq0dteq0xmn.us-east-2.rds.amazonaws.com',
+        #         'PORT': '5432',
+        #     }
+        # }
         DATABASES = {
             'default': {
-                'ENGINE': 'django.db.backends.postgresql_psycopg2',
-                'NAME': 'postgres_notes',
-                'USER': 'aronws01',
-                'PASSWORD': 'CDCBA759EE',
-                #'HOST': 'postgres-01.coq0dteq0xmn.us-east-2.rds.amazonaws.com',
-                'HOST': 'notemaster-db.coq0dteq0xmn.us-east-2.rds.amazonaws.com',
-                'PORT': '5432',
+                'ENGINE': config['DATABASE']['DB_ENGINE'],
+                'NAME': config['DATABASE']['DB_NAME'],
+                'USER': config['DATABASE']['DB_USERNAME'],
+                'PASSWORD': config['DATABASE']['DB_PASSWORD'],
+                # 'HOST': 'postgres-01.coq0dteq0xmn.us-east-2.rds.amazonaws.com',
+                'HOST': config['DATABASE']['DB_HOST'],
+                'PORT': config['DATABASE']['DB_PORT'],
             }
         }
 
