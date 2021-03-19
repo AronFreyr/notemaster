@@ -8,8 +8,9 @@ class DropboxSync:
     uploader_path = ''
     xml_doc_path = ''
     xml_tag_path = ''
+    extension = ''
 
-    def __init__(self):
+    def __init__(self, extension='.xml'):
         this_path = Path(os.path.dirname(os.path.realpath(__file__)))
         xml_path = Path(this_path / 'downloaded_xml/')
         if not xml_path.exists():
@@ -17,6 +18,7 @@ class DropboxSync:
         self.uploader_path = Path(this_path / 'Dropbox-Uploader' / 'dropbox_uploader.sh')
         self.xml_doc_path = Path(xml_path / 'documents.xml')
         self.xml_tag_path = Path(xml_path / 'tags.xml')
+        self.extension = extension  # Mostly used for test purposes, to add .test after files that are tests.
 
     def download_xml(self):
         """ Gets the newest version of the xml for documents and tags. """
@@ -38,12 +40,12 @@ class DropboxSync:
 
         # /opt/notemaster/xml_converter/utils/dropbox_backup_util/dropbox_uploader.sh upload /opt/notemaster/xml_converter/utils/dropbox_backup_util/downloaded_xml/documents.xml notemaster_backups/documents_' + current_date + '.xml
         doc_upload_string = str(self.uploader_path) + ' upload ' + str(
-            self.xml_doc_path.as_posix()) + ' notemaster_backups/documents_' + current_date + '.xml.test'
+            self.xml_doc_path.as_posix()) + ' notemaster_backups/documents_' + current_date + self.extension
         os.system(doc_upload_string)
 
         # /opt/notemaster/xml_converter/utils/dropbox_backup_util/dropbox_uploader.sh upload /opt/notemaster/xml_converter/utils/dropbox_backup_util/downloaded_xml/tags.xml notemaster_backups/tags_' + current_date + '.xml
         tag_upload_string = str(self.uploader_path) + ' upload ' + str(
-            self.xml_tag_path.as_posix()) + ' notemaster_backups/tags_' + current_date + '.xml.test'
+            self.xml_tag_path.as_posix()) + ' notemaster_backups/tags_' + current_date + self.extension
         os.system(tag_upload_string)
 
     def perform_upload(self):
@@ -82,4 +84,5 @@ class DropboxSync:
 
 if __name__ == '__main__':
     syncer = DropboxSync()
+    #syncer.download_xml()
     syncer.download_xml()
