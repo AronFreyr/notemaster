@@ -80,7 +80,7 @@ def test_create_xml_from_tags():
         xml_text += '</tag>\n'
     xml_text += '</tags>'
 
-    print(xml_text)
+ #   print(xml_text)
 
     xml_element = LET.ElementTree(objectify.fromstring(xml_text))
 

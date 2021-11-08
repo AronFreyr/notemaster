@@ -33,7 +33,6 @@ except Exception as e:
 # SECRET_KEY = 'd3em^fux$%_2)zgm^g@fuhz@t7hxs=lvp_%0ckg!%yrs42jh$)'
 with open(BASE_DIR + '/notemaster/secrets/secret_key.txt') as f:
     SECRET_KEY = f.read().strip()
-    f.close()
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True

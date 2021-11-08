@@ -52,7 +52,6 @@ class DropboxSync:
         self.download_xml()
         self.upload_xml_to_dropbox()
 
-
     @DeprecationWarning
     def download_xml_old(self):
         """ Gets the newest version of the xml for documents and tags and uploads it to my dropbox folder. """
@@ -85,4 +84,5 @@ class DropboxSync:
 if __name__ == '__main__':
     syncer = DropboxSync()
     #syncer.download_xml()
-    syncer.download_xml()
+    #syncer.download_xml()
+    syncer.perform_upload()
