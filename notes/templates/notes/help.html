@@ -2,7 +2,45 @@
 {% load static %}
 
 {% block content %}
+<div class="container">
+        <div class="row">
+            <div class="col">
+                <h1>Help will be here</h1>
 
-    <h1>Help will be here</h1>
+                <h2>Shortcut list</h2>
+                <p>There are many shortcuts available when editing documents. The current list of shortcuts is this:</p>
+
+                <h5>Hyperlinks to other documents</h5>
+                <p>A link to a document is created with the basic [[[]]] where the link is in the middle: example [[[my link]]].
+                This will only work if there exists a document with the name "my link", if not, "my link" will appear red in the text.
+                    If one wants the text to the link to be something else than the name of the document it is possible to create that like this:
+                    [[[name of my document | displayed text]]]
+                </p>
+
+                <h5>Links in the text</h5>
+                <p>To create a list of links in the text (at the bottom of the document) on can do
+                    [links[[ description of the link 1 | actual link 1 ; description of link 2 | actual link 2 ]]]</p>
+                <p>"|" is used to separate the name of the link and the actual link, ";"  is used to separate the links.
+                There can be as many links as you like. They will appear as a list.
+                </p>
+
+                <h5>Escaped text</h5>
+                <p>[esc[[text]]] is to print the text as is. This is mostly used in XML text where the parser gets confused with "<" and ">" </p>
+
+                <h5>Java code block</h5>
+                <p>[java[[text]]] displays the text as a block of Java code.</p>
+
+                <h5>Images</h5>
+                <p>[image[[img_name]]] displays images. One can choose which side it should float on like this:
+                [image[[img_name | side=left]]] where side can be "right" or "left".
+                </p>
+
+                <h5>List documents</h5>
+                <p>To list all documents connected to a tag write [list[[tag_name]]]. You can exclude specific documents with
+                [list[[tag_name | excluded_doc_name_1, excluded_doc_name_2 ]]]
+                </p>
+            </div>
+        </div>
+</div>
 
 {% endblock content %}
