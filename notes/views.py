@@ -328,15 +328,15 @@ def display_search_results(request):
             search_options = dict(request.GET)['advancedsearch[]']
             if 'documents' in search_options:  # If the check for doc search in on. Default=True.
                 for item in item_list:
-                    if Document.objects.filter(document_name__contains=item).exists():
-                        document_object = Document.objects.filter(document_name__contains=item)
+                    if Document.objects.filter(document_name__icontains=item).exists():
+                        document_object = Document.objects.filter(document_name__icontains=item)
                         items_to_display['documents'].extend(document_object)
                 items_to_display['documents'].sort(key=lambda x: x.document_name)  # Sort the doc list.
 
             if 'tags' in search_options:  # If the check for tag search is on. Default=False.
                 for item in item_list:
-                    if Tag.objects.filter(tag_name__contains=item).exists():
-                        tag_object = Tag.objects.filter(tag_name__contains=item)
+                    if Tag.objects.filter(tag_name__icontains=item).exists():
+                        tag_object = Tag.objects.filter(tag_name__icontains=item)
                         items_to_display['tags'].extend(tag_object)
                 items_to_display['tags'].sort(key=lambda x: x.tag_name)  # Sort the tag list.
 
