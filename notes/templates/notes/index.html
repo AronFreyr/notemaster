@@ -29,6 +29,16 @@
                     </ul>
                 {% endif %}
             </div>
+            <div id="div-container-most-recent-docs" class="col-md-4 index-col-container">
+                <h3>Most recent documents</h3>
+                {% if most_recent_documents %}
+                    <ul>
+                        {% for doc in most_recent_documents %}
+                            <li><a href="{% url 'notes:display_doc' doc.document_name %}">{{ doc.document_name }}</a></li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
         </div>
     </div>
 {% endblock content %}

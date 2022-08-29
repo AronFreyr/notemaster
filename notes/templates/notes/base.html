@@ -157,11 +157,25 @@
             <script src="{% static 'notes/mivhak/mivhak.min.js' %}"></script>
             <script>$('.mivhak').mivhak();</script>
 
+            <!-- Scripts for Mathjax, which is a JS plugin for displaying math. -->
+            <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+            <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
             {% comment %}
-            <script src="{% static 'notes/jquery/jquery.min.js' %}"></script>
-            <script src="{% static 'notes/bootstrap/bootstrap.min.css' %}"></script>
+
+            <script type="text/x-mathjax-config">
+            MathJax.Hub.Config({
+              tex2jax: {
+                displayMath: [["$$", "$$"], ["\\[", "\\]"]],
+                processEscapes: true,
+              },
+              config: ["MMLorHTML.js"],
+              jax: ["input/TeX", "output/HTML-CSS", "output/NativeMML"],
+              extensions: ["MathMenu.js", "MathZoom.js"]
+            });
+            </script>
             {% endcomment %}
-            {% comment %}<script src="{% static 'notes/js/app' %}js/app.js"></script> {% endcomment %}
+
         {% endblock footer_javascript_site %}
         {% block footer_javascript_section %}{% endblock footer_javascript_section %}
         {% block footer_javascript_page %}{% endblock footer_javascript_page %}

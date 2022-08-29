@@ -1,3 +1,4 @@
+import markdown
 from django.shortcuts import get_object_or_404, render, redirect, reverse
 from django.db.models import Q
 from django.contrib import messages
@@ -37,9 +38,12 @@ def index(request):
 
     # turtle_graphics_tests.draw_document_map()
 
+    most_recent_docs = Document.objects.all().order_by('-id')[:10]
+
     return render(request, 'notes/index.html',
                   {'programming_portal_tags': programming_portal_tags,
-                   'history_portal_tags': history_portal_tags})
+                   'history_portal_tags': history_portal_tags,
+                   'most_recent_documents': most_recent_docs})
 
 
 @login_required
@@ -390,4 +394,11 @@ def display_tests(request):
     #test_create_xml_from_documents()
     #test_create_graph()
     messages.add_message(request, messages.INFO, 'test message')
-    return render(request, 'notes/tests.html')
+    md = markdown.markdown('$ \sqrt{37}$')
+    #md = markdown.markdown('tesxt in the text._Italics_. **Bold**. $$e^x$$',
+    #                       extensions=['mdx_math'])
+    #md = markdown.Markdown(extensions=['mdx_math'], extension_configs={
+    #    'mdx-math': {'enable_dollar_delimiter': True}})
+    #md = md.convert('$$e^x$$')
+  #                         extensions=['markdown.extensions.fenced_code', 'mdx_math'])
+    return render(request, 'notes/tests.html', {'markdown': md})
