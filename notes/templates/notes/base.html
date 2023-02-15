@@ -27,8 +27,6 @@
 <body>
 {# Navigation Menu #}
     <header>
-        <!--<div class="navbar navbar-default navbar-static-top-->
-        <!--<nav class="navbar navbar-dark navbar-static-top bg-dark-->
         <nav class="navbar navbar-dark bg-dark fixed-top
             {% block nav-style %}{% endblock nav-style %}" role="navigation"
         >
@@ -127,10 +125,7 @@
 {# Set of blocks that can be used to display JavaScript files #}
     {% block footer_javascript %}
         {% block footer_javascript_site %}
-            {% comment %}
-            <script src="{% static 'notes/jquery/jquery.min.js' %}"
-            crossorigin="anonymous"></script>
-            {% endcomment %}
+
             <script src="{% static 'notes/jquery/jquery-3.4.1.min.js' %}"
             crossorigin="anonymous"></script>
 
@@ -160,21 +155,6 @@
             <!-- Scripts for Mathjax, which is a JS plugin for displaying math. -->
             <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
             <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-
-            {% comment %}
-
-            <script type="text/x-mathjax-config">
-            MathJax.Hub.Config({
-              tex2jax: {
-                displayMath: [["$$", "$$"], ["\\[", "\\]"]],
-                processEscapes: true,
-              },
-              config: ["MMLorHTML.js"],
-              jax: ["input/TeX", "output/HTML-CSS", "output/NativeMML"],
-              extensions: ["MathMenu.js", "MathZoom.js"]
-            });
-            </script>
-            {% endcomment %}
 
         {% endblock footer_javascript_site %}
         {% block footer_javascript_section %}{% endblock footer_javascript_section %}
