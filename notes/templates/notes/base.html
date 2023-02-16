@@ -60,27 +60,29 @@
                 </div>
                 <!--Search bar -->
                 <form class="form-inline" action="{% url 'notes:search_results' %}" method="get">
-                    <div class="dropdown show input-group-btn search-panel">
-                        <a class="btn btn-outline-secondary dropdown-toggle" role="button"
-                           data-toggle="dropdown" href="#" aria-haspopup="true" aria-expanded="false">Filter by</a>
-                        <div class="dropdown-menu" role="menu">
-                            <div class="advanced-search-option dropdown-item" style="display: flex;">
-                                <label for="searchdocs" style="flex: 0 0 65%;">Documents</label>
-                                <input type="checkbox" name="advancedsearch[]" value="documents" title="searchdocs" checked style="flex: 1; margin-top: 7px;">
-                            </div>
-                            <div class="advanced-search-option dropdown-item" style="display: flex;">
-                                <label for="searchtags" style="flex: 0 0 65%;">Tags</label>
-                                <input type="checkbox" name="advancedsearch[]" value="tags" title="searchtags" style="flex: 1; margin-top: 7px;">
-                            </div>
+                    <div class="input-group">
+                        <div class="dropdown show input-group-btn search-panel">
+                            <a class="btn btn-outline-secondary dropdown-toggle" role="button"
+                               data-toggle="dropdown" href="#" aria-haspopup="true" aria-expanded="false">Filter by</a>
+                            <div class="dropdown-menu" role="menu">
+                                <div class="advanced-search-option dropdown-item" style="display: flex;">
+                                    <label for="searchdocs" style="flex: 0 0 65%;">Documents</label>
+                                    <input type="checkbox" name="advancedsearch[]" value="documents" title="searchdocs" checked style="flex: 1; margin-top: 7px;">
+                                </div>
+                                <div class="advanced-search-option dropdown-item" style="display: flex;">
+                                    <label for="searchtags" style="flex: 0 0 65%;">Tags</label>
+                                    <input type="checkbox" name="advancedsearch[]" value="tags" title="searchtags" style="flex: 1; margin-top: 7px;">
+                                </div>
 
-                            <a class="dropdown-item" href={% url 'notes:advanced_search' %}>Advanced Search</a>
+                                <a class="dropdown-item" href={% url 'notes:advanced_search' %}>Advanced Search</a>
+                            </div>
                         </div>
+
+
+
+                        <input id="tag-search-id" name="search-bar-input" class="mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                        <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
                     </div>
-
-
-
-                    <input id="tag-search-id" name="search-bar-input" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
                 </form>
                 <!-- User account dropdown -->
                 <div class="dropdown show">
