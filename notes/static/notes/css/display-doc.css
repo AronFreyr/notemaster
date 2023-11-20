@@ -61,3 +61,10 @@ code{
     border-radius: 2px;
     padding: 1px 4px;
 }
+
+#img-link-button{
+    background-color: lightgray;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
