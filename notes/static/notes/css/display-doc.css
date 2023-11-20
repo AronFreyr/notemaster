@@ -33,7 +33,7 @@
 }
 
 .img-in-text{
-    max-width: 200px;
+    width: 200px;  /* Default width is 200px. This can be overridden when inserting images. */
     max-height: 100%;
 }
 

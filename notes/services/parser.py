@@ -93,6 +93,8 @@ class TextParser:
             for parameter in image_parameters:
                 if 'side' in parameter:  # Which side should the image be on?
                     style_string += 'float:' + parameter.split('=')[1].strip() + ';'
+                if 'width' in parameter:  # How large should the image be?
+                    style_string += 'width:' + parameter.split('=')[1].strip() + 'px;'
             style_string = 'style="' + style_string + '"'
 
         else:
@@ -111,7 +113,7 @@ class TextParser:
         output_with_html = '<div class="link-list"> <p class="link-list-header">Links</p> <ul>'
         split_output = text_without_brackets.split(';')
         for split in split_output:
-            if split.strip() is not '':  # If ; is at the end of the entire link list.
+            if split.strip() != '':  # If ; is at the end of the entire link list.
                 desc_and_link = split.split('|')
                 description = desc_and_link[0].strip()
                 link = desc_and_link[1].strip()
@@ -264,7 +266,7 @@ def links_to_table_parser(parsed_text):
             output_without_brackets = re.search(pattern, parsed_text).group(1).strip()
             split_output = output_without_brackets.split(';')
             for split in split_output:
-                if split is not '':  # If ; is at the end of the entire link list.
+                if split != '':  # If ; is at the end of the entire link list.
                     desc_and_link = split.split('|')
                     description = desc_and_link[0].strip()
                     link = desc_and_link[1].strip()
