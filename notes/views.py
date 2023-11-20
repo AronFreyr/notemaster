@@ -276,8 +276,8 @@ def edit_image(request, image):
         if form.is_valid():
             tag = form.cleaned_data.get('tag_name')
             handle_new_tag(tag, new_image=image)
-        if 'name-textarea-edit-image-text' in request.POST:
-            new_image_text = request.POST['name-textarea-edit-image-text']
+        if 'name_textarea_edit_image_text' in request.POST:
+            new_image_text = request.POST['name_textarea_edit_image_text']
             image.image_text = new_image_text
             image.save()
         return redirect(reverse('notes:display_img', kwargs={'img': image.image_name}))

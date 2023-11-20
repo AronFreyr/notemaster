@@ -9,11 +9,6 @@
     border: 2px solid #ccc;
     border-radius: 4px;
     background-color: #f8f8f8;
-    /*float:left;*/
-}
-
-#div-container-edit-image-submit-button{
-    /*float:left;*/
 }
 
 #div-container-edit-image{
@@ -27,8 +22,31 @@
 }
 
 #id-container-add-tag{
-    float:right;
+    float: left;
     padding: 15px;
     border: 2px solid grey;
     border-radius: 3px;
+    margin-top: 60px;
+}
+
+#id-div-tag-container{
+    border: 1px solid black;
+    border-radius: 3px;
+}
+
+#id-div-container-delete-image{
+    padding-top: 250px;
+}
+
+.div-tag-name {
+    flex: 1;
+}
+
+.div-red-x-container {
+}
+
+.div-tag-input-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
