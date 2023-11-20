@@ -17,7 +17,7 @@ from .services.graph_generator import test_create_graph
 
 @require_safe  # Only allows the GET and HEAD HTTP methods through.
 @login_required
-@cache_page(CACHE_TIME)
+# @cache_page(CACHE_TIME)  # Caching the first page is not helpful.
 def index(request):
     programming_portal_tags = Tag.objects.filter(
       Q(tag_name='Programming')
