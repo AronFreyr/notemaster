@@ -1,5 +1,5 @@
 #div-container-image-picture img{
-    max-width: 500px;
+    max-width: 700px;
     max-height: 100%;
 }
 
@@ -16,4 +16,8 @@
 #tag-btn-link-text{
     white-space: normal; /* Makes the text wrap inside buttons */
     text-align: left;
+}
+
+#div-container-image-text{
+    padding-top: 15px;
 }

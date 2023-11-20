@@ -32,7 +32,7 @@
             </div>
             <div id="div-container-image-text">
                 <label id="id-label-display-image-text">
-                    {{ image.image_text|safe }}
+                    {{ image.get_parsed_text|safe }}
                 </label>
             </div>
         </div>
