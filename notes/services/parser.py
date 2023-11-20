@@ -1,5 +1,6 @@
 from ..models import Tag, Document, Tagmap, ImageTagMap, Image
 import re
+from django.template import loader
 
 
 class TextParser:
@@ -80,6 +81,14 @@ class TextParser:
         return output_text
 
     def image_insert_parser(self, input_text, text_with_brackets, text_without_brackets):
+        """
+        The part of the parser that handles images. It converts the input into displayable images in the text.
+        TODO comment this.
+        :param input_text:
+        :param text_with_brackets:
+        :param text_without_brackets:
+        :return:
+        """
         output_text = input_text
         image_name = ''
         style_string = ''  # String added to the HTML to apply style to the image.
@@ -95,16 +104,15 @@ class TextParser:
                     style_string += 'float:' + parameter.split('=')[1].strip() + ';'
                 if 'width' in parameter:  # How large should the image be?
                     style_string += 'width:' + parameter.split('=')[1].strip() + 'px;'
-            style_string = 'style="' + style_string + '"'
 
         else:
             image_name = text_without_brackets
 
         if Image.objects.filter(image_name=image_name).exists():
             image = Image.objects.get(image_name=image_name)
-            output_with_html = '<img src="' + image.image_picture.url + '" alt="' \
-                               + image.image_name + '"' \
-                               + 'class="img-responsive img-rounded img-in-text"' + style_string + '>'
+            # Gets the html from a snippet as a string and inserts all relevant variables into it.
+            output_with_html = loader.render_to_string('notes/snippets/display-image-card.html',
+                                                       {'image': image, 'style_string': style_string})
             output_text = output_text.replace(text_with_brackets, output_with_html)
         return output_text
 
