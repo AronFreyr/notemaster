@@ -92,6 +92,7 @@ class TextParser:
         output_text = input_text
         image_name = ''
         style_string = ''  # String added to the HTML to apply style to the image.
+        no_text = False  # Determines if the text in the card for the image should be displayed or not.
         #output_with_brackets = match.group()  # Example: [image[[My Image]]]
         #output_without_brackets = re.search(pattern, parsed_text).group(1).strip()  # Example: My Image
 
@@ -104,6 +105,8 @@ class TextParser:
                     style_string += 'float:' + parameter.split('=')[1].strip() + ';'
                 if 'width' in parameter:  # How large should the image be?
                     style_string += 'width:' + parameter.split('=')[1].strip() + 'px;'
+                if 'no_text' in parameter:  # Should we display text with the image or not?
+                    no_text = True
 
         else:
             image_name = text_without_brackets
@@ -112,7 +115,8 @@ class TextParser:
             image = Image.objects.get(image_name=image_name)
             # Gets the html from a snippet as a string and inserts all relevant variables into it.
             output_with_html = loader.render_to_string('notes/snippets/display-image-card.html',
-                                                       {'image': image, 'style_string': style_string})
+                                                       {'image': image, 'style_string': style_string,
+                                                        'no_text': no_text})
             output_text = output_text.replace(text_with_brackets, output_with_html)
         return output_text
 
