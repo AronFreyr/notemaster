@@ -44,7 +44,7 @@ if 'ENVIRONMENT' in os.environ:
     if os.environ['ENVIRONMENT'] == 'test':
         config.read(CONFIG_DIR + 'dev.ini')
         DEBUG = True
-        # If the debug log folder does not exists, create it.
+        # If the debug log folder does not exist, create it.
         if not os.path.exists(os.path.join(BASE_DIR, config['DEFAULT']['LOG_LOCATION'])):
             os.makedirs(os.path.join(BASE_DIR, config['DEFAULT']['LOG_LOCATION']))
     else:
@@ -68,6 +68,13 @@ if 'ENVIRONMENT' in os.environ:
     #     #cache_location = '/tmp/notemaster_cache/'
     #     log_location = config_parser['DEFAULT']['LOG_LOCATION']
     #     cache_location = config_parser['DEFAULT']['CACHE_LOCATION']
+# To run test cases
+else:
+    config.read(CONFIG_DIR + 'dev.ini')
+    DEBUG = True
+    # If the debug log folder does not exists, create it.
+    if not os.path.exists(os.path.join(BASE_DIR, config['DEFAULT']['LOG_LOCATION'])):
+        os.makedirs(os.path.join(BASE_DIR, config['DEFAULT']['LOG_LOCATION']))
 
 ALLOWED_HOSTS = [config['DEFAULT']['ALLOWED_HOSTS_IP'], config['DEFAULT']['ALLOWED_HOSTS_URL']]
 CACHE_TIME = int(config['DEFAULT']['CACHE_TIME_MINUTES']) * int(config['DEFAULT']['CACHE_TIME_SECONDS'])
