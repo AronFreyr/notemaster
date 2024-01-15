@@ -1,4 +1,5 @@
 from django.test.testcases import TestCase
+from django.test import override_settings
 import re
 from notes.models import Document, Tag, Tagmap
 from notes.forms import AddTagForm
