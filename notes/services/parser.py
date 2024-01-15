@@ -11,6 +11,7 @@ class TextParser:
         self.pattern = re.compile(r'\[([a-zA-Z0-9]*)\[\[(.*?)\]\]\]', re.DOTALL)
 
     def perform_parse(self, input_text):
+
         parsed_text = input_text
         while self.is_match(parsed_text):
             parsed_text = self.find_match(parsed_text)
