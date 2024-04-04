@@ -32,6 +32,7 @@ class FormTests(TestCase):
 
     def test_form_hidden_fields(self):
         f = AddTagForm()
+        print('test form stuff')
         print(f)
 
 
