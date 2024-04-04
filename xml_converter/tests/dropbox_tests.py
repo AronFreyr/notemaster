@@ -1,5 +1,5 @@
 import os
-from django.test.testcases import TestCase
+from django.test.testcases import TestCase, override_settings
 from pathlib import Path
 import subprocess
 
