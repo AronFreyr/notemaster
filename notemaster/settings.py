@@ -108,24 +108,6 @@ WSGI_APPLICATION = 'notemaster.wsgi.application'
 
 ASGI_APPLICATION = 'notemaster.routing.application'
 
-<<<<<<< HEAD
-
-# Database
-# https://docs.djangoproject.com/en/1.10/ref/settings/#databases
-
-# Default database is the test database.
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-        'TEST': {
-                    'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-        },
-    },
-    'test': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'test.sqlite3'),
-=======
 # If the environment is prod, use prod database, else use the default django test database.
 if os.environ['ENVIRONMENT'] == 'prod':
     DATABASES = {
@@ -137,7 +119,6 @@ if os.environ['ENVIRONMENT'] == 'prod':
             'HOST': config['DATABASE']['DB_HOST'],
             'PORT': config['DATABASE']['DB_PORT'],
         }
->>>>>>> 72571c0e813ce9030124e45e1cde6f1326ae684d
     }
 elif os.environ['ENVIRONMENT'] == 'test':
     DATABASES = {
