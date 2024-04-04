@@ -11,7 +11,7 @@
         <div class="col-sm-2">
             <!-- Tags that are currently associated with the document -->
             <div class="sidebar-module">
-                <h3>Current Tags</h3>
+                <h3>Tags</h3>
                 {% for tag in document.get_all_tags_sorted %}
                     <div id="id-div-tag-container">
                         <div class="div-tag-input-container">
@@ -21,7 +21,6 @@
                                         {{ tag.tag_name }}
                                     </a>
                                     <span class="badge badge-light"> ({{ tag.get_nr_of_docs_with_tag }})</span>
-                                    {% comment %}({{ tag.get_nr_of_docs_with_tag }}) {% endcomment %}
                                 </p>
                             </div>
                             <div class="div-red-x-container">

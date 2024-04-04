@@ -76,6 +76,11 @@ class Image(models.Model):
     image_text = models.TextField(blank=True)
     image_picture = models.ImageField(upload_to='gallery')
 
+    def get_parsed_text(self):
+        from .services.parser import TextParser
+        parser = TextParser()
+        return parser.perform_parse(self.image_text)
+
     def get_all_tags(self):
         return [tagmap.tag for tagmap in self.imagetagmap_set.all()]
 

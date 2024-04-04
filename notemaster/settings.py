@@ -35,39 +35,26 @@ with open(BASE_DIR + '/notemaster/secrets/secret_key.txt') as f:
     SECRET_KEY = f.read().strip()
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+#DEBUG = True
 ALLOWED_HOSTS = []
 CACHE_TIME = 0
 cache_location = ''
 
-if 'ENVIRONMENT' in os.environ:
-    if os.environ['ENVIRONMENT'] == 'test':
-        config.read(CONFIG_DIR + 'dev.ini')
-        DEBUG = True
-        # If the debug log folder does not exists, create it.
-        if not os.path.exists(os.path.join(BASE_DIR, config['DEFAULT']['LOG_LOCATION'])):
-            os.makedirs(os.path.join(BASE_DIR, config['DEFAULT']['LOG_LOCATION']))
-    else:
-        config.read(CONFIG_DIR + 'prod.ini')
-        DEBUG = False
-    #     ALLOWED_HOSTS = [config_parser['DEFAULT']['ALLOWED_HOSTS_IP'], config_parser['DEFAULT']['ALLOWED_HOSTS_URL']]
-    #     CACHE_TIME = 1  # Make the cache expire immediately if we are testing.
-    #     log_location = 'logs/'  # locating the dev logs in the project, because it might not be run on a linux machine.
-    #     # If the debug log folder does not exists, create it.
-    #     if not os.path.exists(os.path.join(BASE_DIR, 'logs/')):
-    #         os.makedirs(os.path.join(BASE_DIR, 'logs/'))
-    #
-    #     cache_location = r'C:\temp\notemaster_cache'
-    # else:
-    #     config_parser.read(CONFIG_DIR + 'prod.ini')
-    #     DEBUG = False
-    #    #ALLOWED_HOSTS = ['3.18.188.55', 'einsk.is']
-    #     ALLOWED_HOSTS = [config_parser['DEFAULT']['ALLOWED_HOSTS_IP'], config_parser['DEFAULT']['ALLOWED_HOSTS_URL']]
-    #     CACHE_TIME = 60 * 30  # Half an hour of cache lifetime.
-    #     #log_location = '/var/log/notemaster/'  # locating the prod logs in the proper log place.
-    #     #cache_location = '/tmp/notemaster_cache/'
-    #     log_location = config_parser['DEFAULT']['LOG_LOCATION']
-    #     cache_location = config_parser['DEFAULT']['CACHE_LOCATION']
+# When the environment is not defined it usually means we are running tests.
+if not 'ENVIRONMENT' in os.environ:
+    os.environ['ENVIRONMENT'] = 'test'
+
+
+# Access the config file for either the test or production environment.
+if os.environ['ENVIRONMENT'] == 'test':
+    config.read(CONFIG_DIR + 'dev.ini')
+    DEBUG = True
+    # If the debug log folder does not exist, create it.
+    if not os.path.exists(os.path.join(BASE_DIR, config['DEFAULT']['LOG_LOCATION'])):
+        os.makedirs(os.path.join(BASE_DIR, config['DEFAULT']['LOG_LOCATION']))
+else:
+    config.read(CONFIG_DIR + 'prod.ini')
+    DEBUG = False
 
 ALLOWED_HOSTS = [config['DEFAULT']['ALLOWED_HOSTS_IP'], config['DEFAULT']['ALLOWED_HOSTS_URL']]
 CACHE_TIME = int(config['DEFAULT']['CACHE_TIME_MINUTES']) * int(config['DEFAULT']['CACHE_TIME_SECONDS'])
@@ -121,6 +108,7 @@ WSGI_APPLICATION = 'notemaster.wsgi.application'
 
 ASGI_APPLICATION = 'notemaster.routing.application'
 
+<<<<<<< HEAD
 
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
@@ -137,46 +125,33 @@ DATABASES = {
     'test': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'test.sqlite3'),
-    }
-}
-
-if 'ENVIRONMENT' in os.environ:
-    # If the environment is prod, use prod database, else use the default test database.
-    if os.environ['ENVIRONMENT'] == 'prod':
-
-        # DATABASES = {
-        #     'default': {
-        #         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        #         'NAME': 'postgres_notes',
-        #         'USER': 'aronws01',
-        #         'PASSWORD': 'CDCBA759EE',
-        #         #'HOST': 'postgres-01.coq0dteq0xmn.us-east-2.rds.amazonaws.com',
-        #         'HOST': 'notemaster-db.coq0dteq0xmn.us-east-2.rds.amazonaws.com',
-        #         'PORT': '5432',
-        #     }
-        # }
-        DATABASES = {
-            'default': {
-                'ENGINE': config['DATABASE']['DB_ENGINE'],
-                'NAME': config['DATABASE']['DB_NAME'],
-                'USER': config['DATABASE']['DB_USERNAME'],
-                'PASSWORD': config['DATABASE']['DB_PASSWORD'],
-                # 'HOST': 'postgres-01.coq0dteq0xmn.us-east-2.rds.amazonaws.com',
-                'HOST': config['DATABASE']['DB_HOST'],
-                'PORT': config['DATABASE']['DB_PORT'],
-            }
+=======
+# If the environment is prod, use prod database, else use the default django test database.
+if os.environ['ENVIRONMENT'] == 'prod':
+    DATABASES = {
+        'default': {
+            'ENGINE': config['DATABASE']['DB_ENGINE'],
+            'NAME': config['DATABASE']['DB_NAME'],
+            'USER': config['DATABASE']['DB_USERNAME'],
+            'PASSWORD': config['DATABASE']['DB_PASSWORD'],
+            'HOST': config['DATABASE']['DB_HOST'],
+            'PORT': config['DATABASE']['DB_PORT'],
         }
-
-"""DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'mypostgres',
-        'USER': 'aronfreyrh',
-        'PASSWORD': 'CDCBA759EE',
-        'HOST': 'my-postgres-db.ciluljatx7ni.us-east-2.rds.amazonaws.com',
-        'PORT': '5432',
+>>>>>>> 72571c0e813ce9030124e45e1cde6f1326ae684d
     }
-}"""
+elif os.environ['ENVIRONMENT'] == 'test':
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        },
+        'test': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'test.sqlite3'),
+        }
+    }
+else:
+    raise EnvironmentError('Neither PRODUCTION nor DEBUG environments detected')
 
 
 # Password validation
@@ -211,10 +186,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.10/howto/static-files/
-
 STATIC_URL = '/static/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
@@ -225,8 +196,6 @@ LOGOUT_REDIRECT_URL = 'login_screen'
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
-        #'LOCATION': r'H:\temp\notemaster_cache',
-        #'LOCATION': r'C:\temp\notemaster_cache',
         'LOCATION': cache_location
     }
 }
@@ -236,5 +205,3 @@ CACHES = {
 # https://stackoverflow.com/questions/26682413/django-rotating-file-handler-stuck-when-file-is-equal-to-maxbytes
 if DEBUG and os.environ.get('RUN_MAIN', None) != 'true':
     LOGGING = {}
-
-# Todo: add production cache location.

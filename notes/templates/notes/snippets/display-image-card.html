@@ -1,0 +1,13 @@
+<div class="card img-in-text" style="{{ style_string }}">
+    <img src=" {{ image.image_picture.url }}" alt="{{image.image_name}}">
+    {% if not no_text %}
+        <div class="card-body">
+            <p class="card-text"> {{ image.image_text|safe }} </p>
+        </div>
+    {% endif %}
+
+    <!-- A link that takes you to the page of the image. -->
+    <a id="img-link-button" href="{% url 'notes:display_img' image.image_name %}" class="badge badge-light" title="Go to image page">
+        <i class="fa fa-picture-o"></i>
+    </a>
+</div>

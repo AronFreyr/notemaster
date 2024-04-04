@@ -19,6 +19,8 @@
             <!-- This font is for Mivhak -->
             <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
             <link href="{% static 'notes/css/base.css' %}" rel="stylesheet" media="screen">
+            <!-- This is for FontAwesome glyphicons. -->
+            <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
         {% endblock head_css_site %}
         {% block head_css_section %}{% endblock head_css_section %}
         {% block head_css_page %}{% endblock head_css_page %}
@@ -27,8 +29,6 @@
 <body>
 {# Navigation Menu #}
     <header>
-        <!--<div class="navbar navbar-default navbar-static-top-->
-        <!--<nav class="navbar navbar-dark navbar-static-top bg-dark-->
         <nav class="navbar navbar-dark bg-dark fixed-top
             {% block nav-style %}{% endblock nav-style %}" role="navigation"
         >
@@ -62,27 +62,29 @@
                 </div>
                 <!--Search bar -->
                 <form class="form-inline" action="{% url 'notes:search_results' %}" method="get">
-                    <div class="dropdown show input-group-btn search-panel">
-                        <a class="btn btn-outline-secondary dropdown-toggle" role="button"
-                           data-toggle="dropdown" href="#" aria-haspopup="true" aria-expanded="false">Filter by</a>
-                        <div class="dropdown-menu" role="menu">
-                            <div class="advanced-search-option dropdown-item" style="display: flex;">
-                                <label for="searchdocs" style="flex: 0 0 65%;">Documents</label>
-                                <input type="checkbox" name="advancedsearch[]" value="documents" title="searchdocs" checked style="flex: 1; margin-top: 7px;">
-                            </div>
-                            <div class="advanced-search-option dropdown-item" style="display: flex;">
-                                <label for="searchtags" style="flex: 0 0 65%;">Tags</label>
-                                <input type="checkbox" name="advancedsearch[]" value="tags" title="searchtags" style="flex: 1; margin-top: 7px;">
-                            </div>
+                    <div class="input-group">
+                        <div class="dropdown show input-group-btn search-panel">
+                            <a class="btn btn-outline-secondary dropdown-toggle" role="button"
+                               data-toggle="dropdown" href="#" aria-haspopup="true" aria-expanded="false">Filter by</a>
+                            <div class="dropdown-menu" role="menu">
+                                <div class="advanced-search-option dropdown-item" style="display: flex;">
+                                    <label for="searchdocs" style="flex: 0 0 65%;">Documents</label>
+                                    <input type="checkbox" name="advancedsearch[]" value="documents" title="searchdocs" checked style="flex: 1; margin-top: 7px;">
+                                </div>
+                                <div class="advanced-search-option dropdown-item" style="display: flex;">
+                                    <label for="searchtags" style="flex: 0 0 65%;">Tags</label>
+                                    <input type="checkbox" name="advancedsearch[]" value="tags" title="searchtags" style="flex: 1; margin-top: 7px;">
+                                </div>
 
-                            <a class="dropdown-item" href={% url 'notes:advanced_search' %}>Advanced Search</a>
+                                <a class="dropdown-item" href={% url 'notes:advanced_search' %}>Advanced Search</a>
+                            </div>
                         </div>
+
+
+
+                        <input id="tag-search-id" name="search-bar-input" class="mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                        <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
                     </div>
-
-
-
-                    <input id="tag-search-id" name="search-bar-input" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
                 </form>
                 <!-- User account dropdown -->
                 <div class="dropdown show">
@@ -127,10 +129,7 @@
 {# Set of blocks that can be used to display JavaScript files #}
     {% block footer_javascript %}
         {% block footer_javascript_site %}
-            {% comment %}
-            <script src="{% static 'notes/jquery/jquery.min.js' %}"
-            crossorigin="anonymous"></script>
-            {% endcomment %}
+
             <script src="{% static 'notes/jquery/jquery-3.4.1.min.js' %}"
             crossorigin="anonymous"></script>
 
@@ -157,11 +156,10 @@
             <script src="{% static 'notes/mivhak/mivhak.min.js' %}"></script>
             <script>$('.mivhak').mivhak();</script>
 
-            {% comment %}
-            <script src="{% static 'notes/jquery/jquery.min.js' %}"></script>
-            <script src="{% static 'notes/bootstrap/bootstrap.min.css' %}"></script>
-            {% endcomment %}
-            {% comment %}<script src="{% static 'notes/js/app' %}js/app.js"></script> {% endcomment %}
+            <!-- Scripts for Mathjax, which is a JS plugin for displaying math. -->
+            <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+            <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
         {% endblock footer_javascript_site %}
         {% block footer_javascript_section %}{% endblock footer_javascript_section %}
         {% block footer_javascript_page %}{% endblock footer_javascript_page %}

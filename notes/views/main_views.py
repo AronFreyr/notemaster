@@ -1,22 +1,23 @@
 from django.shortcuts import get_object_or_404, render, redirect, reverse
 from django.db.models import Q
-from django.contrib import messages
 from django.views.decorators.http import require_safe
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import cache_page
 
-from .models import Document, Tag, Tagmap, Image, ImageDocumentMap, ImageTagMap
-from .forms import AddTagForm, CreateDocumentForm, CreateImageForm
-from .services.object_handling import handle_new_tag, remove_object, delete_object
+from notes.models import Document, Tag, Tagmap, Image, ImageDocumentMap, ImageTagMap
+from notes.forms import AddTagForm, CreateDocumentForm, CreateImageForm
+from notes.services.object_handling import handle_new_tag, remove_object, delete_object
 from notemaster.settings import CACHE_TIME
-from .services.graph_generator import test_create_graph
+from notes.views.portal_views import *
+from notes.views.dev_views import *
+from notes.services.graph_generator import test_create_graph
 
 #from .tests import turtle_graphics_tests
 
 
 @require_safe  # Only allows the GET and HEAD HTTP methods through.
 @login_required
-@cache_page(CACHE_TIME)
+# @cache_page(CACHE_TIME)  # Caching the first page is not helpful.
 def index(request):
     programming_portal_tags = Tag.objects.filter(
       Q(tag_name='Programming')
@@ -36,76 +37,14 @@ def index(request):
     ).order_by('tag_name')
 
     # turtle_graphics_tests.draw_document_map()
+    #test_create_graph()
+
+    most_recent_docs = Document.objects.all().order_by('-id')[:10]
 
     return render(request, 'notes/index.html',
                   {'programming_portal_tags': programming_portal_tags,
-                   'history_portal_tags': history_portal_tags})
-
-
-@login_required
-def display_portal(request, tag_name):
-    portal_docs = Document.objects.filter(tagmap__tag__tag_name=tag_name).order_by('document_name')
-    document_list = list(portal_docs)
-    for document in document_list:
-        for tag_in_doc in document.get_all_tags():
-            # If we find a list meta tag, go through all of the documents and remove them from our document list.
-            if tag_in_doc.meta_tag_type == 'list' and tag_name != tag_in_doc.tag_name:
-                for doc_with_list_tag in tag_in_doc.get_all_docs():
-                    if doc_with_list_tag.document_name != tag_in_doc.tag_name and doc_with_list_tag in document_list:
-                        document_list.remove(doc_with_list_tag)
-    return render(request, 'notes/display-portal.html', {'documents': document_list})
-
-
-# A test function to create a test homepage.
-@login_required
-def display_homepage_test(request):
-
-    latest_programming_documents = Document.objects.filter(tagmap__tag__tag_name='Programming').order_by('-id')[:5]
-    latest_history_documents = Document.objects.filter(tagmap__tag__tag_name='History').order_by('-id')[:5]
-
-    return render(request, 'notes/homepage-test.html',
-                  {'latest_programming_docs': latest_programming_documents,
-                   'latest_history_docs': latest_history_documents})
-
-
-# A test function for seeing how individual portals could work.
-@login_required
-def display_spring_portal(request):
-    spring_project_docs = Document.objects.filter(tagmap__tag__tag_name='Spring Project').order_by('document_name')
-    spring_docs = Document.objects.filter(tagmap__tag__tag_name='Spring').order_by('document_name')
-    document_list = list(spring_docs)
-    for document in spring_docs:
-        if document in spring_project_docs:
-            document_list.remove(document)
-        for tagmaps in document.tagmap_set.all():
-            if tagmaps.tag.tag_name == 'Spring Annotations' and document.document_name != 'Spring Annotations':
-                document_list.remove(document)
-                break
-    return render(request, 'notes/spring-portal.html', {'documents': document_list,
-                                                        'spring_projects': spring_project_docs})
-
-
-# A test function for seeing how individual portals could work.
-@login_required
-def display_programming_portal(request):
-    programming_languages_docs = Document.objects.filter(tagmap__tag__tag_name='Programming Language').order_by('document_name')
-    return render(request, 'notes/programming-portal.html',
-                  {'programming_languages_docs': programming_languages_docs})
-
-
-# A test function for seeing how individual portals could work.
-@login_required
-def display_angular_portal(request):
-    angular_docs = Document.objects.filter(tagmap__tag__tag_name='Angular').order_by('document_name')
-    document_list = list(angular_docs)
-    for document in angular_docs:
-        for tagmaps in document.tagmap_set.all():
-            if tagmaps.tag.tag_name == 'Angular Decorator' and document.document_name != 'Angular Decorators':
-                document_list.remove(document)
-            if tagmaps.tag.tag_name == 'Angular Material Modules' and document.document_name != 'Angular Material Modules':
-                document_list.remove(document)
-
-    return render(request, 'notes/angular-portal.html', {'angular_docs': document_list})
+                   'history_portal_tags': history_portal_tags,
+                   'most_recent_documents': most_recent_docs})
 
 
 @login_required
@@ -272,8 +211,8 @@ def edit_image(request, image):
         if form.is_valid():
             tag = form.cleaned_data.get('tag_name')
             handle_new_tag(tag, new_image=image)
-        if 'name-textarea-edit-image-text' in request.POST:
-            new_image_text = request.POST['name-textarea-edit-image-text']
+        if 'name_textarea_edit_image_text' in request.POST:
+            new_image_text = request.POST['name_textarea_edit_image_text']
             image.image_text = new_image_text
             image.save()
         return redirect(reverse('notes:display_img', kwargs={'img': image.image_name}))
@@ -328,15 +267,15 @@ def display_search_results(request):
             search_options = dict(request.GET)['advancedsearch[]']
             if 'documents' in search_options:  # If the check for doc search in on. Default=True.
                 for item in item_list:
-                    if Document.objects.filter(document_name__contains=item).exists():
-                        document_object = Document.objects.filter(document_name__contains=item)
+                    if Document.objects.filter(document_name__icontains=item).exists():
+                        document_object = Document.objects.filter(document_name__icontains=item)
                         items_to_display['documents'].extend(document_object)
                 items_to_display['documents'].sort(key=lambda x: x.document_name)  # Sort the doc list.
 
             if 'tags' in search_options:  # If the check for tag search is on. Default=False.
                 for item in item_list:
-                    if Tag.objects.filter(tag_name__contains=item).exists():
-                        tag_object = Tag.objects.filter(tag_name__contains=item)
+                    if Tag.objects.filter(tag_name__icontains=item).exists():
+                        tag_object = Tag.objects.filter(tag_name__icontains=item)
                         items_to_display['tags'].extend(tag_object)
                 items_to_display['tags'].sort(key=lambda x: x.tag_name)  # Sort the tag list.
 
@@ -375,19 +314,3 @@ def advanced_search(request):
                 items_to_display['tags'].extend(tag_object)
             # TODO: return proper things.
             return render(request, 'notes/search-results.html', {'search_results': items_to_display})
-
-
-# A view that displays links to all of the pages/templates that have been created in this project, this is
-# for development purposes only.
-@login_required
-def display_all_pages(request):
-    return render(request, 'notes/display-all-pages.html')
-
-
-# A test view that displays the stuff behind the "Test" button in the navigation bar.
-@login_required
-def display_tests(request):
-    #test_create_xml_from_documents()
-    #test_create_graph()
-    messages.add_message(request, messages.INFO, 'test message')
-    return render(request, 'notes/tests.html')

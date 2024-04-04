@@ -1,6 +1,7 @@
 from django.test.testcases import TestCase
 from notes.models import Document, Tag, Tagmap
-from notes.services.parser import tagged_docs_to_list_parser
+# from notes.services.parser import tagged_docs_to_list_parser
+from notes.services.parser import TextParser
 import re
 
 
@@ -22,7 +23,11 @@ class TaggedDocsToListTests(TestCase):
         Tagmap.objects.create(document=Document.objects.get(document_name="XML"), tag=Tag.objects.get(tag_name="XML"))
 
         text_to_parse = 'lorem ipsum [list[[Java]]] ipsum lorem.'
-        tagged_docs_to_list_parser(text_to_parse)
+
+        intended_result_text = 'lorem ipsum <div class="document-list"> <p class="document-list-header">Documents</p> <ul><li><a href="/notemaster/document/Java">Java</a></li><li><a href="/notemaster/document/JAXB">JAXB</a></li></ul></div> ipsum lorem.'
+        parser = TextParser()
+        parsed_text = parser.perform_parse(text_to_parse)
+        self.assertEqual(parsed_text, intended_result_text)
 
     def test_get_type_of_match_and_text_of_match(self):
         text = """<p><code>@Autowired</code> is a [[[Spring Annotations| Spring annotation]]] that allows [[[Spring]]] to auto-wire other beans into your classes. 

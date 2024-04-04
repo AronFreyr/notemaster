@@ -33,7 +33,7 @@
 }
 
 .img-in-text{
-    max-width: 200px;
+    width: 200px;  /* Default width is 200px. This can be overridden when inserting images. */
     max-height: 100%;
 }
 
@@ -60,4 +60,11 @@ code{
     border: 1px solid #eaecf0;
     border-radius: 2px;
     padding: 1px 4px;
+}
+
+#img-link-button{
+    background-color: lightgray;
+    position: absolute;
+    bottom: 0;
+    right: 0;
 }

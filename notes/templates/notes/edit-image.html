@@ -5,38 +5,74 @@
  {% endblock head_css_page %}
 
 {% block content %}
-<div>
-    <h1>{{ image.image_name }}</h1>
-</div>
-<div id="div-container-edit-image">
-    <div id="div-container-edit-image-text">
-        <form action="{% url 'notes:edit_image' image.image_name %}" method="post" id="id-form-change-image-text">
-            {% csrf_token %}
-            <div id="div-container-image-submit">
-                <input type="hidden" name="currently_viewed_image" value="{{ image.image_name }}">
-                {% comment %}
-                <input type="text" id="input-edit-document-text" name="edit-document-text" value="{{ image.image_text }}">
-                {% endcomment %}
-                <label>
-                    <textarea id="id-textarea-change-image-text" form="id_form_change_image_text" name="name_textarea_edit_image_text" >{{ image.image_text }}</textarea>
-                </label>
-                <div id="div-container-edit-image-submit-button">
-                    <label for="input-edit-image-text"></label>
-                    <input type="submit" value="Submit">
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-2">
+            <!-- Tags that are currently associated with the image -->
+            <div class="sidebar-module">
+                <h3>Tags</h3>
+                {% for tag in image.get_all_tags_sorted %}
+                    <div id="id-div-tag-container">
+                        <div class="div-tag-input-container">
+                            <div class="div-tag-name">
+                                <p>
+                                    <a href="{% url 'notes:display_tag' tag.tag_name %}">
+                                        {{ tag.tag_name }}
+                                    </a>
+                                    <span class="badge badge-light"> ({{ tag.get_nr_of_docs_with_tag }})</span>
+                                </p>
+                            </div>
+                            <div class="div-red-x-container">
+                                <!-- TODO: modal for confirmation when you press the button -->
+                                <button class="close" data-toggle="modal" data-target="#removeTagModal">
+                                    <span style="color:red; font-size:20pt;">&times;</span>
+                                </button>
+                                {% include 'notes/snippets/modals/remove-tag-modal.html' %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="col-sm-8">
+            <div>
+                <h1>{{ image.image_name }}</h1>
+            </div>
+            {% comment %} The text associated with the image. {% endcomment %}
+            <div id="div-container-edit-image">
+                <div id="div-container-edit-image-text">
+                    <form action="{% url 'notes:edit_image' image.image_name %}" method="post" id="id-form-change-image-text">
+                        {% csrf_token %}
+                        <div id="div-container-image-submit">
+                            <input type="hidden" name="currently_viewed_image" value="{{ image.image_name }}">
+                            <label>
+                                <textarea id="id-textarea-change-image-text" form="id-form-change-image-text" name="name_textarea_edit_image_text" >{{ image.image_text }}</textarea>
+                            </label>
+                            <div id="div-container-edit-image-submit-button">
+                                <label for="input-edit-image-text"></label>
+                                <input type="submit" value="Submit">
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
-        </form>
-    </div>
-    <div id="id-container-add-tag">
-        <form action="{% url 'notes:edit_image' image.image_name %}" method="post">
-            <!-- This form is for adding a tag to the displayed image -->
-            {% csrf_token %}
-            <div>
-                {{ form.as_p }}
-                <input type="hidden" name="current_image" value="{{ image.image_name }}">
-                <input type="submit" />
+        </div>
+
+        <div class="col-sm-2">
+            <div id="id-container-add-tag">
+                <form action="{% url 'notes:edit_image' image.image_name %}" method="post">
+                    <!-- This form is for adding a tag to the displayed image -->
+                    {% csrf_token %}
+                    <div>
+                        {{ form.as_p }}
+                        <input type="hidden" name="current_image" value="{{ image.image_name }}">
+                        <input type="submit" />
+                    </div>
+                </form>
             </div>
-        </form>
+        </div>
     </div>
 </div>
 {% endblock content %}

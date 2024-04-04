@@ -32,7 +32,7 @@
             </div>
             <div id="div-container-image-text">
                 <label id="id-label-display-image-text">
-                    {{ image.image_text|safe }}
+                    {{ image.get_parsed_text|safe }}
                 </label>
             </div>
         </div>
@@ -41,7 +41,7 @@
         <!-- Edit and delete buttons to the right side -->
         <div class="col-sm-2">
             <div id="id-div-edit-image-button">
-                <a class="btn btn-outline-secondary" href="{% url 'notes:edit_image' image.image_name %}"> edit image</a>
+                <a class="btn btn-secondary" href="{% url 'notes:edit_image' image.image_name %}"> edit image</a>
             </div>
             {% comment %}
             <div id="id-div-container-delete-image">

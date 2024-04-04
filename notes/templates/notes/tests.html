@@ -18,7 +18,7 @@ def test_code_block():
 {% if messages %}
     <ul class="messages">
         {% for message in messages %}
-            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            <li> {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
         {% endfor %}
     </ul>
 {% endif %}
@@ -50,7 +50,9 @@ def test_code_block():
 </div>
 
 <!-- mivhak test -->
+<h1>Mivhak test</h1>
 <div class="mivhak" miv-line-numbers="true">
+
     <pre miv-lang="python">
         def test_code_block():
     for tag in tag_list:
@@ -60,4 +62,19 @@ def test_code_block():
             list_of_docs_with_tags.extend(docs_with_tag)
     </pre>
 </div>
+
+<div>
+    <h1>Latex test</h1>
+
+</div>
+
+<div>
+    <h1>Markdown test</h1>
+    {{markdown|safe}}
+</div>
+<div>
+    <h1>Mathjax test</h1>
+    test text of test stuff \(e^x \) \( \sqrt{5} \) $a \ne 0$ $$x = {-b \pm \sqrt{b^2-4ac} \over 2a}.$$
+</div>
+
 {% endblock content %}
