@@ -26,7 +26,7 @@ urlpatterns = [
     path('notemaster/', include('notes.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
     path('notemaster/xml/', include('xml_converter.urls')),
-    path('', TemplateView.as_view(template_name='login-screen.html'), name='login_screen')
+    path('', TemplateView.as_view(template_name='registration/login.html'), name='login_screen')
 ]
 
 urlpatterns += staticfiles_urlpatterns()
