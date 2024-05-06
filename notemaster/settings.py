@@ -149,6 +149,12 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+# Allows static files like bootstrap to be accessible outside the 'notes' app. This is needed for the login site.
+STATICFILES_DIRS = [
+    ('bootstrap', BASE_DIR + '/notes/static/notes/bootstrap/bootstrap_4'),
+    ('jquery', BASE_DIR + '/notes/static/notes/jquery'),
+]
+
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 LOGIN_REDIRECT_URL = '/notemaster/'

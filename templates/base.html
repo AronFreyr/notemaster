@@ -4,11 +4,33 @@
 <head>
   <meta charset="utf-8">
   <title>{% block title %}Django Auth Tutorial{% endblock %}</title>
+  {% load static %}
+  {% block head_css %}
+        {% block head_css_site %}
+          <link rel="stylesheet" href="{% static 'bootstrap/bootstrap.min.css' %}"
+            crossorigin="anonymous" media="screen"/>
+        {% endblock head_css_site %}
+  {% endblock head_css %}
+
 </head>
 <body>
   <main>
     {% block content %}
     {% endblock %}
   </main>
+
+{# Set of blocks that can be used to display JavaScript files #}
+    {% block footer_javascript %}
+        {% block footer_javascript_site %}
+
+        <script src="{% static 'jquery/jquery-3.4.1.min.js' %}"
+                crossorigin="anonymous"></script>
+
+         <!-- Bootstrap needs to load AFTER jQuery -->
+          <script src="{% static 'bootstrap/bootstrap.bundle.min.js' %}"
+                  crossorigin="anonymous"></script>
+
+        {% endblock footer_javascript_site %}
+    {% endblock footer_javascript %}
 </body>
 </html>
