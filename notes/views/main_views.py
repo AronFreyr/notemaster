@@ -175,7 +175,7 @@ def edit_tag(request, tag_name):
             tag.meta_tag_type = request.POST['meta_tag_choices']
         tag.save()
         return redirect(reverse('notes:display_tag', kwargs={'tag_name': tag.tag_name}))
-    return render(request, 'notes/edit-tag.html', {'tag': tag})
+    return render(request, 'notes/edit-tag2.html', {'tag': tag})
 
 
 @login_required
@@ -198,7 +198,7 @@ def edit_doc(request, doc):
             document.document_text = new_doc_text
             document.save()
         return redirect(reverse('notes:display_doc', kwargs={'doc': document.document_name}))
-    return render(request, 'notes/edit-doc.html', {'document': document, 'form': AddTagForm()})
+    return render(request, 'notes/edit-doc2.html', {'document': document, 'form': AddTagForm()})
 
 
 @login_required

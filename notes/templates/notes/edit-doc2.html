@@ -1,0 +1,75 @@
+{% extends 'notes/edit-object.html' %}
+
+{% block title %} EDIT DOCUMENT {% endblock title %}
+{% block obj_name %} {{ document.document_name }} {% endblock obj_name %}
+
+{% block tags %}
+<!-- Tags that are currently associated with the document -->
+<div class="sidebar-module">
+    <h3>Tags</h3>
+    {% for tag in document.get_all_tags_sorted %}
+        <div id="id-div-tag-container">
+            <div class="div-tag-input-container">
+                <div class="div-tag-name">
+                    <p>
+                        <a href="{% url 'notes:display_tag' tag.tag_name %}">{{ tag.tag_name }}</a>
+                        <span class="badge badge-light"> ({{ tag.get_nr_of_docs_with_tag }})</span>
+                    </p>
+                </div>
+                <div class="div-red-x-container">
+                    <!-- TODO: modal for confirmation when you press the button -->
+                    <button class="close" data-toggle="modal" data-target="#removeTagModal">
+                        <span style="color:red; font-size:20pt;">&times;</span>
+                    </button>
+                    {% include 'notes/snippets/modals/remove-tag-modal.html' %}
+                </div>
+            </div>
+            {% comment %}{% include 'notes/snippets/forms/remove-tag-snippet.html' %} {% endcomment %}
+        </div>
+    {% endfor %}
+</div>
+{% endblock tags %}
+
+{% block text_box %}
+<div id="div-container-edit-document">
+    <div id="div-container-edit-document-text">
+        <form action="{% url 'notes:edit_doc' document.document_name %}" method="post" id="id-form-change-document-text">
+            {% csrf_token %}
+            <div id="div-container-document-submit">
+                <input type="hidden" name="currently_viewed_doc" value="{{ document.document_name }}">
+                <label>
+                    <textarea id="id-textarea-change-document-text" form="id-form-change-document-text" name="name_textarea_edit_document_text" >{{ document.document_text }}</textarea>
+                </label>
+                <div id="div-container-edit-document-submit-button">
+                    <label for="input-edit-document-text"></label>
+                    <input type="submit" value="Submit">
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock text_box %}
+
+{% block add_tag %}
+<div id="id-container-add-tag">
+    <form action="{% url 'notes:edit_doc' document.document_name %}" method="post">
+        <!-- This form is for adding a tag to the displayed document -->
+        {% csrf_token %}
+        <div>
+            {{ form.as_p }}
+            <input type="hidden" name="current_document" value="{{ document.document_name }}">
+            <input type="submit" />
+        </div>
+    </form>
+</div>
+{% endblock add_tag %}
+
+{% block delete_button %}
+<div id="id-div-container-delete-document">
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteDocumentModal">
+        Delete Document
+    </button>
+    {% include 'notes/snippets/modals/delete-document-modal.html' %}
+</div>
+{% endblock delete_button %}

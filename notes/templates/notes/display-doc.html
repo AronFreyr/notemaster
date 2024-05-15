@@ -32,18 +32,6 @@
                     {{ document.get_parsed_text|safe }}
                 </label>
             </div>
-
-            <!-- A test div to see if images can be inserted into the document. -->
-            <div class="testdiv">
-                {% for mapset in document.imagedocumentmap_set.all %}
-                        <div  id="id-div-tag-container">
-                            <div id="id-div-tag-name">
-                                <img src="{{ mapset.image.image_picture.url }}" alt="{{ mapset.image.image_name }}"
-                                     class="img-responsive img-rounded">
-                            </div>
-                        </div>
-                {% endfor %}
-            </div>
         </section>
 
 
