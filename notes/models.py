@@ -1,9 +1,18 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 
 class Document(models.Model):
     document_name = models.TextField()
     document_text = models.TextField()
+
+    document_created = models.DateTimeField(auto_now_add=True)
+    document_modified = models.DateTimeField(auto_now=True)
+    document_created_by = models.ForeignKey(User, on_delete=models.SET_NULL, related_name='document_created_by',
+                                            blank=True, null=True)
+    document_last_modified_by = models.ForeignKey(User, on_delete=models.SET_NULL, related_name='document_last_modified_by',
+                                             blank=True, null=True)
+
 
     def get_parsed_text(self):
         from .services.parser import TextParser
@@ -31,6 +40,15 @@ class Tag(models.Model):
         ('list', 'List'),
         ('none', 'None')
     )
+
+    tag_created = models.DateTimeField(auto_now_add=True)
+    tag_modified = models.DateTimeField(auto_now=True)
+
+    tag_created_by = models.ForeignKey(User, on_delete=models.SET_NULL, related_name='tag_created_by',
+                                            blank=True, null=True)
+    tag_last_modified_by = models.ForeignKey(User, on_delete=models.SET_NULL,
+                                                  related_name='tag_last_modified_by',
+                                                  blank=True, null=True)
 
     tag_name = models.TextField()
 
@@ -75,6 +93,15 @@ class Image(models.Model):
     image_name = models.TextField(blank=True)
     image_text = models.TextField(blank=True)
     image_picture = models.ImageField(upload_to='gallery')
+
+    image_created = models.DateTimeField(auto_now_add=True)
+    image_modified = models.DateTimeField(auto_now=True)
+
+    image_created_by = models.ForeignKey(User, on_delete=models.SET_NULL, related_name='image_created_by',
+                                            blank=True, null=True)
+    image_last_modified_by = models.ForeignKey(User, on_delete=models.SET_NULL,
+                                                  related_name='image_last_modified_by',
+                                                  blank=True, null=True)
 
     def get_parsed_text(self):
         from .services.parser import TextParser

@@ -84,9 +84,10 @@ def create_doc(request):
             new_tag = form.cleaned_data.get('new_tag')
 
             if not Document.objects.filter(document_name=doc_name).exists():
-                new_doc = Document(document_name=doc_name, document_text=doc_text)
+                print(request.user)
+                new_doc = Document(document_name=doc_name, document_text=doc_text, document_last_modified_by=request.user, document_created_by=request.user)
                 new_doc.save()
-                handle_new_tag(new_tag, new_doc)
+                handle_new_tag(new_tag, tag_creator=request.user, new_doc=new_doc)
                 return render(request, 'notes/display-doc.html', {'document': new_doc})
             else:  # There can not be multiple documents with the same name.
                 invalid_form = CreateDocumentForm(initial={'document_name': doc_name,
@@ -114,9 +115,10 @@ def create_image(request):
             # TODO: Throw error if the document already exists.
             if not Image.objects.filter(image_name=image_name).exists():
                 new_image = Image(image_name=image_name, image_text=image_text,
-                                  image_picture=image_picture)
+                                  image_picture=image_picture,
+                                  image_created_by=request.user, image_last_modified_by=request.user)
                 new_image.save()
-                handle_new_tag(new_tag, new_image=new_image)
+                handle_new_tag(new_tag, new_image=new_image, tag_creator=request.user)
             else:
                 # TODO: Add functionality in the template to display the duplicate name error text.
                 duplicate_name_error = 'This name is already taken. Choose another one.'
@@ -162,6 +164,7 @@ def edit_tag(request, tag_name):
     # TODO: Document.
     tag = Tag.objects.get(tag_name=tag_name)
     if request.method == 'POST':
+        tag.tag_last_modified_by = request.user
         if 'tag_choices' in request.POST:  # Changing the tag type.
             tag_choice = request.POST['tag_choices']
             if tag_choice == 'normal':  # Normal tags shouldn't have any meta type.
@@ -186,9 +189,10 @@ def edit_doc(request, doc):
     document = Document.objects.get(document_name=doc)
     if request.method == 'POST':
         form = AddTagForm(request.POST)
+        document.document_last_modified_by = request.user
         if form.is_valid():
             tag = form.cleaned_data.get('tag_name')
-            handle_new_tag(tag, new_doc=document)
+            handle_new_tag(tag, tag_creator=request.user, new_doc=document)
         if 'name_textarea_edit_document_text' in request.POST:
             new_doc_text = request.POST['name_textarea_edit_document_text']
             document.document_text = new_doc_text
@@ -208,9 +212,10 @@ def edit_image(request, image):
     image = Image.objects.get(image_name=image)
     if request.method == 'POST':
         form = AddTagForm(request.POST)
+        image.image_last_modified_by = request.user
         if form.is_valid():
             tag = form.cleaned_data.get('tag_name')
-            handle_new_tag(tag, new_image=image)
+            handle_new_tag(tag, tag_creator=request.user, new_image=image)
         if 'name_textarea_edit_image_text' in request.POST:
             new_image_text = request.POST['name_textarea_edit_image_text']
             image.image_text = new_image_text

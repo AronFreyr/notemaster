@@ -61,6 +61,12 @@
             <div class="edit-tag-button-container">
                 <a class="btn btn-secondary" href="{% url 'notes:edit_tag' tag.tag_name %}"> edit tag</a>
             </div>
+            <div>
+                <p>Created: <span class="badge badge-light">{{ tag.tag_created }}</span> </p>
+                <p>Created By: <span class="badge badge-light">{{ tag.tag_created_by }}</span> </p>
+                <p>Modified: <span class="badge badge-light">{{ tag.tag_modified }}</span> </p>
+                <p>Modified By: <span class="badge badge-light">{{ tag.tag_last_modified_by }}</span> </p>
+            </div>
         </div>
     </div>
 </div>

@@ -43,6 +43,12 @@
             <div id="id-div-edit-image-button">
                 <a class="btn btn-secondary" href="{% url 'notes:edit_image' image.image_name %}"> edit image</a>
             </div>
+            <div>
+                <p>Created: <span class="badge badge-light">{{ image.image_created }}</span> </p>
+                <p>Created By: <span class="badge badge-light">{{ image.image_created_by }}</span> </p>
+                <p>Modified: <span class="badge badge-light">{{ image.image_modified }}</span> </p>
+                <p>Modified By: <span class="badge badge-light">{{ image.image_last_modified_by }}</span> </p>
+            </div>
             {% comment %}
             <div id="id-div-container-delete-image">
                 {% include 'notes/snippets/forms/delete-document-snippet.html' %}
