@@ -1,0 +1,19 @@
+#id-textarea-change-task-name{
+    width: 700px;
+    /*height: 700px;*/
+    padding: 12px 20px;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    background-color: #f8f8f8;
+    /*float:left;*/
+}
+
+#id-textarea-change-task-text{
+    width: 700px;
+    height: 300px;
+    padding: 12px 20px;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    background-color: #f8f8f8;
+    /*float:left;*/
+}

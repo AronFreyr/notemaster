@@ -1,0 +1,47 @@
+{% extends 'taskmaster/base.html' %}
+{% load static %}
+
+{% block title %} Display Task {% endblock title %}
+
+{% block head_css_page %}
+    <link rel="stylesheet" type="text/css" href="{% static 'taskmaster/css/display-task.css' %}" />
+{% endblock head_css_page %}
+
+{% block content %}
+
+<div class="container">
+    <h1>{{ task.document_name }}</h1>
+    <div class="row">
+        <div class="col-md-4">
+            <p>Task Importance: {{ task.task_importance }}</p>
+            <p>Task Difficulty: {{ task.task_difficulty }}</p>
+            <p>Assigned to: {{ task.task_assigned_to }}</p>
+        </div>
+        <div class="col-md-6">
+            {{ task.get_parsed_text|safe }}
+        </div>
+        <div class="col-md-2">
+            <div class="edit-task-button">
+                <a class="btn btn-secondary" href="{% url 'taskmaster:edit_task' task.id %}">Edit Task</a>
+            </div>
+            <div class="assigned-list">
+                <p>List: {{ task.task_list.list_name }}</p>
+            </div>
+            <div class="assigned-board">
+
+                <p>Board: <a href="{% url 'taskmaster:display_board' task.task_board.id %}">
+                    {{ task.task_board.board_name }}</a></p>
+            </div>
+            <div>
+                <p>Created: <span class="badge badge-light">{{ task.document_created }}</span> </p>
+                <p>Created By: <span class="badge badge-light">{{ task.document_created_by }}</span> </p>
+                <p>Modified: <span class="badge badge-light">{{ task.document_modified }}</span> </p>
+                <p>Modified By: <span class="badge badge-light">{{ task.document_last_modified_by }}</span> </p>
+                <p>Previous task: <span class="badge badge-light">{{ task.previous_task }}</span> </p>
+                <p>Next task: <span class="badge badge-light">{{ task.next_task }}</span> </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

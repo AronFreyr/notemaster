@@ -1,0 +1,38 @@
+.task-card{
+    border: 2px solid #cccccc;
+    background-color: #f2f2f2;
+    border-radius: 6px;
+    margin-bottom: 10px;
+
+}
+
+.task-list-container{
+    border: 2px solid #cccccc;
+    background-color: #f6f6f6;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+}
+
+.board-list-container{
+    flex-wrap: nowrap;
+}
+
+.container{
+    margin-left: 5%;
+}
+
+.add-task-container input{
+    max-width: 55%;
+    margin-left: 2px;
+}
+
+.reorder-buttons-container{
+    padding-bottom: 10px;
+}
+
+.delete-list-button{
+    position: absolute;
+    top: 0;
+    right: 10%;
+}

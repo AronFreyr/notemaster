@@ -54,6 +54,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'notes',
     'xml_converter',
+    'taskmaster',
+    'notemaster_core',
 ]
 
 MIDDLEWARE = [
@@ -109,6 +111,10 @@ elif os.environ['ENVIRONMENT'] == 'test':
         'test': {
             'ENGINE': 'django.db.backends.sqlite3',
             'NAME': os.path.join(BASE_DIR, 'test.sqlite3'),
+        },
+        'test2': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'test2blabla.sqlite3'),
         }
     }
 else:

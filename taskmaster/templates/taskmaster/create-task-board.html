@@ -1,0 +1,21 @@
+{% extends 'taskmaster/base.html' %}
+{% load static %}
+
+{% block title %} Create Board {% endblock title %}
+
+{% block head_css_page %}
+    <link rel="stylesheet" type="text/css" href="{% static 'taskmaster/css/create-task-board.css' %}" />
+{% endblock head_css_page %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-sm-8">
+            <form action="{% url 'taskmaster:create_board'%}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ create_board_form }}
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock content %}

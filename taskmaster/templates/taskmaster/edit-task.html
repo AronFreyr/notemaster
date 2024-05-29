@@ -1,0 +1,80 @@
+{% extends 'taskmaster/base.html' %}
+{% load static %}
+
+{% block title %} Edit Task {% endblock title %}
+
+{% block head_css_page %}
+    <link rel="stylesheet" type="text/css" href="{% static 'taskmaster/css/edit-task.css' %}" />
+{% endblock head_css_page %}
+
+{% block content %}
+
+<div class="container">
+    <h1>Editing a Task</h1>
+    <div class="row">
+        <div class="col-sm-2">
+            <!-- Tags that are currently associated with the document -->
+            <div class="sidebar-module">
+                {% block tags %} {% endblock tags %}
+            </div>
+            <form action="{% url 'taskmaster:edit_task' task.id %}" method="post" id="id-form-change-task-details">
+                {% csrf_token %}
+                List:
+                <select id="list-dropdown" name="name_list_dropdown">
+                    {% for list in task.task_board.tasklist_set.all %}
+                        <option value="{{list.list_name}}" {% if list.list_name == task.task_list.list_name %} selected {% endif %}>
+                            {{ list.list_name }}</option>
+                    {% endfor %}
+                </select>
+                Difficulty: <input type="number" id="id-difficulty-number" name="name_task_difficulty" value="{{task.task_difficulty}}">
+                Importance: <input type="number" id="id-importance-number" name="name_task_importance" value="{{task.task_importance}}">
+                Assigned To: <input type="text" id="id-assignee" name="name_task_assigned_to" value="{{ task.task_assigned_to }}">
+                <input type="submit" value="Submit">
+            </form>
+
+        </div>
+
+        <div class="col-sm-8">
+            <form action="{% url 'taskmaster:edit_task' task.id %}" method="post" id="id-form-change-task-text">
+                {% csrf_token %}
+                <div id="id-task-name">
+                    <textarea id="id-textarea-change-task-name" form="id-form-change-task-text"
+                    name="name_textarea_edit_task_name">{{ task.document_name }}</textarea>
+                </div>
+
+                <div id="id-task-text">
+                    <textarea id="id-textarea-change-task-text" form="id-form-change-task-text"
+                    name="name_textarea_edit_task_text">{{ task.document_text }}</textarea>
+                </div>
+                <div id="div-container-edit-task-submit-button">
+                    <label for="input-edit-document-text"></label>
+                    <input type="submit" value="Submit">
+                </div>
+            </form>
+
+        </div>
+        <!-- Edit and delete buttons to the right side -->
+        <div class="col-sm-2">
+            {% block add_tag %} {% endblock add_tag %}
+            {% block delete_button %} {% endblock delete_button %}
+            <div class="delete-task-container">
+                 <form action="{% url 'taskmaster:delete_task' task.id %}" method="post">
+                    {% csrf_token %}
+                        <div>
+                            <input type="hidden" name="object_type" value="task">
+                            <input type="hidden" name="action_type" value="delete">
+                            <input type="hidden" name="currently_viewed_doc" value="{{ task.document_name }}">
+                            <button type="submit" class="btn btn-danger" value="Delete Task">Delete Task</button>
+                        </div>
+                </form>
+            </div>
+            <div class="assigned-board">
+
+                <p>Board: <a href="{% url 'taskmaster:display_board' task.task_board.id %}">
+                    {{ task.task_board.board_name }}</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

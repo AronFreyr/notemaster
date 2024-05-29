@@ -1,0 +1,73 @@
+{% extends 'taskmaster/base.html' %}
+{% load static %}
+
+{% block title %} Display Board {% endblock title %}
+
+{% block head_css_page %}
+    <link rel="stylesheet" type="text/css" href="{% static 'taskmaster/css/display-task-board.css' %}" />
+{% endblock head_css_page %}
+
+{% block content %}
+{% if board %}
+<h1>{{ board.board_name }}</h1>
+<div class="container">
+
+    <div class="row board-list-container">
+        {% for board_list in board_lists %}
+            <div class="col-md-3">
+                <div class="task-list-container">
+                    <div class="list-top">
+                        {{ board_list.list_name }}
+                        <form action="{% url 'taskmaster:delete_list' board_list.id %}" method="post" enctype="multipart/form-data">
+                                {% csrf_token %}
+                            <button class="close delete-list-button">
+                                <span style="color:red; font-size:20pt;">&times;</span>
+                            </button>
+                        </form>
+                    </div>
+                    {% for task in board_list.task_set.all %}
+                    <div class="task-card">
+                        <ul>
+                            <li><a href="{% url 'taskmaster:display_task' task.id %}">
+                                {{ task.document_name }}</a></li>
+                            <div class="reorder-buttons-container">
+                                <form action="{% url 'taskmaster:display_board' board.id %}" method="post" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                    <input type="hidden" name="task_to_move" value="{{ task.id }}">
+                                    <button class="close" name="move_task_down">
+                                        <span style="color:red; font-size:10pt;">&#x2B07;</span>
+                                    </button>
+                                    <button class="close" name="move_task_up">
+                                        <span style="color:red; font-size:10pt;">&#x2B06;</span>
+                                    </button>
+                                </form>
+                            </div>
+
+                        </ul>
+                    </div>
+                    {% endfor %}
+                    <div class="add-task-container">
+                        <form class="form-inline" action="{% url 'taskmaster:display_board' board.id %}" method="post"
+                              enctype="multipart/form-data">
+
+                            <input type="hidden" name="currently_viewed_task_list" value="{{ board_list.list_name }}">
+                            {% csrf_token %}
+                            {{ create_task_form }}
+                            <input class="btn btn-secondary btn-sm" type="submit" value="Add Task">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+        <div class="col-md-4">
+            <form action="{% url 'taskmaster:display_board' board.id %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ create_board_list_form }}
+                <input type="submit" value="Add List">
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endif %}
+{% endblock content %}

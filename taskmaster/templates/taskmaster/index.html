@@ -1,0 +1,53 @@
+{% extends 'taskmaster/base.html' %}
+{% load static %}
+
+{% block title %} HOME {% endblock title %}
+{% block nav-style %}mkt-nav{% endblock nav-style %}
+{% block head_css_page %}
+    <link rel="stylesheet" type="text/css" href="{% static 'taskmaster/css/index.css' %}" />
+{% endblock head_css_page %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <h3>Backlog</h3>
+            {% for task in backlog %}
+                {% include 'taskmaster/snippets/task-queue-snippet.html' %}
+            {% endfor %}
+        </div>
+        <div class="col-md-4">
+            <h3>In Progress</h3>
+            {% for task in in_progress %}
+                {% include 'taskmaster/snippets/task-queue-snippet.html' %}
+            {% endfor %}
+        </div>
+        <div class="col-md-4">
+            <h3>Blocked</h3>
+            {% for task in blocked %}
+                {% include 'taskmaster/snippets/task-queue-snippet.html' %}
+            {% endfor %}
+        </div>
+        <div class="col-md-4">
+            <h3>Testing</h3>
+            {% for task in testing %}
+                {% include 'taskmaster/snippets/task-queue-snippet.html' %}
+            {% endfor %}
+        </div>
+        <div class="col-md-4">
+            <h3>Done</h3>
+            {% for task in done %}
+                {% include 'taskmaster/snippets/task-queue-snippet.html' %}
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            {% for board in boards %}
+                <a href="{% url 'taskmaster:display_board' board.id %}">{{ board.board_name }}</a>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock content %}
