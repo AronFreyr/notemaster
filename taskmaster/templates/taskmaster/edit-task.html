@@ -73,6 +73,30 @@
                 <p>Board: <a href="{% url 'taskmaster:display_board' task.task_board.id %}">
                     {{ task.task_board.board_name }}</a></p>
             </div>
+            <div class="connected-tasks">
+                <form action="{% url 'taskmaster:edit_task' task.id %}" method="post" id="id-form-change-task-connections">
+                    {% csrf_token %}
+                    <label for="previous-task-dropdown">Previous task:</label>
+                    <select id="previous-task-dropdown" name="name_previous_task_dropdown" class="change-tasks">
+                        {% for prev_task in tasks_in_list %}
+                            <option value="{{prev_task.document_name}}"
+                                    {% if prev_task.document_name == task.previous_task.document_name %} selected {% endif %}>
+                                {{ prev_task.document_name }}</option>
+                        {% endfor %}
+                    </select>
+
+                     <label for="next-task-dropdown">Next task:</label>
+                    <select id="next-task-dropdown" name="name_next_task_dropdown" class="change-tasks">
+                        {% for next_task in tasks_in_list %}
+                            <option value="{{next_task.document_name}}"
+                                    {% if next_task.document_name == task.next_task.document_name %} selected {% endif %}>
+                                {{ next_task.document_name }}</option>
+                        {% endfor %}
+                    </select>
+
+                    <input type="submit" value="Submit">
+                </form>
+            </div>
         </div>
     </div>
 </div>

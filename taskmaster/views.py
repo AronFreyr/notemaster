@@ -5,6 +5,7 @@ from django.shortcuts import render, redirect, reverse
 from notes.models import Document
 from taskmaster.models import TaskBoard, TaskList, Task
 from taskmaster.forms import AddBoardForm, CreateTaskListForm, CreateTaskForm, CreateTaskMiniForm
+from taskmaster import services
 
 @require_safe
 @login_required
@@ -49,8 +50,6 @@ def create_board(request):
 def display_board(request, board_id):
     board = TaskBoard.objects.get(id=board_id)
     board_lists = list(board.tasklist_set.all())
-    for board_list in board_lists:
-        print(board_list.get_all_tasks_in_list_by_custom_order())
     if request.method == 'GET':
 
         return render(request, 'taskmaster/display-task-board.html', {'board': board,
@@ -106,49 +105,13 @@ def display_board(request, board_id):
                 new_task.save()
 
         if 'move_task_up' in request.POST:
-            print('task should be moved up')
             task_to_move_id = request.POST['task_to_move']
             task_to_move = Task.objects.get(id=task_to_move_id)
-            print(task_to_move.document_name)
-            if task_to_move.previous_task:  # If it is not the top (oldest) task.
-                prev_task = task_to_move.previous_task
-                prev_prev_task = prev_task.previous_task
-                if prev_prev_task:
-                    prev_prev_task.next_task = task_to_move
-                    prev_prev_task.save()
-                next_next_task = task_to_move.next_task
-                if next_next_task:
-                    next_next_task.previous_task = prev_task
-                    next_next_task.save()
-                prev_task.next_task = task_to_move.next_task
-                task_to_move.next_task = prev_task
-                task_to_move.previous_task = prev_task.previous_task
-                prev_task.previous_task = task_to_move
-                prev_task.save()
-                task_to_move.save()
+            moved_task = services.move_task_up(task_to_move)
         if 'move_task_down' in request.POST:
-            print('task should be moved down')
             task_to_move_id = request.POST['task_to_move']
             task_to_move = Task.objects.get(id=task_to_move_id)
-            print(task_to_move.document_name)
-            if task_to_move.next_task:  # If it is not the bottom (newest) task.
-                #prev_task = task_to_move.previous_task
-                prev_task = task_to_move
-                task_to_move = task_to_move.next_task
-                prev_prev_task = prev_task.previous_task
-                if prev_prev_task:
-                    prev_prev_task.next_task = task_to_move
-                    prev_prev_task.save()
-                next_next_task = task_to_move.next_task
-                if next_next_task:
-                    next_next_task.previous_task = prev_task
-                    next_next_task.save()
-                prev_task.next_task = task_to_move.next_task
-                task_to_move.next_task = prev_task
-                task_to_move.previous_task = prev_task.previous_task
-                prev_task.previous_task = task_to_move
-                prev_task.save()
-                task_to_move.save()
+            moved_task = services.move_task_down(task_to_move)
 
         return render(request, 'taskmaster/display-task-board.html', {'board': board,
                                                                       'board_lists': board_lists,
@@ -173,7 +136,6 @@ def edit_task(request, task_id):
         if 'name_textarea_edit_task_name' in request.POST:
             new_task_name = request.POST['name_textarea_edit_task_name']
             task.document_name = new_task_name
-            task_name = new_task_name
 
         if 'name_task_difficulty' in request.POST:
             new_difficulty = request.POST['name_task_difficulty']
@@ -203,6 +165,13 @@ def edit_task(request, task_id):
                 else:
                     prev_task.next_task = None
                     prev_task.save()
+            else:
+                # If there is no previous task but there is a next task then that next task must change its
+                # previous task to None.
+                next_task = task.next_task
+                if next_task:
+                    next_task.previous_task = None
+                    next_task.save()
             task.task_list = new_task_list
             # The task that used to be at the end of the new list.
             old_last_task = new_task_list.task_set.filter(next_task=None, task_list=new_task_list).last()
@@ -216,12 +185,34 @@ def edit_task(request, task_id):
                 task.next_task = None
                 task.previous_task = None
 
+        if 'name_previous_task_dropdown' in request.POST:
+            new_prev_task_name = request.POST['name_previous_task_dropdown']
+
+            if new_prev_task_name != 'None':
+                new_prev_task = Task.objects.get(document_name=new_prev_task_name, task_list=task.task_list)
+                if new_prev_task != task.previous_task:
+                    task.previous_task = new_prev_task
+            else:
+                task.previous_task = None
+
+        if 'name_next_task_dropdown' in request.POST:
+            new_next_task_name = request.POST['name_next_task_dropdown']
+            if new_next_task_name != 'None':
+                new_next_task = Task.objects.get(document_name=new_next_task_name, task_list=task.task_list)
+                if new_next_task != task.next_task:
+                    task.next_task = new_next_task
+            else:
+                task.next_task = None
+
 
         task.save()
 
         return redirect(reverse('taskmaster:display_task', args=(task_id, )))
 
-    return render(request, 'taskmaster/edit-task.html', {'task': task})
+    all_tasks_in_same_list = task.task_list.get_all_tasks_in_list()
+    all_tasks_in_same_list.append({'document_name': None})
+    return render(request, 'taskmaster/edit-task.html', {'task': task,
+                                                         'tasks_in_list': all_tasks_in_same_list})
 
 
 @login_required
