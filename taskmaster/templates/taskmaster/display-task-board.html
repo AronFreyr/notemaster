@@ -1,7 +1,7 @@
 {% extends 'taskmaster/base.html' %}
 {% load static %}
 
-{% block title %} Display Board {% endblock title %}
+{% block title %} {{ board.board_name }} {% endblock title %}
 
 {% block head_css_page %}
     <link rel="stylesheet" type="text/css" href="{% static 'taskmaster/css/display-task-board.css' %}" />
@@ -9,10 +9,9 @@
 
 {% block content %}
 {% if board %}
-<h1><a href="{% url 'taskmaster:edit_board' board.id %}">
-                                {{ board.board_name }}</a></h1>
+<a href="{% url 'taskmaster:index' %}">Go home</a>
+<h1><a href="{% url 'taskmaster:edit_board' board.id %}">{{ board.board_name }}</a></h1>
 <div class="container">
-
     <div class="row board-list-container">
         {% if orphan_tasks %}
         <div class="col-md-3">

@@ -39,7 +39,7 @@ def index(request):
     # turtle_graphics_tests.draw_document_map()
     #test_create_graph()
 
-    most_recent_docs = Document.objects.all().order_by('-id')[:10]
+    most_recent_docs = Document.objects.exclude(tagmap__tag__meta_tag_type='task').order_by('-id')[:10]
 
     return render(request, 'notes/index.html',
                   {'programming_portal_tags': programming_portal_tags,

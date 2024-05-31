@@ -106,6 +106,8 @@ def display_board(request, board_id):
                 new_task.previous_task = last_task
                 new_task.save()
 
+            handle_new_tag('Task', new_doc=new_task, tag_creator=request.user, tag_type=('meta', 'task'))
+
         if 'move_task_up' in request.POST:
             task_to_move_id = request.POST['task_to_move']
             task_to_move = Task.objects.get(id=task_to_move_id)

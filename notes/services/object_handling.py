@@ -1,7 +1,7 @@
 from ..models import Tag, Document, Tagmap, ImageTagMap, Image
 
 
-def handle_new_tag(new_tags, tag_creator=None, new_doc=None, new_image=None):
+def handle_new_tag(new_tags, tag_creator=None, new_doc=None, new_image=None, tag_type:tuple=None):
     # TODO: Update documentation for multi tag support and ImageTagMaps.
     # TODO: Create functionality for DocumentTagMaps.
     """
@@ -22,7 +22,14 @@ def handle_new_tag(new_tags, tag_creator=None, new_doc=None, new_image=None):
             current_tag = Tag.objects.get(tag_name=new_tag)
         else:  # Create the new tag and save it in the database.
             if new_tag != '' and new_tag != '"':
-                current_tag = Tag(tag_name=new_tag, tag_created_by=tag_creator, tag_last_modified_by=tag_creator)
+                if tag_type:
+                    input_tag_type = tag_type[0]
+                    input_meta_tag_type = tag_type[1]
+                else:
+                    input_tag_type = 'normal'
+                    input_meta_tag_type = 'none'
+                current_tag = Tag(tag_name=new_tag, tag_created_by=tag_creator, tag_last_modified_by=tag_creator,
+                                  tag_type=input_tag_type, meta_tag_type=input_meta_tag_type)
                 current_tag.save()
         if new_doc:  # If we are adding a tag to a newly created document.
             # If the tagmap for the newly created document and the tag does not exist.
