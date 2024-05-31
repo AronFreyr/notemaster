@@ -3,7 +3,7 @@ from taskmaster.models import Task
 
 class AddBoardForm(forms.Form):
 
-    board_name = forms.CharField(label='Input board name here:')
+    board_name = forms.CharField(label='Input name of new board here:')
 
     class Meta:
         fields = ['board_name']

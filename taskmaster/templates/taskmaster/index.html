@@ -10,12 +10,20 @@
 {% block content %}
 <div class="container">
     <div class="row">
+        <div class="col-md-3 create-board-container">
+            <form action="{% url 'taskmaster:index'%}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ create_board_form }}
+                <input type="submit" value="Submit">
+            </form>
+        </div>
+    </div>
+    <div class="row">
         {% for board in boards %}
             <div class="col-md-4">
                 {% include 'taskmaster/snippets/board-card-snippet.html' %}
             </div>
-            {% endfor %}
-        </div>
+        {% endfor %}
     </div>
 </div>
 {% endblock content %}

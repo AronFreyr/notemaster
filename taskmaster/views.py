@@ -11,21 +11,14 @@ from taskmaster import services
 from notes.forms import AddTagForm
 from notes.services.object_handling import handle_new_tag
 
-@require_safe
 @login_required
 def index(request):
 
     boards = TaskBoard.objects.all()
-    return render(request, 'taskmaster/index.html',
-                  {'boards': boards})
-
-
-@login_required
-def create_board(request):
     if request.method == 'GET':
-        return render(request, 'taskmaster/create-task-board.html',
-                      {'create_board_form': AddBoardForm()}
-        )
+        return render(request, 'taskmaster/index.html',
+                      {'boards': boards,
+                              'create_board_form': AddBoardForm()})
     if request.method == 'POST':
         form = AddBoardForm(request.POST)
         if form.is_valid():
@@ -34,12 +27,14 @@ def create_board(request):
                 new_board = TaskBoard(board_name=board_name, board_created_by=request.user,
                                       board_last_modified_by=request.user)
                 new_board.save()
-                return redirect(reverse('taskmaster:display_board', args=(board_name, )))
+                return redirect(reverse('taskmaster:display_board', args=(new_board.id,)))
             else:
-                #TODO: decide how to handle when name is already taken?
+                # TODO: decide how to handle when name is already taken?
                 pass
 
-    return redirect(reverse('taskmaster:index'))
+        return render(request, 'taskmaster/index.html',
+                      {'boards': boards,
+                              'create_board_form': AddBoardForm()})
 
 
 @login_required
@@ -207,7 +202,7 @@ def edit_task(request, task_id):
             # The new list the task belongs to.
             new_task_list = TaskList.objects.get(list_name=new_list, list_board=task.task_board)
             prev_task = task.previous_task
-            if new_list != old_task_list.list_name:
+            if new_task_list != old_task_list:
                 if prev_task:  # If there exists a previous task (i.e. more than one task exists)
                     next_task = task.next_task
                     if next_task:  # If there exists a next task.

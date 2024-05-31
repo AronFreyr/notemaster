@@ -5,7 +5,6 @@ from . import views
 app_name = 'taskmaster'
 urlpatterns = [
     path('', views.index, name='index'),
-    path('createboard/', views.create_board, name='create_board'),
     path('displayboard/<int:board_id>/', views.display_board, name='display_board'),
     path('editboard/<int:board_id>/', views.edit_board, name='edit_board'),
     path('displaytask/<int:task_id>/', views.display_task, name='display_task'),
