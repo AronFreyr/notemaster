@@ -3,7 +3,7 @@ from .models import Tag, Image
 
 
 class AddTagForm(forms.ModelForm):
-    tag_name = forms.CharField(label='Input new tag here:')  # The tag to be added.
+    tag_name = forms.CharField(label='Input new tag here:', required=False)  # The tag to be added.
     current_document = forms.CharField(widget=forms.HiddenInput(),
                                        required=False)  # The document that the tag gets added to.
     current_image = forms.CharField(widget=forms.HiddenInput(),

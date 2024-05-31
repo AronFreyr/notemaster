@@ -1,27 +1,23 @@
 from django.views.decorators.http import require_safe
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, reverse
+from django.utils import timezone
+from datetime import datetime
 
 from notes.models import Document
 from taskmaster.models import TaskBoard, TaskList, Task
 from taskmaster.forms import AddBoardForm, CreateTaskListForm, CreateTaskForm, CreateTaskMiniForm
 from taskmaster import services
+from notes.forms import AddTagForm
+from notes.services.object_handling import handle_new_tag
 
 @require_safe
 @login_required
 def index(request):
 
-    tasks = Document.objects.filter(tagmap__tag__tag_name='taskmaster_task').all()
-    backlog = tasks.filter(tagmap__tag__tag_name='taskmaster_backlog').all()
-    in_progress = tasks.filter(tagmap__tag__tag_name='taskmaster_in_progress').all()
-
     boards = TaskBoard.objects.all()
-
     return render(request, 'taskmaster/index.html',
-                  {'tasks': tasks,
-                          'backlog': backlog,
-                          'in_progress': in_progress,
-                   'boards': boards})
+                  {'boards': boards})
 
 
 @login_required
@@ -50,12 +46,15 @@ def create_board(request):
 def display_board(request, board_id):
     board = TaskBoard.objects.get(id=board_id)
     board_lists = list(board.tasklist_set.all())
+    tasks_without_lists = board.task_set.filter(task_board=board, task_list=None)
+
     if request.method == 'GET':
 
         return render(request, 'taskmaster/display-task-board.html', {'board': board,
                                                                        'board_lists': board_lists,
+                                                                       'orphan_tasks': tasks_without_lists,
                                                                        'create_board_list_form': CreateTaskListForm(),
-                                                                      'create_task_form': CreateTaskMiniForm()})
+                                                                       'create_task_form': CreateTaskMiniForm()})
 
     if request.method == 'POST':
         list_form = CreateTaskListForm(request.POST)
@@ -63,14 +62,15 @@ def display_board(request, board_id):
         if list_form.is_valid():
             list_name = list_form.cleaned_data.get('list_name')
             if not TaskList.objects.filter(list_name=list_name, list_board=board).exists():
-                last_list = board.tasklist_set.all().last()
+                last_list = board.get_last_task_list_in_custom_order()
 
                 new_list = TaskList(list_name=list_name, list_board=board)
+                new_list.save()
                 if last_list:
                     last_list.next_list = new_list
+                    last_list.save()
                     new_list.previous_list = last_list
                     new_list.save()
-                    last_list.save()
                 else:
                     new_list.save()
 
@@ -88,13 +88,15 @@ def display_board(request, board_id):
             task_importance = task_form.cleaned_data.get('task_importance')
             task_difficulty = task_form.cleaned_data.get('task_difficulty')
             task_assigned_to = task_form.cleaned_data.get('task_assigned_to')
+            if not task_assigned_to:
+                task_assigned_to = request.user.username
 
             new_task = Task(document_name=task_name, document_text=task_text, task_difficulty=task_difficulty,
                             task_importance=task_importance, task_assigned_to=task_assigned_to,
                             task_list=current_list, task_board=board,
                             document_created_by=request.user, document_last_modified_by=request.user)
 
-            task_list = current_list.get_all_tasks_in_list_by_custom_order()
+            task_list = current_list.get_all_tasks_in_list_in_custom_order()
             new_task.save()  # Save the task immediately so that it exists in the database for last_task.
 
             if task_list:
@@ -113,11 +115,34 @@ def display_board(request, board_id):
             task_to_move = Task.objects.get(id=task_to_move_id)
             moved_task = services.move_task_down(task_to_move)
 
+        if 'move_list_left' in request.POST:
+            list_to_move_id = request.POST['list_to_move']
+            list_to_move = TaskList.objects.get(id=list_to_move_id)
+            moved_list = services.move_list_left(list_to_move)
+
+        if 'move_list_right' in request.POST:
+            list_to_move_id = request.POST['list_to_move']
+            list_to_move = TaskList.objects.get(id=list_to_move_id)
+            moved_list = services.move_list_right(list_to_move)
+
         return render(request, 'taskmaster/display-task-board.html', {'board': board,
                                                                       'board_lists': board_lists,
+                                                                      'orphan_tasks': tasks_without_lists,
                                                                       'create_board_list_form': CreateTaskListForm(),
                                                                       'create_task_form': CreateTaskMiniForm()})
 
+@login_required
+def edit_board(request, board_id):
+    board = TaskBoard.objects.get(id=board_id)
+    if request.method == 'POST':
+        if 'name_textarea_edit_board_name' in request.POST:
+            new_board_name = request.POST['name_textarea_edit_board_name']
+            if new_board_name != '':
+                board.board_name = new_board_name
+                board.save()
+
+        return redirect(reverse('taskmaster:display_board', args=(board_id, )))
+    return render(request, 'taskmaster/edit-task-board.html', {'board': board})
 
 @login_required
 def display_task(request, task_id):
@@ -129,9 +154,16 @@ def edit_task(request, task_id):
     task = Task.objects.get(id=task_id)
     if request.method == 'POST':
 
+        add_tag_form = AddTagForm(request.POST)
+        if add_tag_form.is_valid():
+            tag = add_tag_form.cleaned_data.get('tag_name')
+            if tag != '':
+                handle_new_tag(tag, new_doc=task, tag_creator=request.user)
+
         if 'name_textarea_edit_task_text' in request.POST:
             new_task_text = request.POST['name_textarea_edit_task_text']
-            task.document_text = new_task_text
+            if new_task_text != task.document_text:
+                task.document_text = new_task_text
 
         if 'name_textarea_edit_task_name' in request.POST:
             new_task_name = request.POST['name_textarea_edit_task_name']
@@ -149,45 +181,63 @@ def edit_task(request, task_id):
             new_assignee = request.POST['name_task_assigned_to']
             task.task_assigned_to = new_assignee
 
+        if 'name_parent_task_dropdown' in request.POST:
+            new_parent_task_name = request.POST['name_parent_task_dropdown']
+            new_parent_task = Task.objects.get(document_name=new_parent_task_name, task_board=task.task_board)
+            if task.parent_task:
+                if task.parent_task != new_parent_task and task != new_parent_task and new_parent_task.parent_task != task:
+                    task.parent_task = new_parent_task
+            else:
+                if new_parent_task != task and new_parent_task.parent_task != task:
+                    task.parent_task = new_parent_task
+
+        if 'name-due-date-picker' in request.POST:
+            due_date = request.POST['name-due-date-picker']
+            if due_date:
+                due_date = datetime.strptime(due_date, '%Y-%m-%d')
+                due_date_with_timezone = timezone.make_aware(due_date, timezone.get_current_timezone(), True)
+                if due_date_with_timezone != task.task_deadline:
+                    task.task_deadline = due_date_with_timezone
+
         if 'name_list_dropdown' in request.POST:
             new_list = request.POST['name_list_dropdown']
             old_task_list = task.task_list  # The old list that the task used to belong to.
             # The new list the task belongs to.
             new_task_list = TaskList.objects.get(list_name=new_list, list_board=task.task_board)
             prev_task = task.previous_task
-            if prev_task:  # If there exists a previous task (i.e. more than one task exists)
-                next_task = task.next_task
-                if next_task:  # If there exists a next task.
-                    prev_task.next_task = next_task
-                    next_task.previous_task = prev_task
-                    next_task.save()
-                    prev_task.save()
+            if new_list != old_task_list.list_name:
+                if prev_task:  # If there exists a previous task (i.e. more than one task exists)
+                    next_task = task.next_task
+                    if next_task:  # If there exists a next task.
+                        prev_task.next_task = next_task
+                        next_task.previous_task = prev_task
+                        next_task.save()
+                        prev_task.save()
+                    else:
+                        prev_task.next_task = None
+                        prev_task.save()
                 else:
-                    prev_task.next_task = None
-                    prev_task.save()
-            else:
-                # If there is no previous task but there is a next task then that next task must change its
-                # previous task to None.
-                next_task = task.next_task
-                if next_task:
-                    next_task.previous_task = None
-                    next_task.save()
-            task.task_list = new_task_list
-            # The task that used to be at the end of the new list.
-            old_last_task = new_task_list.task_set.filter(next_task=None, task_list=new_task_list).last()
-            if old_last_task:
-                if old_last_task != task:
-                    old_last_task.next_task = task
-                    task.previous_task = old_last_task
+                    # If there is no previous task but there is a next task then that next task must change its
+                    # previous task to None.
+                    next_task = task.next_task
+                    if next_task:
+                        next_task.previous_task = None
+                        next_task.save()
+                task.task_list = new_task_list
+                # The task that used to be at the end of the new list.
+                old_last_task = new_task_list.task_set.filter(next_task=None, task_list=new_task_list).last()
+                if old_last_task:
+                    if old_last_task != task:
+                        old_last_task.next_task = task
+                        task.previous_task = old_last_task
+                        task.next_task = None
+                        old_last_task.save()
+                else:
                     task.next_task = None
-                    old_last_task.save()
-            else:
-                task.next_task = None
-                task.previous_task = None
+                    task.previous_task = None
 
         if 'name_previous_task_dropdown' in request.POST:
             new_prev_task_name = request.POST['name_previous_task_dropdown']
-
             if new_prev_task_name != 'None':
                 new_prev_task = Task.objects.get(document_name=new_prev_task_name, task_list=task.task_list)
                 if new_prev_task != task.previous_task:
@@ -209,10 +259,14 @@ def edit_task(request, task_id):
 
         return redirect(reverse('taskmaster:display_task', args=(task_id, )))
 
-    all_tasks_in_same_list = task.task_list.get_all_tasks_in_list()
-    all_tasks_in_same_list.append({'document_name': None})
+    if task.task_list:
+        all_tasks_in_same_list = task.task_list.get_all_tasks_in_list()
+        all_tasks_in_same_list.append({'document_name': None})
+    else:
+        all_tasks_in_same_list = None
     return render(request, 'taskmaster/edit-task.html', {'task': task,
-                                                         'tasks_in_list': all_tasks_in_same_list})
+                                                         'tasks_in_list': all_tasks_in_same_list,
+                                                         'add_tag_form': AddTagForm()})
 
 
 @login_required
@@ -236,5 +290,20 @@ def delete_list(request, list_id):
     list_to_delete = TaskList.objects.get(id=list_id)
     board= list_to_delete.list_board
     list_board_id = board.id
+
+    next_list = list_to_delete.next_list
+    prev_list = list_to_delete.previous_list
+    if next_list and prev_list:
+        prev_list.next_list = next_list
+        next_list.previous_list = prev_list
+        next_list.save()
+        prev_list.save()
+
     list_to_delete.delete()
     return redirect(reverse('taskmaster:display_board', args=(list_board_id,)))
+
+@login_required
+def delete_board(request, board_id):
+    board = TaskBoard.objects.get(id=board_id)
+    board.delete()
+    return redirect(reverse('taskmaster:index'))

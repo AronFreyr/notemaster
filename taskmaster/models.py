@@ -22,6 +22,13 @@ class Task(Document):
     previous_task = models.ForeignKey('Task', on_delete=models.SET_NULL, blank=True, null=True,
                                       related_name='previous_task_in_list')
 
+    # A task that this task depends upon. It can be null and replaced.
+    parent_task = models.ForeignKey('Task', on_delete=models.SET_NULL, blank=True, null=True,
+                                    related_name='parent_task_of_task')
+
+    # Deadline for a task. It can be null.
+    task_deadline = models.DateTimeField(blank=True, null=True)
+
 
 class TaskBoard(models.Model):
     """
@@ -35,6 +42,25 @@ class TaskBoard(models.Model):
                                             blank=True, null=True)
     board_last_modified_by = models.ForeignKey(User, on_delete=models.SET_NULL,
                                                related_name='board_last_modified_by', blank=True, null=True)
+
+    def get_all_lists_in_board_in_custom_order(self):
+        task_list = self.tasklist_set.filter(previous_list=None).first()
+        if not task_list:
+            return
+        task_list_list = [task_list]
+        while task_list.next_list:
+            task_list_list.append(task_list.next_list)
+            task_list = task_list.next_list
+        return task_list_list
+
+    def get_first_task_list_in_custom_order(self):
+        return self.tasklist_set.filter(previous_list=None).first()
+
+    def get_last_task_list_in_custom_order(self):
+        return self.tasklist_set.filter(next_list=None).first()
+
+    def __str__(self):
+        return self.board_name
 
 
 class TaskList(models.Model):
@@ -56,6 +82,9 @@ class TaskList(models.Model):
     previous_list = models.ForeignKey('TaskList', on_delete=models.SET_NULL, blank=True, null=True,
                                       related_name='previous_list_in_board')
 
+    def __str__(self):
+        return self.list_name
+
     def get_all_tasks_in_list(self):
         return [task for task in self.task_set.all()]
 
@@ -68,7 +97,9 @@ class TaskList(models.Model):
     def get_all_tasks_in_list_by_importance(self):
         return [task for task in self.task_set.all().order_by('task_importance')][::-1]
 
-    def get_all_tasks_in_list_by_custom_order(self):
+    def get_all_tasks_in_list_in_custom_order(self):
+
+        # There should only be one task in the list with previous_task=None, that would be the first task.
         task = self.task_set.filter(previous_task=None).first()
         if not task:
             return

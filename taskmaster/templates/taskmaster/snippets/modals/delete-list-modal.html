@@ -1,0 +1,31 @@
+<!-- Modal for Deleting Tasks. -->
+<div class="modal fade" id="deleteListModal_{{board_list.id}}"
+     tabindex="-1" role="dialog"
+     aria-labelledby="deleteListModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteDListModalLabel">Delete List</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you wish to delete the entire list and all tasks in it? This action can not be undone!</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <form action="{% url 'taskmaster:delete_list' board_list.id %}" method="post">
+                    {% csrf_token %}
+                    <div>
+                        <input type="hidden" name="object_type" value="task">
+                        <input type="hidden" name="action_type" value="delete">
+                        <input type="hidden" name="currently_viewed_list" value="{{ board_list.id }}">
+                        <button type="submit" class="btn btn-danger" value="Delete List">Delete List</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -9,23 +9,83 @@
 
 {% block content %}
 {% if board %}
-<h1>{{ board.board_name }}</h1>
+<h1><a href="{% url 'taskmaster:edit_board' board.id %}">
+                                {{ board.board_name }}</a></h1>
 <div class="container">
 
     <div class="row board-list-container">
-        {% for board_list in board_lists %}
+        {% if orphan_tasks %}
+        <div class="col-md-3">
+            <div class="task-list-container">
+                <div class="list-top">
+                    <div class="list-name">
+                        Tasks without a list
+                    </div>
+                    <div class="orphan-tasks">
+                        {% for task in orphan_tasks %}
+                        <div class="task-card">
+                            <ul>
+                                <li><a href="{% url 'taskmaster:display_task' task.id %}">
+                                    {{ task.document_name }}</a></li>
+                                {% comment %}
+                                <div class="reorder-buttons-container">
+                                    <form action="{% url 'taskmaster:display_board' board.id %}" method="post" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                        <input type="hidden" name="task_to_move" value="{{ task.id }}">
+                                        <button class="close" name="move_task_down">
+                                            <span style="color:red; font-size:10pt;">&#x2B07;</span>
+                                        </button>
+                                        <button class="close" name="move_task_up">
+                                            <span style="color:red; font-size:10pt;">&#x2B06;</span>
+                                        </button>
+                                    </form>
+                                </div>
+                                {% endcomment %}
+
+                            </ul>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        {% for board_list in board.get_all_lists_in_board_in_custom_order %}
             <div class="col-md-3">
                 <div class="task-list-container">
                     <div class="list-top">
-                        {{ board_list.list_name }}
+                        <div class="list-name">
+                            {{ board_list.list_name }}
+                        </div>
+                        <div class="move-list-buttons-container">
+                            <form action="{% url 'taskmaster:display_board' board.id %}" method="post" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <input type="hidden" name="list_to_move" value="{{ board_list.id }}">
+                                <button class="close" name="move_list_right">
+                                    <span style="color:red; font-size:10pt;">&#x27A1;</span>
+                                </button>
+                                <button class="close" name="move_list_left">
+                                    <span style="color:red; font-size:10pt;">&#x2B05;</span>
+                                </button>
+                            </form>
+
+
+                        </div>
+
+                        {% comment %}
                         <form action="{% url 'taskmaster:delete_list' board_list.id %}" method="post" enctype="multipart/form-data">
                                 {% csrf_token %}
-                            <button class="close delete-list-button">
+                            <button class="close delete-list-button" data-toggle="modal" data-target="#deleteListModal">
                                 <span style="color:red; font-size:20pt;">&times;</span>
                             </button>
                         </form>
+                        {% endcomment %}
+                        <button class="close delete-list-button" data-toggle="modal" data-target="#deleteListModal_{{board_list.id}}">
+                            <span style="color:red; font-size:20pt;">&times;</span>
+                        </button>
+                        {% include 'taskmaster/snippets/modals/delete-list-modal.html' %}
                     </div>
-                    {% for task in board_list.task_set.all %}
+                    {% for task in board_list.get_all_tasks_in_list_in_custom_order %}
                     <div class="task-card">
                         <ul>
                             <li><a href="{% url 'taskmaster:display_task' task.id %}">

@@ -16,12 +16,34 @@
             <!-- Tags that are currently associated with the document -->
             <div class="sidebar-module">
                 {% block tags %} {% endblock tags %}
+                <h3>Tags</h3>
+                {% for tag in task.get_all_tags_sorted %}
+                    <div id="id-div-tag-container">
+                        <div class="div-tag-input-container">
+                            <div class="div-tag-name">
+                                <p>
+                                    <a href="{% url 'notes:display_tag' tag.tag_name %}">{{ tag.tag_name }}</a>
+                                    <span class="badge badge-light"> ({{ tag.get_nr_of_docs_with_tag }})</span>
+                                </p>
+                            </div>
+                            <div class="div-red-x-container">
+                                <!-- TODO: modal for confirmation when you press the button -->
+                                <button class="close" data-toggle="modal" data-target="#removeTagModal_{{tag.id}}">
+                                    <span style="color:red; font-size:20pt;">&times;</span>
+                                </button>
+                                {% with task as document %}
+                                {% include 'notes/snippets/modals/remove-tag-modal.html' %}
+                                {% endwith %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
             </div>
             <form action="{% url 'taskmaster:edit_task' task.id %}" method="post" id="id-form-change-task-details">
                 {% csrf_token %}
                 List:
                 <select id="list-dropdown" name="name_list_dropdown">
-                    {% for list in task.task_board.tasklist_set.all %}
+                    {% for list in task.task_board.get_all_lists_in_board_in_custom_order %}
                         <option value="{{list.list_name}}" {% if list.list_name == task.task_list.list_name %} selected {% endif %}>
                             {{ list.list_name }}</option>
                     {% endfor %}
@@ -29,6 +51,25 @@
                 Difficulty: <input type="number" id="id-difficulty-number" name="name_task_difficulty" value="{{task.task_difficulty}}">
                 Importance: <input type="number" id="id-importance-number" name="name_task_importance" value="{{task.task_importance}}">
                 Assigned To: <input type="text" id="id-assignee" name="name_task_assigned_to" value="{{ task.task_assigned_to }}">
+                <label for="parent-task-dropdown">Parent task:</label>
+                <select id="parent-task-dropdown" name="name_parent_task_dropdown" class="change-tasks">
+                    {% for some_task in task.task_board.task_set.all %}
+                        <option value="{{some_task.document_name}}"
+                                {% if some_task.document_name == task.parent_task.document_name %} selected {% endif %}>
+                            {{ some_task.document_name }}</option>
+                    {% endfor %}
+                </select>
+
+                <label for="id-due-date-picker">Pick a date</label>
+                <input id="id-due-date-picker" name="name-due-date-picker"
+                       type="date" {% if task.task_deadline %} value="{{ task.task_deadline }}" {% endif %}>
+
+                <div id="id-container-add-tag">
+                    <div>
+                        {{ add_tag_form.as_p }}
+                    </div>
+                </div>
+
                 <input type="submit" value="Submit">
             </form>
 
@@ -58,15 +99,21 @@
             {% block add_tag %} {% endblock add_tag %}
             {% block delete_button %} {% endblock delete_button %}
             <div class="delete-task-container">
+                {% comment %}
                  <form action="{% url 'taskmaster:delete_task' task.id %}" method="post">
                     {% csrf_token %}
-                        <div>
-                            <input type="hidden" name="object_type" value="task">
-                            <input type="hidden" name="action_type" value="delete">
-                            <input type="hidden" name="currently_viewed_doc" value="{{ task.document_name }}">
-                            <button type="submit" class="btn btn-danger" value="Delete Task">Delete Task</button>
-                        </div>
+                    <div>
+                        <input type="hidden" name="object_type" value="task">
+                        <input type="hidden" name="action_type" value="delete">
+                        <input type="hidden" name="currently_viewed_doc" value="{{ task.document_name }}">
+                        <button type="submit" class="btn btn-danger" value="Delete Task">Delete Task</button>
+                    </div>
                 </form>
+                {% endcomment %}
+                <button type="submit" class="btn btn-danger" data-toggle="modal" data-target="#deleteTaskModal">
+                    Delete Task
+                </button>
+                {% include 'taskmaster/snippets/modals/delete-task-modal.html' %}
             </div>
             <div class="assigned-board">
 

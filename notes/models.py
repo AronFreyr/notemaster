@@ -38,6 +38,7 @@ class Tag(models.Model):
 
     META_TAG_TYPE_CHOICES = (
         ('list', 'List'),
+        ('task', 'Task'),
         ('none', 'None')
     )
 

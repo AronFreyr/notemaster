@@ -21,8 +21,9 @@ def handle_new_tag(new_tags, tag_creator=None, new_doc=None, new_image=None):
         if Tag.objects.filter(tag_name=new_tag).exists():  # If the tag already exists.
             current_tag = Tag.objects.get(tag_name=new_tag)
         else:  # Create the new tag and save it in the database.
-            current_tag = Tag(tag_name=new_tag, tag_created_by=tag_creator, tag_last_modified_by=tag_creator)
-            current_tag.save()
+            if new_tag != '' and new_tag != '"':
+                current_tag = Tag(tag_name=new_tag, tag_created_by=tag_creator, tag_last_modified_by=tag_creator)
+                current_tag.save()
         if new_doc:  # If we are adding a tag to a newly created document.
             # If the tagmap for the newly created document and the tag does not exist.
             if not Tagmap.objects.filter(tag=current_tag, document=new_doc).exists():
