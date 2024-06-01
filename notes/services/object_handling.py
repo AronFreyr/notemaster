@@ -12,7 +12,8 @@ def handle_new_tag(new_tags, tag_creator=None, new_doc=None, new_image=None, tag
     tagmap as well.
     :return: nothing.
     """
-
+    if new_tags == '':
+        return
     # Tags are separated by a comma (,) but if there is a comma in the tag name then it can be escaped with this trick.
     new_tags = new_tags.replace('\,', 'replacecommahackfromhell')
     split_tags = new_tags.split(',')
