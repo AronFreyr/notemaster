@@ -157,8 +157,8 @@ STATIC_URL = '/static/'
 
 # Allows static files like bootstrap to be accessible outside the 'notes' app. This is needed for the login site.
 STATICFILES_DIRS = [
-    ('bootstrap', BASE_DIR + '/notes/static/notes/bootstrap/bootstrap_4'),
-    ('jquery', BASE_DIR + '/notes/static/notes/jquery'),
+    ('bootstrap', BASE_DIR + '/notemaster_core/static/notes/bootstrap/bootstrap_4'),
+    ('jquery', BASE_DIR + '/notemaster_core/static/notes/jquery'),
 ]
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
