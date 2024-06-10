@@ -39,7 +39,8 @@ class Tag(models.Model):
     META_TAG_TYPE_CHOICES = (
         ('list', 'List'),
         ('task', 'Task'),
-        ('none', 'None')
+        ('none', 'None'),
+        ('time measurement', 'Time Measurement'),
     )
 
     tag_created = models.DateTimeField(auto_now_add=True)

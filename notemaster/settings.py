@@ -52,10 +52,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'notemaster_core',
     'notes',
     'xml_converter',
     'taskmaster',
-    'notemaster_core',
+    'timemaster',
 ]
 
 MIDDLEWARE = [

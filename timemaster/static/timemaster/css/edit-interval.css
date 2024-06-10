@@ -1,0 +1,15 @@
+.change-intervals{
+    width: 150px;
+}
+
+.div-tag-input-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+#id-div-tag-container{
+    border: 1px solid black;
+    border-radius: 3px;
+    margin-bottom: 20px;
+}

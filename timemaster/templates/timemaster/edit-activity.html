@@ -1,0 +1,100 @@
+{% extends 'timemaster/base.html' %}
+{% load static %}
+
+{% block title %} Edit Activity {% endblock title %}
+
+{% block head_css_page %}
+    <link rel="stylesheet" type="text/css" href="{% static 'timemaster/css/edit-activity.css' %}" />
+{% endblock head_css_page %}
+
+{% block content %}
+
+<div class="container">
+    <h1>Editing an Activity</h1>
+    <div class="row">
+        <div class="col-sm-2">
+            <!-- Tags that are currently associated with the document -->
+            <div class="sidebar-module">
+                {% block tags %} {% endblock tags %}
+                <h3>Tags</h3>
+                {% for tag in activity.get_all_tags_sorted %}
+                    <div id="id-div-tag-container">
+                        <div class="div-tag-input-container">
+                            <div class="div-tag-name">
+                                <p>
+                                    <a href="{% url 'notes:display_tag' tag.tag_name %}">{{ tag.tag_name }}</a>
+                                    <span class="badge badge-light"> ({{ tag.get_nr_of_docs_with_tag }})</span>
+                                </p>
+                            </div>
+                            <div class="div-red-x-container">
+                                <!-- TODO: modal for confirmation when you press the button -->
+                                <button class="close" data-toggle="modal" data-target="#removeTagModal_{{tag.id}}">
+                                    <span style="color:red; font-size:20pt;">&times;</span>
+                                </button>
+                                {% with activity as document %}
+                                {% include 'notes/snippets/modals/remove-tag-modal.html' %}
+                                {% endwith %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <form action="{% url 'timemaster:edit_activity' activity.id %}" method="post" id="id-form-change-activity-details">
+                {% csrf_token %}
+
+                <div id="id-container-add-tag">
+                    <div>
+                        {{ add_tag_form.as_p }}
+                    </div>
+                </div>
+
+                <input type="submit" value="Submit">
+            </form>
+
+        </div>
+
+        <div class="col-sm-8">
+            <form action="{% url 'timemaster:edit_activity' activity.id %}" method="post" id="id-form-change-activity-text">
+                {% csrf_token %}
+                <div id="id-activity-name">
+                    <textarea id="id-textarea-change-activity-name" form="id-form-change-activity-text"
+                    name="name_textarea_edit_activity_name">{{ activity.document_name }}</textarea>
+                </div>
+
+                <div id="id-activity-text">
+                    <textarea id="id-textarea-change-activity-text" form="id-form-change-activity-text"
+                    name="name_textarea_edit_activity_text">{{ activity.document_text }}</textarea>
+                </div>
+                <div id="div-container-edit-activity-submit-button">
+                    <label for="input-edit-document-text"></label>
+                    <input type="submit" value="Submit">
+                </div>
+            </form>
+
+        </div>
+        <!-- Edit and delete buttons to the right side -->
+        <div class="col-sm-2">
+            {% block add_tag %} {% endblock add_tag %}
+            {% block delete_button %} {% endblock delete_button %}
+            <div class="delete-activity-container">
+                {% comment %}
+                 <form action="{% url 'timemaster:delete_activity' activity.id %}" method="post">
+                    {% csrf_token %}
+                    <div>
+                        <input type="hidden" name="object_type" value="activity">
+                        <input type="hidden" name="action_type" value="delete">
+                        <input type="hidden" name="currently_viewed_doc" value="{{ activity.document_name }}">
+                        <button type="submit" class="btn btn-danger" value="Delete Activity">Delete Activity</button>
+                    </div>
+                </form>
+                {% endcomment %}
+                <button type="submit" class="btn btn-danger" data-toggle="modal" data-target="#deleteActivityModal">
+                    Delete Activity
+                </button>
+                {% include 'timemaster/snippets/modals/delete-activity-modal.html' %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

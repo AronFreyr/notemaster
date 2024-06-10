@@ -1,0 +1,35 @@
+#id-textarea-change-activity-name{
+    width: 700px;
+    /*height: 700px;*/
+    padding: 12px 20px;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    background-color: #f8f8f8;
+    /*float:left;*/
+}
+
+#id-textarea-change-activity-text{
+    width: 700px;
+    height: 300px;
+    padding: 12px 20px;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    background-color: #f8f8f8;
+    /*float:left;*/
+}
+
+.change-activities{
+    width: 150px;
+}
+
+.div-tag-input-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+#id-div-tag-container{
+    border: 1px solid black;
+    border-radius: 3px;
+    margin-bottom: 20px;
+}

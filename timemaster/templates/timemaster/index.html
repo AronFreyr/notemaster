@@ -1,0 +1,30 @@
+{% extends 'timemaster/base.html' %}
+{% load static %}
+
+{% block title %} TIMEMASTER {% endblock title %}
+{% block nav-style %}mkt-nav{% endblock nav-style %}
+{% block head_css_page %}
+    <link rel="stylesheet" type="text/css" href="{% static 'timemaster/css/index.css' %}" />
+{% endblock head_css_page %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-3">
+            <form action="{% url 'timemaster:index'%}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ activity_form }}
+                <input type="submit" value="Submit">
+            </form>
+        </div>
+        {% for activity in all_activities %}
+            <div class="col-md-4">
+                <p>
+                    <a href="{% url 'timemaster:display_activity' activity.id %}">
+                        {{ activity.document_name }}</a>
+                </p>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock content %}

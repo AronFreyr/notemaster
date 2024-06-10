@@ -1,0 +1,67 @@
+{% extends 'timemaster/base.html' %}
+{% load static %}
+
+{% block title %} Display Activity {% endblock title %}
+
+{% block head_css_page %}
+    <link rel="stylesheet" type="text/css" href="{% static 'timemaster/css/display-activity.css' %}" />
+{% endblock head_css_page %}
+
+{% block content %}
+
+<div class="container">
+    <h1>{{ activity.document_name }}</h1>
+    <div class="row">
+        <div class="col-md-2">
+            <div class="sidebar-module">
+                <h3>Tags</h3>
+                {% if activity.get_all_tags_sorted %}
+                    {% for tag in activity.get_all_tags_sorted %}
+                        <div id="id-div-tag-container">
+                            <a class="btn btn-outline-secondary btn-block" href="{% url 'notes:display_tag' tag.tag_name %}" id="tag-btn-link-text">
+                                {{ tag.tag_name }} <span class="badge badge-light"> ({{ tag.get_nr_of_docs_with_tag }})</span>
+                            </a>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="activity-text-container">
+                {{ activity.get_parsed_text|safe }}
+            </div>
+            <div class="create-activity-container">
+                <form method="post" action="{% url 'timemaster:display_activity' activity.id %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ interval_form }}
+                    <input type="submit" value="submit">
+                </form>
+            </div>
+            <div class="intervals-container">
+                {% for interval in all_intervals %}
+                    <div class="interval-container">
+                        {{interval.interval_date}} - {{ interval.interval_amount }}
+                        <div class="button-edit-interval">
+                            <a href="{% url 'timemaster:display_interval' interval.id %}">Display Interval</a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <div class="edit-activity-button">
+                <a class="btn btn-secondary" href="{% url 'timemaster:edit_activity' activity.id %}">Edit Activity</a>
+            </div>
+            <div>
+                <p>Created: <span class="badge badge-light">{{ activity.document_created }}</span> </p>
+                <p>Created By: <span class="badge badge-light">{{ activity.document_created_by }}</span> </p>
+                <p>Modified: <span class="badge badge-light">{{ activity.document_modified }}</span> </p>
+                <p>Modified By: <span class="badge badge-light">{{ activity.document_last_modified_by }}</span> </p>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock content %}

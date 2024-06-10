@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- A block for the title of the page -->
+    <title>{% block title %} Title {% endblock title %}</title>
+    <!-- A block for the icon of the page. -->
+    {% block head_favicon %}
+        <link rel="icon" type="image/png"
+              href="{{ STATIC_URL }}images/favicon.ico">
+    {% endblock head_favicon %}
+    {% load static %}
+    {% block head_css %}
+        {% block head_css_site %}
+            <link rel="stylesheet" href="{% static 'notemaster_core/bootstrap/bootstrap_4/bootstrap.min.css' %}"
+            crossorigin="anonymous" media="screen"/>
+            <link rel="stylesheet" href="{% static 'notes/mivhak/mivhak.min.css' %}"
+                  crossorigin="anonymous" media="screen"/>
+            <!-- This font is for Mivhak -->
+            <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+            <link href="{% static 'notes/css/base.css' %}" rel="stylesheet" media="screen">
+            <!-- This is for FontAwesome glyphicons. -->
+            <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+        {% endblock head_css_site %}
+        {% block head_css_section %}{% endblock head_css_section %}
+        {% block head_css_page %}{% endblock head_css_page %}
+    {% endblock head_css %}
+</head>
+<body>
+{# The Document Body #}
+<div id="site-wrapper">
+    {% block content %}
+        if you see this, something is wrong!
+    {% endblock content %}
+</div>
+{# The Footer #}
+{% comment %}
+<div class="footer">
+    <div class="container">
+        <p>A&A Industries</p>
+    </div>
+</div>
+{% endcomment %}
+
+{# Set of blocks that can be used to display JavaScript files #}
+    {% block footer_javascript %}
+        {% block footer_javascript_site %}
+            <script src="{% static 'notemaster_core/jquery/jquery-3.4.1.min.js' %}"
+            crossorigin="anonymous"></script>
+
+            <!-- Bootstrap needs to load AFTER jQuery -->
+            <script src="{% static 'notemaster_core/bootstrap/bootstrap_4/bootstrap.bundle.min.js' %}"
+            crossorigin="anonymous"></script>
+        {% endblock footer_javascript_site %}
+    {% block footer_javascript_section %}{% endblock footer_javascript_section %}
+    {% block footer_javascript_page %}{% endblock footer_javascript_page %}
+{% endblock footer_javascript %}

@@ -1,7 +1,8 @@
 from ..models import Tag, Document, Tagmap, ImageTagMap, Image
+from timemaster.models import IntervalTagMap
 
 
-def handle_new_tag(new_tags, tag_creator=None, new_doc=None, new_image=None, tag_type:tuple=None):
+def handle_new_tag(new_tags, tag_creator=None, new_doc=None, new_image=None, new_interval=None, tag_type:tuple=None):
     # TODO: Update documentation for multi tag support and ImageTagMaps.
     # TODO: Create functionality for DocumentTagMaps.
     """
@@ -41,6 +42,11 @@ def handle_new_tag(new_tags, tag_creator=None, new_doc=None, new_image=None, tag
             if not ImageTagMap.objects.filter(tag=current_tag, image=new_image).exists():
                 new_image_tagmap = ImageTagMap(image=new_image, tag=current_tag)
                 new_image_tagmap.save()
+        if new_interval:
+            if not IntervalTagMap.objects.filter(tag=current_tag, interval=new_interval).exists():
+                new_interval_tagmap = IntervalTagMap(tag=current_tag, interval=new_interval)
+                new_interval_tagmap.save()
+
 
 
 def delete_object(obj_name, obj_type, request):

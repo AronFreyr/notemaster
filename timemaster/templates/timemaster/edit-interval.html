@@ -1,0 +1,117 @@
+{% extends 'timemaster/base.html' %}
+{% load static %}
+
+{% block title %} Edit Time Interval {% endblock title %}
+
+{% block head_css_page %}
+    <link rel="stylesheet" type="text/css" href="{% static 'timemaster/css/edit-interval.css' %}" />
+{% endblock head_css_page %}
+
+{% block content %}
+
+<div class="container">
+    <h1>Editing a Time Interval</h1>
+    <div class="row">
+        <div class="col-sm-2">
+            <!-- Tags that are currently associated with the document -->
+            <div class="sidebar-module">
+                {% block tags %} {% endblock tags %}
+                <h3>Tags</h3>
+                {% for tag in interval.get_all_tags_sorted %}
+                    <div id="id-div-tag-container">
+                        <div class="div-tag-input-container">
+                            <div class="div-tag-name">
+                                <p>
+                                    <a href="{% url 'notes:display_tag' tag.tag_name %}">{{ tag.tag_name }}</a>
+                                    <span class="badge badge-light"> ({{ tag.get_nr_of_docs_with_tag }})</span>
+                                </p>
+                            </div>
+                            <div class="div-red-x-container">
+                                <!-- TODO: modal for confirmation when you press the button -->
+                                <button class="close" data-toggle="modal" data-target="#removeTagModal_{{tag.id}}">
+                                    <span style="color:red; font-size:20pt;">&times;</span>
+                                </button>
+                                <!-- Modal for removing tags from intervals. -->
+                                <div class="modal fade" id="removeTagModal_{{tag.id}}"
+                                     tabindex="-1" role="dialog"
+                                     aria-labelledby="removeTagModalLabel"
+                                     aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="removeTagModalLabel">Remove Tag from Time Interval</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p>Are you sure you want to remove this tag from the current time interval (the tag will not be deleted).</p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                                <form action="{% url 'timemaster:remove_interval_tag' tag.id %}" method="post">
+                                                <!-- This form is for removing tags from the time interval-->
+                                                    {% csrf_token %}
+                                                    <div id="id_div_tag_remove_button_container">
+                                                        <input type="hidden" name="object_type" value="tag">
+                                                        <input type="hidden" name="action_type" value="remove">
+                                                        <input type="hidden" name="currently_viewed_interval" value="{{ interval.id }}">
+                                                        <button type="submit" class="btn btn-danger" value="Remove Tag">Remove Tag</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <form action="{% url 'timemaster:edit_interval' interval.id %}" method="post" id="id-form-change-interval-tags">
+                {% csrf_token %}
+
+                <div id="id-container-add-tag">
+                    <div>
+                        {{ add_tag_form.as_p }}
+                    </div>
+                </div>
+
+                <input type="submit" value="Submit">
+            </form>
+
+        </div>
+
+        <div class="col-sm-8">
+            <form action="{% url 'timemaster:edit_interval' interval.id %}" method="post" id="id-form-change-interval-details">
+                {% csrf_token %}
+                {{ interval_form }}
+                <input type="submit" value="Submit">
+            </form>
+        </div>
+        <!-- Edit and delete buttons to the right side -->
+        <div class="col-sm-2">
+            {% block add_tag %} {% endblock add_tag %}
+            {% block delete_button %} {% endblock delete_button %}
+            <div class="delete-interval-container">
+                {% comment %}
+                 <form action="{% url 'timemaster:delete_interval' interval.id %}" method="post">
+                    {% csrf_token %}
+                    <div>
+                        <input type="hidden" name="object_type" value="interval">
+                        <input type="hidden" name="action_type" value="delete">
+                        <input type="hidden" name="currently_viewed_doc" value="{{ interval.document_name }}">
+                        <button type="submit" class="btn btn-danger" value="Delete Interval">Delete Interval</button>
+                    </div>
+                </form>
+                {% endcomment %}
+                <button type="submit" class="btn btn-danger" data-toggle="modal" data-target="#deleteIntervalModal">
+                    Delete Interval
+                </button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

@@ -1,0 +1,52 @@
+{% extends 'timemaster/base.html' %}
+{% load static %}
+
+{% block title %} Display Time Interval {% endblock title %}
+
+{% block head_css_page %}
+    <link rel="stylesheet" type="text/css" href="{% static 'timemaster/css/display-interval.css' %}" />
+{% endblock head_css_page %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-2">
+            <div class="sidebar-module">
+                <h3>Tags</h3>
+                {% if interval.get_all_tags_sorted %}
+                    {% for tag in interval.get_all_tags_sorted %}
+                        <div id="id-div-tag-container">
+                            <a class="btn btn-outline-secondary btn-block" href="{% url 'notes:display_tag' tag.tag_name %}" id="tag-btn-link-text">
+                                {{ tag.tag_name }} <span class="badge badge-light"> ({{ tag.get_nr_of_docs_with_tag }})</span>
+                            </a>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="interval-container">
+                {{interval.interval_date}} - {{ interval.interval_amount }}
+            </div>
+        </div>
+
+        <div class="col-md-2">
+
+            <div class="edit-interval-button">
+                <a class="btn btn-secondary" href="{% url 'timemaster:edit_interval' interval.id %}">Edit Interval</a>
+            </div>
+            {% comment %}
+            <div>
+                <p>Created: <span class="badge badge-light">{{ activity.document_created }}</span> </p>
+                <p>Created By: <span class="badge badge-light">{{ activity.document_created_by }}</span> </p>
+                <p>Modified: <span class="badge badge-light">{{ activity.document_modified }}</span> </p>
+                <p>Modified By: <span class="badge badge-light">{{ activity.document_last_modified_by }}</span> </p>
+            </div>
+            {% endcomment %}
+        </div>
+
+    </div>
+</div>
+
+{% endblock content %}
