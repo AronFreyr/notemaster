@@ -41,6 +41,7 @@
                 <a class="btn btn-secondary" href="{% url 'notes:edit_doc' document.document_name %}"> edit document</a>
             </div>
             <div>
+                <p>Document Type: <span class="badge badge-light">{{ document.document_type }}</span></p>
                 <p>Created: <span class="badge badge-light">{{ document.document_created }}</span> </p>
                 <p>Created By: <span class="badge badge-light">{{ document.document_created_by }}</span> </p>
                 <p>Modified: <span class="badge badge-light">{{ document.document_modified }}</span> </p>

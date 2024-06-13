@@ -197,6 +197,11 @@ def edit_doc(request, doc):
             new_doc_text = request.POST['name_textarea_edit_document_text']
             document.document_text = new_doc_text
             document.save()
+        if 'name_type_choices' in request.POST:
+            new_doc_type = request.POST['name_type_choices']
+            if new_doc_type != document.document_type:
+                document.document_type = new_doc_type
+                document.save()
         return redirect(reverse('notes:display_doc', kwargs={'doc': document.document_name}))
     return render(request, 'notes/edit-doc2.html', {'document': document, 'form': AddTagForm()})
 

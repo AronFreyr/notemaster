@@ -13,6 +13,17 @@ class Document(models.Model):
     document_last_modified_by = models.ForeignKey(User, on_delete=models.SET_NULL, related_name='document_last_modified_by',
                                              blank=True, null=True)
 
+    DOCUMENT_CHOICES = (
+        ('document', 'Document'),
+        ('task', 'Task'),
+        ('activity', 'Activity'),
+    )
+
+    document_type = models.TextField(
+        choices=DOCUMENT_CHOICES,
+        default='document',
+    )
+
 
     def get_parsed_text(self):
         from .services.parser import TextParser

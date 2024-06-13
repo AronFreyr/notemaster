@@ -62,7 +62,24 @@
         </div>
     </form>
 </div>
+
+<div class="container-change-type">
+    <form action="{% url 'notes:edit_doc' document.document_name %}" method="post">
+        {% csrf_token %}
+        <label for="id-type-choices">Document Type:</label>
+        <select name="name_type_choices" id="id-type-choices">
+            {% for choice in document.DOCUMENT_CHOICES %}
+                <option value="{{choice.0}}" {% if choice.0 == document.document_type %} selected {% endif %}>
+                    {{choice.1}}
+                </option>
+            {% endfor %}
+            <input type="submit" />
+        </select>
+    </form>
+</div>
 {% endblock add_tag %}
+
+
 
 {% block delete_button %}
 <div id="id-div-container-delete-document">
