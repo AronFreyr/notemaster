@@ -44,6 +44,15 @@
                 <p>Modified By: <span class="badge badge-light">{{ activity.document_last_modified_by }}</span> </p>
             </div>
             {% endcomment %}
+            <div class="all-activities-container">
+                <h3>Connected Activities</h3>
+                {% for activity in connected_activities %}
+                    <div class="activity-container">
+                        <a href="{% url 'timemaster:display_activity' activity.id %}">{{activity.document_name}}</a>
+                    </div>
+                {% endfor%}
+            </div>
+
         </div>
 
     </div>

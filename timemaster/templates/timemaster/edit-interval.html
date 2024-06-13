@@ -94,21 +94,19 @@
             {% block add_tag %} {% endblock add_tag %}
             {% block delete_button %} {% endblock delete_button %}
             <div class="delete-interval-container">
-                {% comment %}
-                 <form action="{% url 'timemaster:delete_interval' interval.id %}" method="post">
-                    {% csrf_token %}
-                    <div>
-                        <input type="hidden" name="object_type" value="interval">
-                        <input type="hidden" name="action_type" value="delete">
-                        <input type="hidden" name="currently_viewed_doc" value="{{ interval.document_name }}">
-                        <button type="submit" class="btn btn-danger" value="Delete Interval">Delete Interval</button>
-                    </div>
-                </form>
-                {% endcomment %}
+                {% include 'timemaster/snippets/modals/delete-interval-modal.html' %}
                 <button type="submit" class="btn btn-danger" data-toggle="modal" data-target="#deleteIntervalModal">
                     Delete Interval
                 </button>
 
+            </div>
+            <div class="all-activities-container">
+                <h3>Connected Activities</h3>
+                {% for activity in connected_activities %}
+                    <div class="activity-container">
+                        <a href="{% url 'timemaster:display_activity' activity.id %}">{{activity.document_name}}</a>
+                    </div>
+                {% endfor%}
             </div>
         </div>
     </div>

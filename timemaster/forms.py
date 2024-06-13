@@ -18,7 +18,7 @@ class AddTimeIntervalForm(forms.ModelForm):
 
     interval_date = forms.DateField(initial=datetime.date.today, widget=forms.DateInput(attrs={'type': 'date'}))
     #interval_amount = forms.IntegerField(min_value=0)
-    interval_amount = forms.CharField()
+    interval_amount = forms.CharField(widget=forms.TimeInput(attrs={'type': 'time', 'step': '1', 'value': '00:00:00'}))
 
     class Meta:
         model = TimeInterval

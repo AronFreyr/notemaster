@@ -1,0 +1,15 @@
+.activity-card{
+    border: 2px solid #cccccc;
+    background-color: #f2f2f2;
+    border-radius: 6px;
+    margin-bottom: 10px;
+}
+
+.activity-name {
+    text-align: center;
+    font-weight: bold;
+}
+
+.create-activity-container{
+    padding-bottom: 50px;
+}

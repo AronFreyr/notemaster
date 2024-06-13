@@ -10,19 +10,24 @@
 {% block content %}
 <div class="container">
     <div class="row">
-        <div class="col-md-3">
+        <div class="col-md-3 create-activity-container">
             <form action="{% url 'timemaster:index'%}" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 {{ activity_form }}
                 <input type="submit" value="Submit">
             </form>
         </div>
+    </div>
+    <h1>Activities</h1>
+    <div class="row">
         {% for activity in all_activities %}
             <div class="col-md-4">
-                <p>
-                    <a href="{% url 'timemaster:display_activity' activity.id %}">
-                        {{ activity.document_name }}</a>
-                </p>
+                <div class="activity-card">
+                    <h1>
+                        <a href="{% url 'timemaster:display_activity' activity.id %}">
+                            {{ activity.document_name }}</a>
+                    </h1>
+                </div>
             </div>
         {% endfor %}
     </div>

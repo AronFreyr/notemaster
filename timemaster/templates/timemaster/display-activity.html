@@ -10,7 +10,8 @@
 {% block content %}
 
 <div class="container">
-    <h1>{{ activity.document_name }}</h1>
+    <a href="{% url 'timemaster:index' %}">Go home</a>
+
     <div class="row">
         <div class="col-md-2">
             <div class="sidebar-module">
@@ -27,6 +28,7 @@
             </div>
         </div>
         <div class="col-md-8">
+            <h1>{{ activity.document_name }}</h1>
             <div class="activity-text-container">
                 {{ activity.get_parsed_text|safe }}
             </div>
@@ -36,6 +38,35 @@
                     {{ interval_form }}
                     <input type="submit" value="submit">
                 </form>
+            </div>
+            <div class="total-time-container">
+                <p><b>Total Time:</b> {{total_time}}</p>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <p><b>Total time in years:</b></p>
+                    <div class="year-time-container">
+                        {% for year, year_time in total_year_time.items %}
+                            <p>{{year}} - {{year_time}}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <p><b>Total time in months:</b></p>
+                    <div class="month-time-container">
+                        {% for month, month_time in total_month_time.items %}
+                            <p>{{month}} - {{month_time}}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <p><b>Total time in weeks:</b></p>
+                    <div class="week-time-container">
+                        {% for week, week_time in total_week_time.items %}
+                            <p>{{week}} - {{week_time}}</p>
+                        {% endfor %}
+                    </div>
+                </div>
             </div>
             <div class="intervals-container">
                 {% for interval in all_intervals %}
