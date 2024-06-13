@@ -172,9 +172,10 @@ def display_interval(request, interval_id):
     all_connected_activities = []
     all_tags = interval.get_all_tags()
     for tag in all_tags:
-        activity_query = Activity.objects.filter(tagmap__tag__tag_name=tag.tag_name,
-                                                 tagmap__tag__tag_type='meta',
-                                                 tagmap__tag__meta_tag_type='time measurement')
+        #activity_query = Activity.objects.filter(tagmap__tag__tag_name=tag.tag_name,
+        #                                         tagmap__tag__tag_type='meta',
+        #                                         tagmap__tag__meta_tag_type='time measurement')
+        activity_query = Activity.objects.filter(document_name=tag.tag_name)
         if activity_query.exists():
             activity = activity_query.get()
             all_connected_activities.append(activity)
@@ -190,9 +191,10 @@ def edit_interval(request, interval_id):
     all_connected_activities = []
     all_tags = interval.get_all_tags()
     for tag in all_tags:
-        activity_query = Activity.objects.filter(tagmap__tag__tag_name=tag.tag_name,
-                                                 tagmap__tag__tag_type='meta',
-                                                 tagmap__tag__meta_tag_type='time measurement')
+        # activity_query = Activity.objects.filter(tagmap__tag__tag_name=tag.tag_name,
+        #                                          tagmap__tag__tag_type='meta',
+        #                                          tagmap__tag__meta_tag_type='time measurement')
+        activity_query = Activity.objects.filter(document_name=tag.tag_name)
         if activity_query.exists():
             activity = activity_query.get()
             all_connected_activities.append(activity)

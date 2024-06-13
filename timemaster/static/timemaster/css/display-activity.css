@@ -18,3 +18,8 @@
     float: right;
     padding-right: 10px;
 }
+
+#tag-btn-link-text{
+    white-space: normal; /* Makes the text wrap inside buttons */
+    text-align: left;
+}
