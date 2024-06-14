@@ -22,7 +22,7 @@ class CreateTaskMiniForm(forms.ModelForm):
     Creates tasks, but you only need to input the task name.
     """
     task_name = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Task Name'}), required=True, label=False)
-    task_text = forms.CharField(widget=forms.HiddenInput(), initial='Input the details of your task here.')
+    task_text = forms.CharField(widget=forms.HiddenInput(), required=False)
     task_difficulty = forms.IntegerField(widget=forms.HiddenInput(), initial=0)
     task_importance = forms.IntegerField(widget=forms.HiddenInput(), initial=0)
     task_assigned_to = forms.CharField(widget=forms.HiddenInput(), required=False)
@@ -41,7 +41,7 @@ class CreateTaskMiniForm(forms.ModelForm):
 class CreateTaskForm(forms.ModelForm):
 
     task_name = forms.CharField(label='Task name:', required=True)
-    task_text = forms.CharField(label='Task text:')
+    task_text = forms.CharField(label='Task text:', required=False)
     task_assigned_to = forms.CharField(label='assigned to:', required=False)
     class Meta:
         model = Task

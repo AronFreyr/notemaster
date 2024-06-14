@@ -8,7 +8,7 @@ from notes.forms import AddTagForm
 class AddActivityForm(forms.Form):
 
     activity_name = forms.CharField(label='Input the activity name here')
-    activity_description = forms.CharField(label='Input the activity description here')
+    activity_description = forms.CharField(label='Input the activity description here', required=False)
 
     class Meta:
         fields = ['activity_name', 'activity_description']
