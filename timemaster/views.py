@@ -20,7 +20,8 @@ def index(request):
             if not Activity.objects.filter(document_name=activity_name).exists():
                 activity_description = activity_form.cleaned_data.get('activity_description')
                 new_activity = Activity(document_name=activity_name, document_text=activity_description,
-                                        document_last_modified_by=request.user, document_created_by=request.user)
+                                        document_last_modified_by=request.user, document_created_by=request.user,
+                                        document_type='activity')
                 new_activity.save()
                 # create new tag for the new activity.
                 handle_new_tag(activity_name, new_doc=new_activity, tag_creator=request.user,
@@ -47,15 +48,7 @@ def display_activity(request, activity_id):
             new_interval = TimeInterval(interval_date=interval_date, interval_amount=new_timedelta)
             new_interval.save()
 
-            # Mark the new time measurement as an interval with a tag.
-            handle_new_tag('Time Interval', new_interval=new_interval, tag_creator=request.user,
-                           tag_type=('meta', 'time measurement'))
-            # Give the new measurement the tag that it relates to. This makes it a measurement of this activity.
-            handle_new_tag(activity.document_name, new_interval=new_interval, tag_creator=request.user,
-                           tag_type=('meta', 'time measurement'))
-            # Mark the activity with the tag as well.
-            handle_new_tag(activity.document_name, new_doc=activity, tag_creator=request.user,
-                           tag_type=('meta', 'time measurement'))
+            services.add_interval_to_activity(new_interval, activity, request.user)
 
     interval_form = forms.AddTimeIntervalForm()
 
@@ -65,9 +58,6 @@ def display_activity(request, activity_id):
                      .all().order_by('interval_date'))
 
     total_time = services.get_total_time_of_intervals(all_intervals)
-    # months = all_intervals.filter(interval_date__month='04')
-    # for x in months:
-    #     print(x.interval_date)
 
     years = all_intervals.order_by('interval_date__year').values_list('interval_date__year', flat=True).distinct()
     months = all_intervals.order_by('interval_date__month').values_list('interval_date__month', flat=True).distinct()
@@ -136,8 +126,6 @@ def delete_activity(request, activity_id):
     # that have no other activity than this one.
 
     activity = Activity.objects.get(id=activity_id)
-    associated_name_tag = Tag.objects.get(tag_name=activity.document_name, meta_tag_type='time measurement',
-                                          tag_type='meta')
 
     all_intervals = (TimeInterval.objects.filter(intervaltagmap__tag__tag_name=activity.document_name,
                                                  intervaltagmap__tag__tag_type='meta',
@@ -150,9 +138,8 @@ def delete_activity(request, activity_id):
         for interval in all_intervals:
             this_interval_activity_list = []
             for tag in interval.get_all_tags():
-                activity_query = Activity.objects.filter(tagmap__tag__tag_name=tag.tag_name,
-                                                         tagmap__tag__tag_type='meta',
-                                                         tagmap__tag__meta_tag_type='time measurement')
+                activity_query = Activity.objects.filter(document_name=tag.tag_name,
+                                                         document_type='activity')
                 if activity_query.exists():
                     found_activity = activity_query.get()
                     if found_activity != activity:
@@ -160,7 +147,11 @@ def delete_activity(request, activity_id):
             if len(this_interval_activity_list) == 0:
                 interval.delete()
 
-    associated_name_tag.delete()
+    associated_name_tag_query = Tag.objects.filter(tag_name=activity.document_name, meta_tag_type='time measurement',
+                                                   tag_type='meta')
+    if associated_name_tag_query.exists():
+        associated_name_tag = associated_name_tag_query.get()
+        associated_name_tag.delete()
     activity.delete()
     return redirect(reverse('timemaster:index'))
 
@@ -172,9 +163,6 @@ def display_interval(request, interval_id):
     all_connected_activities = []
     all_tags = interval.get_all_tags()
     for tag in all_tags:
-        #activity_query = Activity.objects.filter(tagmap__tag__tag_name=tag.tag_name,
-        #                                         tagmap__tag__tag_type='meta',
-        #                                         tagmap__tag__meta_tag_type='time measurement')
         activity_query = Activity.objects.filter(document_name=tag.tag_name)
         if activity_query.exists():
             activity = activity_query.get()
@@ -191,9 +179,6 @@ def edit_interval(request, interval_id):
     all_connected_activities = []
     all_tags = interval.get_all_tags()
     for tag in all_tags:
-        # activity_query = Activity.objects.filter(tagmap__tag__tag_name=tag.tag_name,
-        #                                          tagmap__tag__tag_type='meta',
-        #                                          tagmap__tag__meta_tag_type='time measurement')
         activity_query = Activity.objects.filter(document_name=tag.tag_name)
         if activity_query.exists():
             activity = activity_query.get()
