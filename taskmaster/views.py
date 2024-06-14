@@ -88,7 +88,7 @@ def display_board(request, board_id):
 
             new_task = Task(document_name=task_name, document_text=task_text, task_difficulty=task_difficulty,
                             task_importance=task_importance, task_assigned_to=task_assigned_to,
-                            task_list=current_list, task_board=board,
+                            task_list=current_list, task_board=board, document_type='task',
                             document_created_by=request.user, document_last_modified_by=request.user)
 
             task_list = current_list.get_all_tasks_in_list_in_custom_order()
