@@ -59,6 +59,11 @@ class TaskBoard(models.Model):
     def get_last_task_list_in_custom_order(self):
         return self.tasklist_set.filter(next_list=None).first()
 
+    def get_all_unfinished_tasks_in_board(self):
+        excluded_board_names = ['Done', 'done', 'Finished', 'finished', 'Closed', 'closed']
+        all_tasks = self.task_set.exclude(task_list__list_name__in=excluded_board_names).all()
+        return all_tasks
+
     def __str__(self):
         return self.board_name
 
