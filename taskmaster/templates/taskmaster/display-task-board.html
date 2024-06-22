@@ -9,9 +9,9 @@
 
 {% block content %}
 {% if board %}
-<a href="{% url 'taskmaster:index' %}">Go home</a>
-<h1><a href="{% url 'taskmaster:edit_board' board.id %}">{{ board.board_name }}</a></h1>
+
 <div class="container">
+    <h1><a href="{% url 'taskmaster:edit_board' board.id %}">{{ board.board_name }}</a></h1>
     <div class="row board-list-container">
         {% if orphan_tasks %}
         <div class="col-md-3">
