@@ -48,15 +48,19 @@
                             {{ list.list_name }}</option>
                     {% endfor %}
                 </select>
-                Difficulty: <input type="number" id="id-difficulty-number" name="name_task_difficulty" value="{{task.task_difficulty}}">
-                Importance: <input type="number" id="id-importance-number" name="name_task_importance" value="{{task.task_importance}}">
-                Assigned To: <input type="text" id="id-assignee" name="name_task_assigned_to" value="{{ task.task_assigned_to }}">
+                Difficulty: <input type="number" id="id-difficulty-number"
+                                   name="name_task_difficulty" value="{{task.task_difficulty}}">
+                Importance: <input type="number" id="id-importance-number"
+                                   name="name_task_importance" value="{{task.task_importance}}">
+                Assigned To: <input type="text" id="id-assignee"
+                                    name="name_task_assigned_to" value="{{ task.task_assigned_to }}">
+
                 <label for="parent-task-dropdown">Parent task:</label>
                 <select id="parent-task-dropdown" name="name_parent_task_dropdown" class="change-tasks">
-                    {% for some_task in task.task_board.task_set.all %}
-                        <option value="{{some_task.document_name}}"
-                                {% if some_task.document_name == task.parent_task.document_name %} selected {% endif %}>
-                            {{ some_task.document_name }}</option>
+                    {% for parent_task in possible_parent_tasks %}
+                        <option value="{{parent_task.document_name}}"
+                                {% if parent_task.document_name == task.parent_task.document_name %} selected {% endif %}>
+                            {{ parent_task.document_name }}</option>
                     {% endfor %}
                 </select>
 

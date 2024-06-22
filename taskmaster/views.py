@@ -180,13 +180,16 @@ def edit_task(request, task_id):
 
         if 'name_parent_task_dropdown' in request.POST:
             new_parent_task_name = request.POST['name_parent_task_dropdown']
-            new_parent_task = Task.objects.get(document_name=new_parent_task_name, task_board=task.task_board)
-            if task.parent_task:
-                if task.parent_task != new_parent_task and task != new_parent_task and new_parent_task.parent_task != task:
-                    task.parent_task = new_parent_task
+            if new_parent_task_name != 'None':
+                new_parent_task = Task.objects.get(document_name=new_parent_task_name, task_board=task.task_board)
+                if task.parent_task:
+                    if task.parent_task != new_parent_task and task != new_parent_task and new_parent_task.parent_task != task:
+                        task.parent_task = new_parent_task
+                else:
+                    if new_parent_task != task and new_parent_task.parent_task != task:
+                        task.parent_task = new_parent_task
             else:
-                if new_parent_task != task and new_parent_task.parent_task != task:
-                    task.parent_task = new_parent_task
+                task.parent_task = None
 
         if 'name-due-date-picker' in request.POST:
             due_date = request.POST['name-due-date-picker']
@@ -261,9 +264,13 @@ def edit_task(request, task_id):
         all_tasks_in_same_list.append({'document_name': None})
     else:
         all_tasks_in_same_list = None
+
+    possible_parent_tasks =  list(task.task_board.task_set.exclude(id=task.id).all())
+    possible_parent_tasks.append({'document_name': None})  # Add the possibility that the task does not have a parent.
     return render(request, 'taskmaster/edit-task.html', {'task': task,
                                                          'tasks_in_list': all_tasks_in_same_list,
-                                                         'add_tag_form': AddTagForm()})
+                                                         'add_tag_form': AddTagForm(),
+                                                         'possible_parent_tasks': possible_parent_tasks})
 
 
 @login_required
