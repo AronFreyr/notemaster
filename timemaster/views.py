@@ -57,27 +57,24 @@ def display_activity(request, activity_id):
                                                 intervaltagmap__tag__meta_tag_type='time measurement')
                      .all().order_by('interval_date'))
 
-    total_time = services.get_total_time_of_intervals(all_intervals)
-    total_time_formatted = services.convert_timedelta_to_hour_format(total_time)
+    total_time = services.convert_timedelta_to_hour_format(services.get_total_time_of_intervals(all_intervals))
 
     years = all_intervals.order_by('interval_date__year').values_list('interval_date__year', flat=True).distinct()
     months = all_intervals.order_by('interval_date__month').values_list('interval_date__month', flat=True).distinct()
     weeks = all_intervals.order_by('interval_date__week').values_list('interval_date__week', flat=True).distinct()
 
-    year_time_list = {}
+    year_time_list, month_time_list, week_time_list = {}, {}, {}
     for year in years:
         this_year_intervals = all_intervals.filter(interval_date__year=year)
         year_time_list[year] = services.convert_timedelta_to_hour_format(
             services.get_total_time_of_intervals(this_year_intervals))
-    month_time_list = {}
-    for year in years:
+
         for month in months:
             this_month_intervals = all_intervals.filter(interval_date__month=month, interval_date__year=year)
             if this_month_intervals.exists():
                 month_time_list[str(month) + '-' + str(year)] = services.convert_timedelta_to_hour_format(
                     services.get_total_time_of_intervals(this_month_intervals))
-    week_time_list = {}
-    for year in years:
+
         for week in weeks:
             this_week_intervals = all_intervals.filter(interval_date__week=week, interval_date__year=year)
             if this_week_intervals.exists():
@@ -87,7 +84,7 @@ def display_activity(request, activity_id):
     return render(request, 'timemaster/display-activity.html', {'activity': activity,
                                                                 'interval_form': interval_form,
                                                                 'all_intervals': all_intervals,
-                                                                'total_time': total_time_formatted,
+                                                                'total_time': total_time,
                                                                 'total_year_time': year_time_list,
                                                                 'total_month_time': month_time_list,
                                                                 'total_week_time': week_time_list})

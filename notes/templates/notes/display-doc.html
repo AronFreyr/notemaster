@@ -16,7 +16,7 @@
                 <h3>Tags</h3>
                 {% for tag in document.get_all_tags_sorted %}
                     <div id="id-div-tag-container">
-                        <a class="btn btn-outline-secondary btn-block" href="{% url 'notes:display_tag' tag.tag_name %}" id="tag-btn-link-text">
+                        <a class="btn btn-outline-secondary btn-block" href="{% url 'notes:display_tag' tag.id %}" id="tag-btn-link-text">
                             {{ tag.tag_name }} <span class="badge badge-light"> ({{ tag.get_nr_of_docs_with_tag }})</span>
                         </a>
                     </div>
@@ -38,7 +38,7 @@
         <!-- Edit button to the right side -->
         <div class="col-sm-2">
             <div id="id-div-edit-document-button">
-                <a class="btn btn-secondary" href="{% url 'notes:edit_doc' document.document_name %}"> edit document</a>
+                <a class="btn btn-secondary" href="{% url 'notes:edit_doc' document.id %}"> edit document</a>
             </div>
             <div>
                 <p>Document Type: <span class="badge badge-light">{{ document.document_type }}</span></p>

@@ -7,13 +7,13 @@ from notes.models import Document, Tag, Tagmap, Image, ImageDocumentMap, ImageTa
 
 
 @login_required
-def display_portal(request, tag_name):
-    portal_docs = Document.objects.filter(tagmap__tag__tag_name=tag_name).order_by('document_name')
+def display_portal(request, tag_id):
+    portal_docs = Document.objects.filter(tagmap__tag__id=tag_id).order_by('document_name')
     document_list = list(portal_docs)
     for document in document_list:
         for tag_in_doc in document.get_all_tags():
             # If we find a list meta tag, go through all of the documents and remove them from our document list.
-            if tag_in_doc.meta_tag_type == 'list' and tag_name != tag_in_doc.tag_name:
+            if tag_in_doc.meta_tag_type == 'list' and tag_id != tag_in_doc.id:
                 for doc_with_list_tag in tag_in_doc.get_all_docs():
                     if doc_with_list_tag.document_name != tag_in_doc.tag_name and doc_with_list_tag in document_list:
                         document_list.remove(doc_with_list_tag)

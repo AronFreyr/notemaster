@@ -33,7 +33,7 @@
                 <div class="view_all_docs_in_tag_wrapper">
                     {% for mapset in tag.tagmap_set.all|sort_queryset:"document__document_name" %}
                         <div class="view_single_doc_in_tag_wrapper">
-                            <a href="{% url 'notes:display_doc' mapset.document.document_name %}">{{ mapset.document.document_name }}</a>
+                            <a href="{% url 'notes:display_doc' mapset.document.id %}">{{ mapset.document.document_name }}</a>
                         </div>
                     {% endfor %}
                 </div>
@@ -45,7 +45,7 @@
                     <div class="view-all-images-in-tag-wrapper">
                         {% for mapset in tag.imagetagmap_set.all %}
                             <div class="view-single-image-in-tag-wrapper">
-                                <a href="{% url 'notes:display_img' mapset.image.image_name %}">{{ mapset.image.image_name }}</a>
+                                <a href="{% url 'notes:display_img' mapset.image.id %}">{{ mapset.image.image_name }}</a>
                                 {% comment %}
                                 <div class="container-remove-image">
                                     {% include 'notes/snippets/forms/remove-document-snippet.html' %}
@@ -59,7 +59,7 @@
         </div>
         <div class="col-sm-2">
             <div class="edit-tag-button-container">
-                <a class="btn btn-secondary" href="{% url 'notes:edit_tag' tag.tag_name %}"> edit tag</a>
+                <a class="btn btn-secondary" href="{% url 'notes:edit_tag' tag.id %}"> edit tag</a>
             </div>
             <div>
                 <p>Created: <span class="badge badge-light">{{ tag.tag_created }}</span> </p>

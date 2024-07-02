@@ -11,7 +11,7 @@
 {% block tags %}
 <div class="tag-type-container">
     <span><b>Tag Type:</b></span>
-    <form action="{% url 'notes:edit_tag' tag.tag_name %}" method="post">
+    <form action="{% url 'notes:edit_tag' tag.id %}" method="post">
         {% csrf_token %}
         <label>
             <select name="tag_choices">
@@ -23,7 +23,7 @@
         <button type="submit" class="btn btn-secondary" value="Change Tag">Submit</button>
     </form>
     {% if tag.tag_type == "meta" %}
-        <form action="{% url 'notes:edit_tag' tag.tag_name %}" method="post">
+        <form action="{% url 'notes:edit_tag' tag.id %}" method="post">
             {% csrf_token %}
             <label>
                 <select name="meta_tag_choices">
@@ -46,7 +46,7 @@
         {% for mapset in tag.tagmap_set.all|sort_queryset:"document__document_name" %}
             <div class="view_single_doc_in_tag_wrapper">
                 <div class="document-name-container">
-                    <a href="{% url 'notes:display_doc' mapset.document.document_name %}">{{ mapset.document.document_name }}</a>
+                    <a href="{% url 'notes:display_doc' mapset.document.id %}">{{ mapset.document.document_name }}</a>
                 </div>
                 <div class="container-remove-document">
                     <!-- Button trigger modal -->
@@ -66,7 +66,7 @@
         <div class="view-all-images-in-tag-wrapper">
             {% for mapset in tag.imagetagmap_set.all %}
                 <div class="view-single-image-in-tag-wrapper">
-                    <a href="{% url 'notes:display_img' mapset.image.image_name %}">{{ mapset.image.image_name }}</a>
+                    <a href="{% url 'notes:display_img' mapset.image.id %}">{{ mapset.image.image_name }}</a>
                     {% comment %}
                     <div class="container-remove-image">
                         {% include 'notes/snippets/forms/remove-document-snippet.html' %}

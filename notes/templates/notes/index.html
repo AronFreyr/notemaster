@@ -15,7 +15,7 @@
                 {% if programming_portal_tags %}
                     <ul>
                         {% for tag in programming_portal_tags %}
-                            <li><a href="{% url 'notes:display_portal' tag.tag_name %}">{{ tag.tag_name }}</a></li>
+                            <li><a href="{% url 'notes:display_portal' tag.id %}">{{ tag.tag_name }}</a></li>
                         {% endfor %}
                     </ul>
                 {% endif %}
@@ -24,7 +24,7 @@
                 {% if history_portal_tags %}
                     <ul>
                         {% for tag in history_portal_tags %}
-                            <li><a href="{% url 'notes:display_portal' tag.tag_name %}">{{ tag.tag_name }}</a></li>
+                            <li><a href="{% url 'notes:display_portal' tag.id %}">{{ tag.tag_name }}</a></li>
                         {% endfor %}
                     </ul>
                 {% endif %}
@@ -34,7 +34,7 @@
                 {% if most_recent_documents %}
                     <ul>
                         {% for doc in most_recent_documents %}
-                            <li><a href="{% url 'notes:display_doc' doc.document_name %}">{{ doc.document_name }}</a></li>
+                            <li><a href="{% url 'notes:display_doc' doc.id %}">{{ doc.document_name }}</a></li>
                         {% endfor %}
                     </ul>
                 {% endif %}

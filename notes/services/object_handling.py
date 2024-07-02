@@ -49,16 +49,16 @@ def handle_new_tag(new_tags, tag_creator=None, new_doc=None, new_image=None, new
 
 
 
-def delete_object(obj_name, obj_type, request):
+def delete_object(obj_id: int, obj_type: str, request):
     if obj_type == 'tag':  # If we are deleting a tag.
-        tag_to_delete = Tag.objects.get(tag_name=obj_name)
+        tag_to_delete = Tag.objects.get(id=obj_id)
         for tagmap in tag_to_delete.tagmap_set.all():
             tagmap.delete()
         tag_to_delete.delete()
         # if 'currently_viewed_doc' in request.POST:
         #    document = Document.objects.get(document_name=request.POST['currently_viewed_doc'])
     elif obj_type == 'document':  # If we are deleting a document.
-        doc_to_delete = Document.objects.get(document_name=obj_name)
+        doc_to_delete = Document.objects.get(id=obj_id)
         for tagmap in doc_to_delete.tagmap_set.all():
             tagmap.delete()
         doc_to_delete.delete()

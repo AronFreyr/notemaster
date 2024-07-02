@@ -7,7 +7,7 @@
     {% endif %}
 
     <!-- A link that takes you to the page of the image. -->
-    <a id="img-link-button" href="{% url 'notes:display_img' image.image_name %}" class="badge badge-light" title="Go to image page">
+    <a id="img-link-button" href="{% url 'notes:display_img' image.id %}" class="badge badge-light" title="Go to image page">
         <i class="fa fa-picture-o"></i>
     </a>
 </div>

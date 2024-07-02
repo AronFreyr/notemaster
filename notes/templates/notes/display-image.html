@@ -15,7 +15,7 @@
                 <h3>Tags</h3>
                 {% for tag in image.get_all_tags_sorted %}
                     <div id="id-div-tag-container">
-                        <a class="btn btn-outline-secondary btn-block" href="{% url 'notes:display_tag' tag.tag_name %}" id="tag-btn-link-text">
+                        <a class="btn btn-outline-secondary btn-block" href="{% url 'notes:display_tag' tag.id %}" id="tag-btn-link-text">
                             {{ tag.tag_name }} <span class="badge badge-light"> ({{ tag.get_nr_of_docs_with_tag }})</span>
                         </a>
                     </div>
@@ -41,7 +41,7 @@
         <!-- Edit and delete buttons to the right side -->
         <div class="col-sm-2">
             <div id="id-div-edit-image-button">
-                <a class="btn btn-secondary" href="{% url 'notes:edit_image' image.image_name %}"> edit image</a>
+                <a class="btn btn-secondary" href="{% url 'notes:edit_image' image.id %}"> edit image</a>
             </div>
             <div>
                 <p>Created: <span class="badge badge-light">{{ image.image_created }}</span> </p>
