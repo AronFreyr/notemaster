@@ -39,7 +39,8 @@ def index(request):
     # turtle_graphics_tests.draw_document_map()
     #test_create_graph()
 
-    most_recent_docs = Document.objects.exclude(tagmap__tag__meta_tag_type='task').order_by('-id')[:10]
+    most_recent_docs = Document.objects.exclude(tagmap__tag__meta_tag_type='task')\
+                           .exclude(document_type='activity').exclude(document_type='task').order_by('-id')[:10]
 
     return render(request, 'notes/index.html',
                   {'programming_portal_tags': programming_portal_tags,
@@ -129,40 +130,40 @@ def create_image(request):
 
 
 @login_required
-def display_doc(request, doc):
+def display_doc(request, doc_id):
     """
     Displays a single document and all of its tags.
-    :param doc: The document that is to be displayed.
+    :param doc_id: The ID of the document that is to be displayed.
     :param request: The classic Django request object.
     :return: renders the HTML page with the document and the document text paragraphs in a list for easy display
     in the HTML.
     """
-    document = Document.objects.get(document_name=doc)
+    document = Document.objects.get(id=doc_id)
     return render(request, 'notes/display-doc.html', {'document': document})
 
 
 @login_required
-def display_image(request, img):
-    image = Image.objects.get(image_name=img)
+def display_image(request, img_id):
+    image = Image.objects.get(id=img_id)
     return render(request, 'notes/display-image.html', {'image': image})
 
 
 @login_required
-def display_tag(request, tag_name):
+def display_tag(request, tag_id: int):
     """
     Displays a single tag.
     :param request: The request object.
     :param tag_name: The name of the tag to be displayed.
     :return: render for the tag, which will be rendered with the display-tag.html file.
     """
-    tag = Tag.objects.get(tag_name=tag_name)
+    tag = Tag.objects.get(id=tag_id)
     return render(request, 'notes/display-tag.html', {'tag': tag})
 
 
 @login_required
-def edit_tag(request, tag_name):
+def edit_tag(request, tag_id: int):
     # TODO: Document.
-    tag = Tag.objects.get(tag_name=tag_name)
+    tag = Tag.objects.get(id=tag_id)
     if request.method == 'POST':
         tag.tag_last_modified_by = request.user
         if 'tag_choices' in request.POST:  # Changing the tag type.
@@ -174,19 +175,19 @@ def edit_tag(request, tag_name):
         if 'meta_tag_choices' in request.POST:  # Changing the meta tag type.
             tag.meta_tag_type = request.POST['meta_tag_choices']
         tag.save()
-        return redirect(reverse('notes:display_tag', kwargs={'tag_name': tag.tag_name}))
+        return redirect(reverse('notes:display_tag', kwargs={'tag_id': tag.id}))
     return render(request, 'notes/edit-tag2.html', {'tag': tag})
 
 
 @login_required
-def edit_doc(request, doc):
+def edit_doc(request, doc_id):
     """
     Enables edits to the current document. TODO: currently it's only possible to edit the document text.
     :param request: The request object.
-    :param doc: The document to be edited
+    :param doc: The ID of the document to be edited
     :return: A render of the edited document.
     """
-    document = Document.objects.get(document_name=doc)
+    document = Document.objects.get(id=doc_id)
     if request.method == 'POST':
         form = AddTagForm(request.POST)
         document.document_last_modified_by = request.user
@@ -202,19 +203,19 @@ def edit_doc(request, doc):
             if new_doc_type != document.document_type:
                 document.document_type = new_doc_type
                 document.save()
-        return redirect(reverse('notes:display_doc', kwargs={'doc': document.document_name}))
+        return redirect(reverse('notes:display_doc', kwargs={'doc_id': document.id}))
     return render(request, 'notes/edit-doc2.html', {'document': document, 'form': AddTagForm()})
 
 
 @login_required
-def edit_image(request, image):
+def edit_image(request, img_id: int):
     """
     Enables edits to the current image. TODO: currently it's only possible to edit the image text.
     :param request: The request object.
     :param image: The image to be edited
     :return: A render of the edited image.
     """
-    image = Image.objects.get(image_name=image)
+    image = Image.objects.get(id=img_id)
     if request.method == 'POST':
         form = AddTagForm(request.POST)
         image.image_last_modified_by = request.user
@@ -225,12 +226,12 @@ def edit_image(request, image):
             new_image_text = request.POST['name_textarea_edit_image_text']
             image.image_text = new_image_text
             image.save()
-        return redirect(reverse('notes:display_img', kwargs={'img': image.image_name}))
+        return redirect(reverse('notes:display_img', kwargs={'img_id': image.id}))
     return render(request, 'notes/edit-image.html', {'image': image, 'form': AddTagForm()})
 
 
 @login_required
-def delete_or_remove(request, obj_name):
+def delete_or_remove(request, obj_id: int):
     """
     This function deletes or removes objects from the database. It takes in a post request that uses
     the request object with obj_name to determine what kind of object it is working with and whether it
@@ -245,7 +246,7 @@ def delete_or_remove(request, obj_name):
     :return: If a tag was removed from a document while the document was being viewed, the function
     redirects to the document, else it redirects to the index.
     """
-    document = None
+    currently_viewed_document = None
     if request.method == 'GET':
         # TODO: Throw error, you should never GET delete/remove.
         pass
@@ -253,18 +254,20 @@ def delete_or_remove(request, obj_name):
         obj_type = request.POST['object_type']  # Is it a document or a tag?
         action_type = request.POST['action_type']  # Are we deleting or removing?
         if 'currently_viewed_doc' in request.POST:  # If we are viewing a document.
-            if request.POST['currently_viewed_doc'] != obj_name:  # And if that doc is not the doc we are removing.
-                document = Document.objects.get(document_name=request.POST['currently_viewed_doc'])
+            #if request.POST['currently_viewed_doc'] != obj_name:  # And if that doc is not the doc we are removing.
+            currently_viewed_document = Document.objects.get(document_name=request.POST['currently_viewed_doc'])
+            if obj_type == 'document' and currently_viewed_document.id == obj_id:  # The doc is being deleted.
+                currently_viewed_document = None
 
         if action_type == 'delete':
-            delete_object(obj_name, obj_type, request)
+            delete_object(obj_id, obj_type, request)
         elif action_type == 'remove':
-            remove_object(obj_name, obj_type, request)
+            remove_object(obj_id, obj_type, request)
         else:
             # TODO: throw error, action_type should only be delete of remove
             pass
-    if document is not None:
-        return redirect(reverse('notes:display_doc', kwargs={'doc': document.document_name}))
+    if currently_viewed_document is not None:
+        return redirect(reverse('notes:display_doc', kwargs={'doc_id': currently_viewed_document.id}))
     return redirect(reverse('notes:index'))
 
 

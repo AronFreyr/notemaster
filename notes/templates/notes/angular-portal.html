@@ -10,7 +10,7 @@
     <div class="row">
         {% for doc in angular_docs %}
             <div class="document_wrapper col-md-4">
-                <h3><a href="{% url 'notes:display_doc' doc.document_name %}">{{ doc.document_name }}</a></h3>
+                <h3><a href="{% url 'notes:display_doc' doc.id %}">{{ doc.document_name }}</a></h3>
                 <p>{{ doc.get_parsed_text| safe| truncatewords_html:50}}</p>
             </div>
         {% endfor %}

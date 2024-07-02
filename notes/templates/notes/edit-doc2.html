@@ -12,7 +12,7 @@
             <div class="div-tag-input-container">
                 <div class="div-tag-name">
                     <p>
-                        <a href="{% url 'notes:display_tag' tag.tag_name %}">{{ tag.tag_name }}</a>
+                        <a href="{% url 'notes:display_tag' tag.id %}">{{ tag.tag_name }}</a>
                         <span class="badge badge-light"> ({{ tag.get_nr_of_docs_with_tag }})</span>
                     </p>
                 </div>
@@ -33,7 +33,7 @@
 {% block text_box %}
 <div id="div-container-edit-document">
     <div id="div-container-edit-document-text">
-        <form action="{% url 'notes:edit_doc' document.document_name %}" method="post" id="id-form-change-document-text">
+        <form action="{% url 'notes:edit_doc' document.id %}" method="post" id="id-form-change-document-text">
             {% csrf_token %}
             <div id="div-container-document-submit">
                 <input type="hidden" name="currently_viewed_doc" value="{{ document.document_name }}">
@@ -52,7 +52,7 @@
 
 {% block add_tag %}
 <div id="id-container-add-tag">
-    <form action="{% url 'notes:edit_doc' document.document_name %}" method="post">
+    <form action="{% url 'notes:edit_doc' document.id %}" method="post">
         <!-- This form is for adding a tag to the displayed document -->
         {% csrf_token %}
         <div>
@@ -64,7 +64,7 @@
 </div>
 
 <div class="container-change-type">
-    <form action="{% url 'notes:edit_doc' document.document_name %}" method="post">
+    <form action="{% url 'notes:edit_doc' document.id %}" method="post">
         {% csrf_token %}
         <label for="id-type-choices">Document Type:</label>
         <select name="name_type_choices" id="id-type-choices">

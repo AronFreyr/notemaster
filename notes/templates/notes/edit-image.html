@@ -17,7 +17,7 @@
                         <div class="div-tag-input-container">
                             <div class="div-tag-name">
                                 <p>
-                                    <a href="{% url 'notes:display_tag' tag.tag_name %}">
+                                    <a href="{% url 'notes:display_tag' tag.id %}">
                                         {{ tag.tag_name }}
                                     </a>
                                     <span class="badge badge-light"> ({{ tag.get_nr_of_docs_with_tag }})</span>
@@ -43,7 +43,7 @@
             {% comment %} The text associated with the image. {% endcomment %}
             <div id="div-container-edit-image">
                 <div id="div-container-edit-image-text">
-                    <form action="{% url 'notes:edit_image' image.image_name %}" method="post" id="id-form-change-image-text">
+                    <form action="{% url 'notes:edit_image' image.id %}" method="post" id="id-form-change-image-text">
                         {% csrf_token %}
                         <div id="div-container-image-submit">
                             <input type="hidden" name="currently_viewed_image" value="{{ image.image_name }}">
@@ -62,7 +62,7 @@
 
         <div class="col-sm-2">
             <div id="id-container-add-tag">
-                <form action="{% url 'notes:edit_image' image.image_name %}" method="post">
+                <form action="{% url 'notes:edit_image' image.id %}" method="post">
                     <!-- This form is for adding a tag to the displayed image -->
                     {% csrf_token %}
                     <div>

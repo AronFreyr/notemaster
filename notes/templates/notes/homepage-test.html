@@ -18,7 +18,7 @@
                             <h5>5 latest programming documents</h5>
                             <ul>
                                 {% for doc in latest_programming_docs %}
-                                    <li><a href="{% url 'notes:display_doc' doc.document_name %}">{{ doc.document_name }}</a></li>
+                                    <li><a href="{% url 'notes:display_doc' doc.id %}">{{ doc.document_name }}</a></li>
                                 {% endfor %}
                             </ul>
                         {% endif %}
@@ -33,7 +33,7 @@
                             <h5>5 latest history documents</h5>
                             <ul>
                                 {% for doc in latest_history_docs %}
-                                    <li><a href="{% url 'notes:display_doc' doc.document_name %}">{{ doc.document_name }}</a></li>
+                                    <li><a href="{% url 'notes:display_doc' doc.id %}">{{ doc.document_name }}</a></li>
                                 {% endfor %}
                             </ul>
                         {% endif %}

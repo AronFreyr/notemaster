@@ -17,7 +17,7 @@
                     <p>All documents in the database</p>
                     <ul>
                         {% for doc in documents %}
-                            <li><a href="{% url 'notes:display_doc' doc.document_name %}">{{ doc.document_name }}</a></li>
+                            <li><a href="{% url 'notes:display_doc' doc.id %}">{{ doc.document_name }}</a></li>
                         {% endfor %}
                     </ul>
                 {% endif %}
@@ -28,7 +28,7 @@
                     <p>All tags in the database</p>
                     <ul>
                         {% for tag in tags %}
-                            <li><a href="{% url 'notes:display_tag' tag.tag_name %}">{{ tag.tag_name }}</a></li>
+                            <li><a href="{% url 'notes:display_tag' tag.id %}">{{ tag.tag_name }}</a></li>
                         {% endfor %}
                     </ul>
                 {% endif %}
@@ -51,7 +51,7 @@
                     <p>All images in the database</p>
                     <ul>
                         {% for image in images %}
-                            <li><a href="{% url 'notes:display_img' image.image_name %}">{{ image.image_name }}</a></li>
+                            <li><a href="{% url 'notes:display_img' image.id %}">{{ image.image_name }}</a></li>
                         {% endfor %}
                     </ul>
                 {% endif %}

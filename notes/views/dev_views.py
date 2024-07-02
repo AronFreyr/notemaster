@@ -16,14 +16,6 @@ def display_homepage_test(request):
                   {'latest_programming_docs': latest_programming_documents,
                    'latest_history_docs': latest_history_documents})
 
-
-# A view that displays links to all of the pages/templates that have been created in this project, this is
-# for development purposes only.
-@login_required
-def display_all_pages(request):
-    return render(request, 'notes/display-all-pages.html')
-
-
 # A test view that displays the stuff behind the "Test" button in the navigation bar.
 @login_required
 def display_tests(request):
