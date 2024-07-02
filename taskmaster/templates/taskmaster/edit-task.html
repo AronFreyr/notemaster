@@ -22,7 +22,7 @@
                         <div class="div-tag-input-container">
                             <div class="div-tag-name">
                                 <p>
-                                    <a href="{% url 'notes:display_tag' tag.tag_name %}">{{ tag.tag_name }}</a>
+                                    <a href="{% url 'notes:display_tag' tag.id %}">{{ tag.tag_name }}</a>
                                     <span class="badge badge-light"> ({{ tag.get_nr_of_docs_with_tag }})</span>
                                 </p>
                             </div>

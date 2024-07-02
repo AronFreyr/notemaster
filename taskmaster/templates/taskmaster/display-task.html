@@ -29,7 +29,7 @@
                 {% if task.get_all_tags_sorted %}
                     {% for tag in task.get_all_tags_sorted %}
                         <div id="id-div-tag-container">
-                            <a class="btn btn-outline-secondary btn-block" href="{% url 'notes:display_tag' tag.tag_name %}" id="tag-btn-link-text">
+                            <a class="btn btn-outline-secondary btn-block" href="{% url 'notes:display_tag' tag.id %}" id="tag-btn-link-text">
                                 {{ tag.tag_name }} <span class="badge badge-light"> ({{ tag.get_nr_of_docs_with_tag }})</span>
                             </a>
                         </div>
