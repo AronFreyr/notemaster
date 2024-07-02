@@ -58,6 +58,7 @@ def display_activity(request, activity_id):
                      .all().order_by('interval_date'))
 
     total_time = services.get_total_time_of_intervals(all_intervals)
+    total_time_formatted = services.convert_timedelta_to_hour_format(total_time)
 
     years = all_intervals.order_by('interval_date__year').values_list('interval_date__year', flat=True).distinct()
     months = all_intervals.order_by('interval_date__month').values_list('interval_date__month', flat=True).distinct()
@@ -66,24 +67,27 @@ def display_activity(request, activity_id):
     year_time_list = {}
     for year in years:
         this_year_intervals = all_intervals.filter(interval_date__year=year)
-        year_time_list[year] = services.get_total_time_of_intervals(this_year_intervals)
+        year_time_list[year] = services.convert_timedelta_to_hour_format(
+            services.get_total_time_of_intervals(this_year_intervals))
     month_time_list = {}
     for year in years:
         for month in months:
             this_month_intervals = all_intervals.filter(interval_date__month=month, interval_date__year=year)
             if this_month_intervals.exists():
-                month_time_list[str(month) + '-' + str(year)] = services.get_total_time_of_intervals(this_month_intervals)
+                month_time_list[str(month) + '-' + str(year)] = services.convert_timedelta_to_hour_format(
+                    services.get_total_time_of_intervals(this_month_intervals))
     week_time_list = {}
     for year in years:
         for week in weeks:
             this_week_intervals = all_intervals.filter(interval_date__week=week, interval_date__year=year)
             if this_week_intervals.exists():
-                week_time_list[str(week) + '-' + str(year)] = services.get_total_time_of_intervals(this_week_intervals)
+                week_time_list[str(week) + '-' + str(year)] = services.convert_timedelta_to_hour_format(
+                    services.get_total_time_of_intervals(this_week_intervals))
 
     return render(request, 'timemaster/display-activity.html', {'activity': activity,
                                                                 'interval_form': interval_form,
                                                                 'all_intervals': all_intervals,
-                                                                'total_time': total_time,
+                                                                'total_time': total_time_formatted,
                                                                 'total_year_time': year_time_list,
                                                                 'total_month_time': month_time_list,
                                                                 'total_week_time': week_time_list})

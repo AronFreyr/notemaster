@@ -10,7 +10,7 @@
 {% block content %}
 {% if board %}
 
-<div class="container">
+<div class="container task-board-container">
     <h1><a href="{% url 'taskmaster:edit_board' board.id %}">{{ board.board_name }}</a></h1>
     <div class="row board-list-container">
         {% if orphan_tasks %}
@@ -84,11 +84,13 @@
                         </button>
                         {% include 'taskmaster/snippets/modals/delete-list-modal.html' %}
                     </div>
+                    <ol class="list-group list-group-numbered">
                     {% for task in board_list.get_all_tasks_in_list_in_custom_order %}
-                    <div class="task-card">
-                        <ul>
-                            <li><a href="{% url 'taskmaster:display_task' task.id %}">
-                                {{ task.document_name }}</a></li>
+                        <li class="list-group-item task-card">
+                        <div class="task-card-container">
+
+                            <a href="{% url 'taskmaster:display_task' task.id %}">
+                                {{ task.document_name }}</a>
                             <div class="reorder-buttons-container">
                                 <form action="{% url 'taskmaster:display_board' board.id %}" method="post" enctype="multipart/form-data">
                                 {% csrf_token %}
@@ -102,9 +104,11 @@
                                 </form>
                             </div>
 
-                        </ul>
-                    </div>
+                        </div>
+                        </li>
+
                     {% endfor %}
+                    </ol>
                     <div class="add-task-container">
                         <form class="form-inline" action="{% url 'taskmaster:display_board' board.id %}" method="post"
                               enctype="multipart/form-data">

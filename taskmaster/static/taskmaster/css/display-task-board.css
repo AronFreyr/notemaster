@@ -3,7 +3,6 @@
     background-color: #f2f2f2;
     border-radius: 6px;
     margin-bottom: 10px;
-
 }
 
 .task-list-container{
@@ -18,7 +17,7 @@
     flex-wrap: nowrap;
 }
 
-.container{
+.task-board-container{
     margin-left: 5%;
 }
 
@@ -41,4 +40,13 @@
     position: absolute;
     top: 0;
     right: 17%;
+}
+.task-card-container{
+    display: list-item;
+    margin-left: 3%;
+}
+
+.list-group-item{
+    padding-bottom: 2px;
+    padding-right: 2px;
 }
