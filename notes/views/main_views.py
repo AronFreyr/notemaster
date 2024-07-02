@@ -39,7 +39,8 @@ def index(request):
     # turtle_graphics_tests.draw_document_map()
     #test_create_graph()
 
-    most_recent_docs = Document.objects.exclude(tagmap__tag__meta_tag_type='task').order_by('-id')[:10]
+    most_recent_docs = Document.objects.exclude(tagmap__tag__meta_tag_type='task')\
+                           .exclude(document_type='activity').exclude(document_type='task').order_by('-id')[:10]
 
     return render(request, 'notes/index.html',
                   {'programming_portal_tags': programming_portal_tags,
@@ -174,7 +175,7 @@ def edit_tag(request, tag_id: int):
         if 'meta_tag_choices' in request.POST:  # Changing the meta tag type.
             tag.meta_tag_type = request.POST['meta_tag_choices']
         tag.save()
-        return redirect(reverse('notes:display_tag', kwargs={'tag_name': tag.id}))
+        return redirect(reverse('notes:display_tag', kwargs={'tag_id': tag.id}))
     return render(request, 'notes/edit-tag2.html', {'tag': tag})
 
 
@@ -202,7 +203,7 @@ def edit_doc(request, doc_id):
             if new_doc_type != document.document_type:
                 document.document_type = new_doc_type
                 document.save()
-        return redirect(reverse('notes:display_doc', kwargs={'doc': document.id}))
+        return redirect(reverse('notes:display_doc', kwargs={'doc_id': document.id}))
     return render(request, 'notes/edit-doc2.html', {'document': document, 'form': AddTagForm()})
 
 
@@ -225,7 +226,7 @@ def edit_image(request, img_id: int):
             new_image_text = request.POST['name_textarea_edit_image_text']
             image.image_text = new_image_text
             image.save()
-        return redirect(reverse('notes:display_img', kwargs={'img': image.id}))
+        return redirect(reverse('notes:display_img', kwargs={'img_id': image.id}))
     return render(request, 'notes/edit-image.html', {'image': image, 'form': AddTagForm()})
 
 
@@ -266,7 +267,7 @@ def delete_or_remove(request, obj_id: int):
             # TODO: throw error, action_type should only be delete of remove
             pass
     if currently_viewed_document is not None:
-        return redirect(reverse('notes:display_doc', kwargs={'doc': currently_viewed_document.id}))
+        return redirect(reverse('notes:display_doc', kwargs={'doc_id': currently_viewed_document.id}))
     return redirect(reverse('notes:index'))
 
 
