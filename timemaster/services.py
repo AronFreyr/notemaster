@@ -12,6 +12,21 @@ def get_total_time_of_intervals(intervals: List[TimeInterval]) -> timedelta:
 
     return total_time
 
+def convert_timedelta_to_hour_format(total_time: timedelta) -> str:
+
+    def add_prefix_zeroes(any_number) -> str:
+        any_number = str(any_number)
+        if len(any_number) == 1:
+            any_number = '0' + any_number
+        return any_number
+
+    total_time_seconds = total_time.total_seconds()
+    total_time_hours = int(total_time_seconds // 3600)
+    total_time_minutes = int((total_time_seconds // 60) - (total_time_hours * 60))
+    remaining_seconds = int(total_time_seconds - (total_time_hours * 3600) - (total_time_minutes * 60))
+
+    return str(f'{add_prefix_zeroes(total_time_hours)}:{add_prefix_zeroes(total_time_minutes)}:{add_prefix_zeroes(remaining_seconds)}')
+
 
 def get_week_nr_of_date(input_date: date) -> int:
     return date.isocalendar(input_date).week
