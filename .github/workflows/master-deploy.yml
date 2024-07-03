@@ -16,6 +16,7 @@ jobs:
             PRIVATE_KEY: ${{ secrets.DEFAULT_USER_KEY }}
             HOSTNAME: ${{secrets.EINSKIS_IP}}
             USER_NAME: ${{secrets.DEFAULT_USER_FOR_AWS}}
+            DEPLOY_USER_NAME: ${{secrets.DEPLOY_USER_NAME}}
       
         run: |
           echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
