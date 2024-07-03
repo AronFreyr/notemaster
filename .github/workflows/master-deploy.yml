@@ -25,6 +25,7 @@ jobs:
               #restart using whatever script I have created for that purpose
               sudo su ${DEPLOY_USER_NAME} &&
               cd /opt/notemaster &&
+              whoami &&
               git pull origin master &&
               cd &&
               ./restart-notemaster.sh
