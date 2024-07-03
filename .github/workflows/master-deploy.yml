@@ -23,11 +23,6 @@ jobs:
           ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} '
 
               #restart using whatever script I have created for that purpose
-              sudo su ${DEPLOY_USER_NAME} &&
-              echo "test crap" &&
-              cd /opt/notemaster &&
-              whoami &&
-              git pull origin master &&
-              cd &&
+              ./pull-master-notemaster-as-euro-counter.sh &&
               ./restart-notemaster.sh
               '
