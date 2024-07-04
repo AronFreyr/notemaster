@@ -11,7 +11,8 @@ class AddBoardForm(forms.Form):
 
 class CreateTaskListForm(forms.Form):
 
-    list_name = forms.CharField(label='Input task list name here:')
+    list_name = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'List Name'}),
+                                label='New task list:')
 
     class Meta:
         fields = ['list_name']
