@@ -15,7 +15,7 @@
 
 .board-list-container{
     flex-wrap: nowrap;
-    background-color: #e2e2e2;
+    background-color: #e7e7e7;
     overflow-x: scroll;
     overflow-y: scroll;
     margin-right: 10%;
@@ -30,7 +30,8 @@
 
 .add-task-container input{
     max-width: 55%;
-    margin-left: 2px;
+    margin-left: 5px;
+    margin-top: 5px;
 }
 
 .reorder-buttons-container{
@@ -59,7 +60,12 @@
 }
 
 .task-list-column{
-    min-width: 10%;
+    /*min-width: 10%;*/
+    min-width: 250px;
     max-width: 15%;
     margin-top: 10px;
+}
+
+.list-name{
+    margin-left: 5px;
 }
