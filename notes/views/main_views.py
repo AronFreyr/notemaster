@@ -54,7 +54,7 @@ def index(request):
 def list_db_content(request):
     # TODO: Update the documentation.
     """
-    Shows a list of all of the documents, tags and tagmaps currently in the database.
+    Shows a list of all the documents, tags and tagmaps currently in the database.
     :param request: The classic Django request object.
     :return: renders the HTML page with three lists, one list of every document, one list of every tag and
     one list of every tagmap.
@@ -76,7 +76,8 @@ def display_help(request):
 @login_required
 def create_doc(request):
     if request.method == 'GET':
-        return render(request, 'notes/create-document.html', {'create_document_form': CreateDocumentForm()})
+        return render(request, 'notes/create-document.html',
+                      {'create_document_form': CreateDocumentForm()})
     if request.method == 'POST':
         form = CreateDocumentForm(request.POST)
         if form.is_valid():
@@ -86,8 +87,8 @@ def create_doc(request):
             new_tag = form.cleaned_data.get('new_tag')
 
             if not Document.objects.filter(document_name=doc_name).exists():
-                print(request.user)
-                new_doc = Document(document_name=doc_name, document_text=doc_text, document_last_modified_by=request.user, document_created_by=request.user)
+                new_doc = Document(document_name=doc_name, document_text=doc_text,
+                                   document_last_modified_by=request.user, document_created_by=request.user)
                 new_doc.save()
                 handle_new_tag(new_tag, tag_creator=request.user, new_doc=new_doc)
                 return render(request, 'notes/display-doc.html', {'document': new_doc})
@@ -96,8 +97,9 @@ def create_doc(request):
                                                            'document_text': doc_text,
                                                            'new_tag': new_tag})
                 duplicate_name_error = 'This name is already taken. Choose another one.'
-                return render(request, 'notes/create-document.html', {'create_document_form': invalid_form,
-                                                                      'duplicate_name_error': duplicate_name_error})
+                return render(request, 'notes/create-document.html',
+                              {'create_document_form': invalid_form,
+                               'duplicate_name_error': duplicate_name_error})
 
     return redirect(reverse('notes:index'))
 
@@ -154,7 +156,7 @@ def display_tag(request, tag_id: int):
     """
     Displays a single tag.
     :param request: The request object.
-    :param tag_name: The name of the tag to be displayed.
+    :param tag_id: The ID of the tag to be displayed.
     :return: render for the tag, which will be rendered with the display-tag.html file.
     """
     tag = Tag.objects.get(id=tag_id)
@@ -185,7 +187,7 @@ def edit_doc(request, doc_id):
     """
     Enables edits to the current document. TODO: currently it's only possible to edit the document text.
     :param request: The request object.
-    :param doc: The ID of the document to be edited
+    :param doc_id: The ID of the document to be edited
     :return: A render of the edited document.
     """
     document = Document.objects.get(id=doc_id)
@@ -213,7 +215,7 @@ def edit_image(request, img_id: int):
     """
     Enables edits to the current image. TODO: currently it's only possible to edit the image text.
     :param request: The request object.
-    :param image: The image to be edited
+    :param img_id: The ID of the image to be edited
     :return: A render of the edited image.
     """
     image = Image.objects.get(id=img_id)
@@ -243,7 +245,7 @@ def delete_or_remove(request, obj_id: int):
     as deleting the object itself.
     :param request: The Django request object. From it the function acquires the 'object_type',
     'action_type', 'currently_viewed_doc' and possibly 'currently_viewed_tag' in the future.
-    :param obj_name: The name of the tag or document that should be deleted or removed.
+    :param obj_id: The ID of the tag or document that should be deleted or removed.
     :return: If a tag was removed from a document while the document was being viewed, the function
     redirects to the document, else it redirects to the index.
     """
