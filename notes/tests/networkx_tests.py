@@ -26,7 +26,9 @@ class NetworkXTests(TestCase):
         pos = nx.spring_layout(graph)  # Gives the node coordinates????
         print('pos:', pos)
         for node in graph.nodes():
-            graph.node[node]['pos'] = pos[node]
+        #for node in list(graph.nodes.data()):
+            graph.nodes[node]['pos'] = pos[node]
+            #node['pos'] = pos[node]
 
         node_trace = go.Scatter(
             x=[],
@@ -41,7 +43,7 @@ class NetworkXTests(TestCase):
 
         for node in graph.nodes():
             print('node:', node)
-            x, y = graph.node[node]['pos']
+            x, y = graph.nodes[node]['pos']
             node_trace['x'] += tuple([x])
             node_trace['y'] += tuple([y])
             node_trace['text'] += tuple([str(node)])
@@ -57,10 +59,10 @@ class NetworkXTests(TestCase):
 
         for edge in graph.edges():
             print('edge:', edge)
-            print('graph.node[edge[0]]:', graph.node[edge[0]])
-            print('graph.node[edge[1]]:', graph.node[edge[1]])
-            x0, y0 = graph.node[edge[0]]['pos']
-            x1, y1 = graph.node[edge[1]]['pos']
+            print('graph.node[edge[0]]:', graph.nodes[edge[0]])
+            print('graph.node[edge[1]]:', graph.nodes[edge[1]])
+            x0, y0 = graph.nodes[edge[0]]['pos']
+            x1, y1 = graph.nodes[edge[1]]['pos']
             #edge_trace['x'] += tuple([x0, x1, None])
             edge_trace['x'] += tuple([x0, x1])
             #edge_trace['y'] += tuple([y0, y1, None])
@@ -69,9 +71,15 @@ class NetworkXTests(TestCase):
         print('node_trace:', node_trace)
         print('edge_trace:', edge_trace)
 
-        fig = go.Figure(data=[edge_trace, node_trace],
+        # Generate the plot of the network.
+        self.plot_network(node_trace, edge_trace)
+
+    def plot_network(self, nodes, edges):
+        """ Plots the edges and nodes in the network. """
+
+        fig = go.Figure(data=[edges, nodes],
                         layout=go.Layout(
-                            title='<br>Network graph made with Python',
+                            title='<br>Network graph made with Python</br>',
                             titlefont=dict(size=16),
                             showlegend=False,
                             hovermode='closest',
