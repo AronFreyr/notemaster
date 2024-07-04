@@ -10,11 +10,22 @@
 {% block content %}
 {% if board %}
 
-<div class="container task-board-container">
-    <h1><a href="{% url 'taskmaster:edit_board' board.id %}">{{ board.board_name }}</a></h1>
+<div class="container-fluid task-board-container">
+    <div class="row">
+        <div class="col">
+            <h1><a href="{% url 'taskmaster:edit_board' board.id %}">{{ board.board_name }}</a></h1>
+        </div>
+        <div class="col">
+            <form action="{% url 'taskmaster:display_board' board.id %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ create_board_list_form }}
+                <input type="submit" value="Add List">
+            </form>
+        </div>
+    </div>
     <div class="row board-list-container">
         {% if orphan_tasks %}
-        <div class="col-md-3">
+        <div class="col task-list-column">
             <div class="task-list-container">
                 <div class="list-top">
                     <div class="list-name">
@@ -50,7 +61,7 @@
         </div>
         {% endif %}
         {% for board_list in board.get_all_lists_in_board_in_custom_order %}
-            <div class="col-md-3">
+            <div class="col task-list-column">
                 <div class="task-list-container">
                     <div class="list-top">
                         <div class="list-name">
@@ -122,13 +133,7 @@
                 </div>
             </div>
         {% endfor %}
-        <div class="col-md-4">
-            <form action="{% url 'taskmaster:display_board' board.id %}" method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-                {{ create_board_list_form }}
-                <input type="submit" value="Add List">
-            </form>
-        </div>
+
     </div>
 </div>
 
