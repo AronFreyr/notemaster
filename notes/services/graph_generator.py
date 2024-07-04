@@ -19,18 +19,20 @@ def test_create_graph():
 
     for doc in doc_list:
         #graph.add_node('Doc - ' + doc.document_name, type='Doc', name=doc.document_name)
-        graph.add_node('Doc - ' + doc.document_name)
+        doc_node_name = 'Doc - ' + doc.document_name
+        graph.add_node(doc_node_name)
         for tag in doc.get_all_tags():
+            tag_node_name = 'Tag - ' + tag.tag_name
             if tag.tag_name not in tag_exclusion_list:
-                if not graph.has_node('Tag - ' + tag.tag_name):
+                if not graph.has_node(tag_node_name):
                     #graph.add_node('Tag - ' + tag.tag_name, type='Tag', name=tag.tag_name)
-                    graph.add_node('Tag - ' + tag.tag_name)
-                graph.add_edge('Doc - ' + doc.document_name, 'Tag - ' + tag.tag_name)
+                    graph.add_node(tag_node_name)
+                graph.add_edge(doc_node_name, tag_node_name)
 
     pos = nx.spring_layout(graph)  # Gives the node coordinates????
     print('pos:', pos)
     for node in graph.nodes():
-        graph.node[node]['pos'] = pos[node]
+        graph.nodes[node]['pos'] = pos[node]
 
     node_trace = go.Scatter(
         x=[],
@@ -53,7 +55,7 @@ def test_create_graph():
         print('------')
 
     for node in graph.nodes():
-        x, y = graph.node[node]['pos']
+        x, y = graph.nodes[node]['pos']
         #print(graph.node[node]['name'])
         #print(graph.node[node]['type'])
 
@@ -92,15 +94,15 @@ def test_create_graph():
         #print('graph.node[edge[0]]:', graph.node[edge[0]])
         #print('graph.node[edge[1]]:', graph.node[edge[1]])
         #print('--------')
-        node1 = graph.node[edge[0]]
+        node1 = graph.nodes[edge[0]]
         #print(node1)
-        node2 = graph.node[edge[1]]
+        node2 = graph.nodes[edge[1]]
         #print(node2)
         #print(graph.get_edge_data(edge[0], edge[1]))
         #print('--------')
 
-        x0, y0 = graph.node[edge[0]]['pos']
-        x1, y1 = graph.node[edge[1]]['pos']
+        x0, y0 = graph.nodes[edge[0]]['pos']
+        x1, y1 = graph.nodes[edge[1]]['pos']
         edge_trace['x'] += tuple([x0, x1])
         edge_trace['y'] += tuple([y0, y1])
         edge_trace['text'] += tuple([edge])
@@ -173,4 +175,5 @@ def test_create_graph():
                         xaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
                         yaxis=dict(showgrid=False, zeroline=False, showticklabels=False)))
 
-    py.offline.plot(fig, filename=r'./notes/tests/test-plot2.html', auto_open=False)
+    #py.offline.plot(fig, filename=r'./notes/tests/test-plot2.html', auto_open=False)
+    py.offline.plot(fig, filename=r'./notes/tests/test-plot3.html', auto_open=False)
