@@ -16,8 +16,7 @@
 .board-list-container{
     flex-wrap: nowrap;
     background-color: #e7e7e7;
-    overflow-x: scroll;
-    overflow-y: scroll;
+    overflow: auto;
     margin-right: 10%;
     height: 80vh;
     border-radius: 6px;
