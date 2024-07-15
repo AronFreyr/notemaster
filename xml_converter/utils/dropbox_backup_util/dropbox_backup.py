@@ -19,18 +19,20 @@ class DropboxSync:
         self.xml_doc_path = Path(xml_path / 'documents.xml')
         self.xml_tag_path = Path(xml_path / 'tags.xml')
         self.extension = extension  # Mostly used for test purposes, to add .test after files that are tests.
+        self.xml_on_server_path = 'einsk.is:8080/notemaster/xml/'
 
     def download_xml(self):
         """ Gets the newest version of the xml for documents and tags. """
 
         # curl -o documents.xml einsk.is:8080/notemaster/xml/documents/
-        os.system('curl -o ' + str(self.xml_doc_path) + ' einsk.is:8080/notemaster/xml/documents/')
+        os.system('curl -o ' + str(self.xml_doc_path) + ' ' + self.xml_on_server_path +  'documents/')
 
         # os.system('curl -o tags.xml einsk.is:8080/notemaster/xml/tags/')
         # os.system('/home/aron/Dropbox-Uploader/dropbox_uploader.sh upload /home/aron/dropbox_backup_test/tags.xml notemaster_backups/tags_' + current_date + '.xml')
 
         # curl -o tags.xml einsk.is:8080/notemaster/xml/tags/
-        os.system('curl -o ' + str(self.xml_tag_path) + ' einsk.is:8080/notemaster/xml/tags/')
+        # os.system('curl -o ' + str(self.xml_tag_path) + ' einsk.is:8080/notemaster/xml/tags/')
+        os.system('curl -o ' + str(self.xml_tag_path) + ' ' + self.xml_on_server_path  + 'tags/')
 
     def upload_xml_to_dropbox(self):
         """ Uploads the xml documents and tags to dropbox. It assumes that download_xml has already run. """
@@ -83,6 +85,7 @@ class DropboxSync:
 
 if __name__ == '__main__':
     syncer = DropboxSync()
+    syncer.xml_on_server_path = 'http://localhost:8000/notemaster/xml/'
+    syncer.download_xml()
     #syncer.download_xml()
-    #syncer.download_xml()
-    syncer.perform_upload()
+    #syncer.perform_upload()
