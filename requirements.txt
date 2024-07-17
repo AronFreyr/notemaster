@@ -10,3 +10,5 @@ psycopg2-binary
 requests
 markdown
 python-markdown-math
+
+beautifulsoup4

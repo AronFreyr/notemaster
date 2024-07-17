@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 
 from lxml import etree as LET
@@ -11,10 +12,11 @@ def index(request):
     pass
 
 
+@login_required
 def documents(request):
     return HttpResponse(create_xml_from_documents(), content_type='text/xml')
 
-
+@login_required
 def tags(request):
     return HttpResponse(create_xml_from_tags(), content_type='text/xml')
 
