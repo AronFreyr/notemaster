@@ -13,3 +13,7 @@
 .create-board-container{
     padding-bottom: 50px;
 }
+
+.board-cards-container{
+    max-width: 100%;
+}
