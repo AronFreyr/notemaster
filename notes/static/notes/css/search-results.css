@@ -9,7 +9,7 @@
     flex-direction: row;
 }
 
-.document-wrapper, .tag-wrapper{
+.document-wrapper, .tag-wrapper, .image-wrapper{
     border: 1px solid black;
     border-radius: 6px;
     margin: 25px 80px;

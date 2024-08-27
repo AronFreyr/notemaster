@@ -34,4 +34,17 @@
             </div>
         {% endfor %}
     </div>
+
+    <div class="item-header">
+        <p>images</p>
+    </div>
+    <div class="row">
+        {% for item in search_results.images %}
+            <div class="image-wrapper">
+                <h3><a href="{% url 'notes:display_img' item.id %}">{{ item.image_name }}</a></h3>
+                <img src="{{ item.image_picture.url }}" class="img-responsive img-rounded" style="max-width: 250px;"/>
+                <p>{{ item.get_parsed_text| safe| truncatewords_html:50}}</p>
+            </div>
+        {% endfor %}
+    </div>
 {% endblock content %}

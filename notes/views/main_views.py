@@ -277,7 +277,7 @@ def delete_or_remove(request, obj_id: int):
 
 @login_required
 def display_search_results(request):
-    items_to_display = {'documents': [], 'tags': []}
+    items_to_display = {'documents': [], 'tags': [], 'images': []}
     if request.method == 'GET':
         item_list = [x.strip() for x in request.GET['search-bar-input'].split(',')]
         if 'advancedsearch[]' in request.GET:
@@ -295,6 +295,13 @@ def display_search_results(request):
                         tag_object = Tag.objects.filter(tag_name__icontains=item)
                         items_to_display['tags'].extend(tag_object)
                 items_to_display['tags'].sort(key=lambda x: x.tag_name)  # Sort the tag list.
+
+            if 'images' in search_options: # If the check for image search is on.
+                for item in item_list:
+                    if Image.objects.filter(image_name__icontains=item).exists():
+                        image_object = Image.objects.filter(image_name__icontains=item)
+                        items_to_display['images'].extend(image_object)
+                items_to_display['images'].sort(key=lambda x: x.image_name)
 
     return render(request, 'notes/search-results.html', {'search_results': items_to_display})
 

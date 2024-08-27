@@ -44,11 +44,15 @@
             <div class="dropdown-menu" role="menu">
                 <div class="advanced-search-option dropdown-item" style="display: flex;">
                     <label for="searchdocs" style="flex: 0 0 65%;">Documents</label>
-                    <input type="checkbox" name="advancedsearch[]" value="documents" title="searchdocs" checked style="flex: 1; margin-top: 7px;">
+                    <input type="checkbox" name="advancedsearch[]" value="documents" title="searchdocs" id="searchdocs" checked style="flex: 1; margin-top: 7px;">
                 </div>
                 <div class="advanced-search-option dropdown-item" style="display: flex;">
                     <label for="searchtags" style="flex: 0 0 65%;">Tags</label>
-                    <input type="checkbox" name="advancedsearch[]" value="tags" title="searchtags" style="flex: 1; margin-top: 7px;">
+                    <input type="checkbox" name="advancedsearch[]" value="tags" title="searchtags" id="searchtags" style="flex: 1; margin-top: 7px;">
+                </div>
+                <div class="advanced-search-option dropdown-item" style="display: flex;">
+                    <label for="searchimages" style="flex: 0 0 65%;">Images</label>
+                    <input type="checkbox" name="advancedsearch[]" value="images" title="searchimages" id="searchimages" style="flex: 1; margin-top: 7px;">
                 </div>
 
                 <a class="dropdown-item" href="{% url 'notes:advanced_search' %}">Advanced Search</a>
