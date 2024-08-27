@@ -68,3 +68,29 @@ code{
     bottom: 0;
     right: 0;
 }
+
+table{
+    border-spacing: 0;
+    border-collapse: separate;
+    border: 1px solid black;
+    border-radius: 5px;
+}
+
+table td, table th{
+    border-top: 1px solid black;
+    border-right: 1px solid black;
+}
+
+table th{
+    border-top: 0px solid black;
+}
+
+
+table tr:first-child th:first-child, table tr:last-child th:last-child{
+    /*border-radius: 5px;*/
+}
+
+
+table td:last-child, table th:last-child{
+    border-right: 0px solid black;
+}
