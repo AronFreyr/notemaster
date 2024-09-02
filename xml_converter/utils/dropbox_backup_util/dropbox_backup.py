@@ -156,5 +156,5 @@ if __name__ == '__main__':
     #syncer.xml_on_server_path = 'http://localhost:8000/notemaster/xml/'
     #syncer.download_xml()
     # syncer.download_xml_with_session('documents')
-    what_to_upload = ['documents', 'tags', 'tasks', 'task_lists', 'task_boards']
+    what_to_upload = ['documents', 'tags', 'tasks', 'task_lists', 'task_boards', 'activities', 'time_intervals']
     syncer.perform_upload(what_to_upload)

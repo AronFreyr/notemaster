@@ -32,6 +32,14 @@ def task_lists(request):
 def task_boards(request):
     return HttpResponse(create_xml_from_task_boards(), content_type='text/xml')
 
+@login_required
+def activities(request):
+    return HttpResponse(create_xml_from_activities(), content_type='text/xml')
+
+@login_required
+def time_intervals(request):
+    return HttpResponse(create_xml_from_time_intervals(), content_type='text/xml')
+
 
 def create_xml_from_documents():
     all_docs = Document.objects.all()
@@ -252,4 +260,75 @@ def create_xml_from_task_boards():
     xml_element = LET.ElementTree(objectify.fromstring(xml_text))
     xml_to_string = LET.tostring(xml_element.getroot(), pretty_print=True, xml_declaration=True,
                                  encoding='UTF-8').decode()
+    return xml_to_string
+
+
+def create_xml_from_activities():
+    all_activities = Activity.objects.all()
+
+    xml_text = '<activities>\n'
+    for activity in all_activities:
+        xml_text += '<activity>\n'
+        xml_text += '<activity_id>' + str(activity.id) + '</activity_id>\n'
+        xml_text += '<name>' + activity.document_name + '</name>\n'
+        input_text = activity.document_text
+        while ']]>' in input_text:
+            input_text = input_text.replace(']]>', '.\].\].\>')
+        while '<![CDATA[' in input_text:
+            input_text = input_text.replace('<![CDATA[', '\<!\[CDATA\[')
+        xml_text += '<text> <![CDATA[' + input_text + ']]> </text>\n'
+        xml_text += '<activity_tags>\n'
+        for tag in activity.get_all_tags_sorted():
+            xml_text += '<activity_tag>\n'
+            xml_text += '<tag_id>' + str(tag.id) + '</tag_id>\n'
+            xml_text += '<tag_name>' + tag.tag_name + '</tag_name>\n'
+            xml_text += '<tag_type>' + tag.tag_type + '</tag_type>\n'
+            xml_text += '<meta_tag_type>' + tag.meta_tag_type + '</meta_tag_type>\n'
+            xml_text += '</activity_tag>\n'
+        xml_text += '</activity_tags>\n'
+        xml_text += '<last_modified>' + activity.document_modified.strftime('%Y-%m-%d') + '</last_modified> \n'
+        xml_text += '<last_modified_by>' + str(activity.document_last_modified_by) + '</last_modified_by> \n'
+        xml_text += '<created>' + activity.document_created.strftime('%Y-%m-%d') + '</created> \n'
+        xml_text += '<created_by>' + str(activity.document_created_by) + '</created_by> \n'
+        xml_text += '<document_type>' + activity.document_type + '</document_type> \n'
+        xml_text += '</activity>\n'
+    xml_text += '</activities>'
+
+    xml_element = LET.ElementTree(objectify.fromstring(xml_text))
+
+    xml_to_string = LET.tostring(xml_element.getroot(), pretty_print=True, xml_declaration=True,
+                                 encoding='UTF-8').decode()
+
+    return xml_to_string
+
+
+def create_xml_from_time_intervals():
+    all_time_intervals = TimeInterval.objects.all()
+
+    xml_text = '<time_intervals>\n'
+
+    for interval in all_time_intervals:
+        xml_text += '<time_interval>\n'
+        xml_text += '<time_interval_id>' + str(interval.id) + '</time_interval_id>\n'
+        xml_text += '<time_interval_date>' + interval.interval_date.strftime('%Y-%m-%d') + '</time_interval_date>\n'
+        xml_text += '<time_interval_amount>' + str(interval.interval_amount) + '</time_interval_amount>\n'
+        xml_text += '<time_interval_tags>\n'
+        for tag in interval.get_all_tags():
+            xml_text += '<time_interval_tag>\n'
+            xml_text += '<tag_id>' + str(tag.id) + '</tag_id>\n'
+            xml_text += '<tag_name>' + tag.tag_name + '</tag_name>\n'
+            xml_text += '<tag_type>' + tag.tag_type + '</tag_type>\n'
+            xml_text += '<meta_tag_type>' + tag.meta_tag_type + '</meta_tag_type>\n'
+            xml_text += '</time_interval_tag>\n'
+        xml_text += '</time_interval_tags>\n'
+
+        xml_text += '</time_interval>\n'
+
+    xml_text += '</time_intervals>'
+
+    xml_element = LET.ElementTree(objectify.fromstring(xml_text))
+
+    xml_to_string = LET.tostring(xml_element.getroot(), pretty_print=True, xml_declaration=True,
+                                 encoding='UTF-8').decode()
+
     return xml_to_string
