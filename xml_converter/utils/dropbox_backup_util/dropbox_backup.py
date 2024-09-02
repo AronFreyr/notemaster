@@ -150,10 +150,11 @@ class DropboxSync:
 
 
 if __name__ == '__main__':
-    conf_location = Path(__file__).resolve().parent.parent.parent.parent / 'notemaster' / 'config' / 'dev.ini'
+    # conf_location = Path(__file__).resolve().parent.parent.parent.parent / 'notemaster' / 'config' / 'dev.ini'
+    conf_location = Path(__file__).resolve().parent.parent.parent.parent / 'notemaster' / 'config' / 'prod.ini'
     syncer = DropboxSync(config_location=conf_location)
     #syncer.xml_on_server_path = 'http://localhost:8000/notemaster/xml/'
     #syncer.download_xml()
     # syncer.download_xml_with_session('documents')
-    what_to_upload = ['documents', 'tags']
+    what_to_upload = ['documents', 'tags', 'tasks', 'task_lists', 'task_boards']
     syncer.perform_upload(what_to_upload)
