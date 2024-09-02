@@ -43,10 +43,10 @@ class TaskBoard(models.Model):
     board_last_modified_by = models.ForeignKey(User, on_delete=models.SET_NULL,
                                                related_name='board_last_modified_by', blank=True, null=True)
 
-    def get_all_lists_in_board_in_custom_order(self):
+    def get_all_lists_in_board_in_custom_order(self) -> list:
         task_list = self.tasklist_set.filter(previous_list=None).first()
         if not task_list:
-            return
+            return []
         task_list_list = [task_list]
         while task_list.next_list:
             task_list_list.append(task_list.next_list)
