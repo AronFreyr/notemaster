@@ -1,6 +1,6 @@
 <div class="board-card">
     <h1 class="board-name"><a href="{% url 'taskmaster:display_board' board.id %}">
                                 {{ board.board_name }}</a></h1>
-    <p>Number of lists: {{board.get_all_lists_in_board_in_custom_order|length}}</p>
     <p>Number of unfinished tasks: {{board.get_all_unfinished_tasks_in_board|length}}</p>
+    <p>Number of lists: {{board.get_all_lists_in_board_in_custom_order|length}}</p>
 </div>
