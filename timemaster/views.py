@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect, reverse
 
 from notes.forms import AddTagForm
 from notes.models import Tag
-from notes.services.object_handling import handle_new_tag
+from notes.services.object_handling import handle_new_tag, remove_object
 from timemaster import forms, services
 from timemaster.models import Activity, TimeInterval, IntervalTagMap
 
@@ -98,6 +98,18 @@ def edit_activity(request, activity_id):
             tag = add_tag_form.cleaned_data.get('tag_name')
             if tag != '':
                 handle_new_tag(tag, new_doc=activity, tag_creator=request.user)
+
+            # If the new tag is a tag for another activity, give all intervals that this activity has the
+            # same activity as the new tag.
+            connected_activity = Activity.objects.filter(document_name=tag).first()
+            if connected_activity:
+                all_intervals = (TimeInterval.objects.filter(intervaltagmap__tag__tag_name=activity.document_name,
+                                                             intervaltagmap__tag__tag_type='meta',
+                                                             intervaltagmap__tag__meta_tag_type='time measurement')
+                                 .all().order_by('interval_date'))
+                for interval in all_intervals:
+                    handle_new_tag(tag, new_interval=interval, tag_creator=request.user,
+                                   tag_type=('meta', 'time measurement'))
 
         if 'name_textarea_edit_activity_name' in request.POST:
             new_activity_name = request.POST['name_textarea_edit_activity_name']
@@ -241,3 +253,34 @@ def remove_interval_tag(request, tag_id):
         interval_tag_map.delete()
 
         return redirect(reverse('timemaster:display_interval', args=(interval_id, )))
+
+
+@login_required()
+def remove_tag(request, obj_id):
+    if request.method == 'GET':
+        # todo what to do
+        pass
+
+    if request.method == 'POST':
+        current_activity_name = request.POST['currently_viewed_doc']
+        current_activity = Activity.objects.get(document_name=current_activity_name)
+        tag_to_remove = Tag.objects.get(id=obj_id)
+        # If we are removing a tag that belongs to a different activity from this activity, then all
+        # intervals that are connected to this activity should not be connected to the other activity anymore.
+        if (tag_to_remove.tag_type == 'meta' and tag_to_remove.meta_tag_type == 'time measurement' and
+                current_activity.document_name != tag_to_remove.tag_name):
+            connected_activity = Activity.objects.filter(document_name=tag_to_remove.tag_name).first()
+            if connected_activity:
+                current_activity_intervals = (TimeInterval.objects.filter(
+                    intervaltagmap__tag__tag_name=current_activity.document_name,
+                    intervaltagmap__tag__tag_type='meta',
+                    intervaltagmap__tag__meta_tag_type='time measurement')
+                    .all().order_by('interval_date'))
+                for interval in current_activity_intervals:
+                    interval_tag_map = IntervalTagMap.objects.filter(tag=tag_to_remove, interval=interval).first()
+                    if interval_tag_map:
+                        interval_tag_map.delete()
+
+        # Remove the tag from the current activity
+        remove_object(tag_to_remove.id, 'tag', request)
+        return redirect(reverse('timemaster:edit_activity', kwargs={'activity_id': current_activity.id}))

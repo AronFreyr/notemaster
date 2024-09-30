@@ -12,6 +12,7 @@ urlpatterns = [
     path('editinterval/<int:interval_id>/', views.edit_interval, name='edit_interval'),
     path('deleteinterval/<int:interval_id>/', views.delete_interval, name='delete_interval'),
     path('removeintervaltag/<int:tag_id>/', views.remove_interval_tag, name='remove_interval_tag'),
+    path('removetag/<int:obj_id>', views.remove_tag, name='remove_tag'),
     # path('displayboard/<int:board_id>/', views.display_board, name='display_board'),
     # path('editboard/<int:board_id>/', views.edit_board, name='edit_board'),
     # path('displaytask/<int:task_id>/', views.display_task, name='display_task'),
