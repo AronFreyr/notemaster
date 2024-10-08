@@ -14,6 +14,11 @@
                     <div class="create-image-name-container">
                         <label>{{ create_image_form.image_name.label }}</label>
                         {{ create_image_form.image_name|add_class:'form-image-name' }}
+                        <div class="duplicate-name-error-container">
+                        {% if duplicate_name_error %}
+                            {{ duplicate_name_error }}
+                        {% endif %}
+                        </div>
                     </div>
                 </div>
                 <div class="form-row">

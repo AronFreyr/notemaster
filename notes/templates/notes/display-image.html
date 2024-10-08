@@ -1,6 +1,7 @@
 {% extends 'notes/base.html' %}
 {% load static %}
 {% load app_filters %}
+{% block title %} Image: {{ image.image_name }} {% endblock title %}
 {%  block head_css_page %}
     <link rel="stylesheet" type="text/css" href="{% static 'notes/css/display-image.css' %}" />
  {% endblock head_css_page %}

@@ -29,3 +29,9 @@ label{
 fieldset{
     margin-bottom: 30px;
 }
+
+.duplicate-name-error-container{
+    font-size: 10pt;
+    float: left;
+    color: red;
+}

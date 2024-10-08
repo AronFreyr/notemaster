@@ -91,7 +91,7 @@ def create_doc(request):
                                    document_last_modified_by=request.user, document_created_by=request.user)
                 new_doc.save()
                 handle_new_tag(new_tag, tag_creator=request.user, new_doc=new_doc)
-                return render(request, 'notes/display-doc.html', {'document': new_doc})
+                return redirect(reverse('notes:display_doc', kwargs={'doc_id': new_doc.id}))
             else:  # There can not be multiple documents with the same name.
                 invalid_form = CreateDocumentForm(initial={'document_name': doc_name,
                                                            'document_text': doc_text,
@@ -123,7 +123,7 @@ def create_image(request):
                                   image_created_by=request.user, image_last_modified_by=request.user)
                 new_image.save()
                 handle_new_tag(new_tag, new_image=new_image, tag_creator=request.user)
-                return render(request, 'notes/display-image.html', {'image': new_image})
+                return redirect(reverse('notes:display_img', kwargs={'img_id': new_image.id}))
             else:
                 # TODO: Add functionality in the template to display the duplicate name error text.
                 duplicate_name_error = 'This name is already taken. Choose another one.'
