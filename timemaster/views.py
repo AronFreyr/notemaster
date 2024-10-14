@@ -1,6 +1,9 @@
 from datetime import datetime, timedelta
+import plotly as py
+import plotly.graph_objs as go
 
 from django.contrib.auth.decorators import login_required
+from django.db.models import Sum
 from django.shortcuts import render, redirect, reverse
 
 from notes.forms import AddTagForm
@@ -284,3 +287,30 @@ def remove_tag(request, obj_id):
         # Remove the tag from the current activity
         remove_object(tag_to_remove.id, 'tag', request)
         return redirect(reverse('timemaster:edit_activity', kwargs={'activity_id': current_activity.id}))
+
+@login_required()
+def display_interval_graph(request):
+    # Same as saying:
+    # TimeInterval.objects.raw('SELECT id, interval_date, SUM(interval_amount) as my_sum
+    # FROM timemaster_TimeInterval GROUP BY interval_date;'
+    # )
+    all_intervals = (TimeInterval.objects.values('interval_date').annotate(interval_sum=Sum('interval_amount')).order_by())
+
+    time_interval_form = forms.PlotTimeIntervalsInRangeForm(request.GET)
+    if time_interval_form.is_valid():
+        first_date = time_interval_form.cleaned_data.get('first_date')
+        last_date = time_interval_form.cleaned_data.get('last_date')
+        all_intervals = all_intervals.filter(interval_date__range=[first_date, last_date])
+    else:
+        time_interval_form = forms.PlotTimeIntervalsInRangeForm()
+        all_intervals = all_intervals.filter(interval_date__range=[time_interval_form.offset_time,
+                                                                   time_interval_form.date_today])
+
+
+    sums = [x['interval_sum'].total_seconds() // 60 / 60 for x in all_intervals]
+    dates = [x['interval_date'] for x in all_intervals]
+    bar_chart = go.Bar(x=dates, y=sums)
+    fig = go.Figure(data=[bar_chart])
+    plot_as_div = py.offline.plot(fig, include_plotlyjs=True, output_type='div')
+    return render(request, 'timemaster/display-interval-graph.html',
+                  {'graph': plot_as_div, 'time_interval_form': time_interval_form})

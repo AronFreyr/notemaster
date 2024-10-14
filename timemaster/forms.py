@@ -31,3 +31,15 @@ class AddTagToIntervalForm(AddTagForm):
 
     def cleaned_time_interval(self):
         return self.cleaned_data['current_time_interval']
+
+class PlotTimeIntervalsInRangeForm(forms.Form):
+
+    date_today = datetime.date.today()
+    offset_time = datetime.date(year=date_today.year - 1, month=date_today.month, day=date_today.day)
+    first_date = forms.DateField(initial=offset_time,
+                                 widget=forms.DateInput(attrs={'type': 'date'}))
+    last_date = forms.DateField(initial=date_today,
+                                 widget=forms.DateInput(attrs={'type': 'date'}))
+
+    class Meta:
+        fields = ['first_date', 'last_date']

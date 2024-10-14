@@ -1,0 +1,23 @@
+{% extends 'timemaster/base.html' %}
+{% load static %}
+
+{% block title %} Display Time Interval {% endblock title %}
+
+{% block head_css_page %}
+    <link rel="stylesheet" type="text/css" href="{% static 'timemaster/css/display-interval-graph.css' %}" />
+{% endblock head_css_page %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <form action="{% url 'timemaster:display_interval_graph' %}" method="get">
+                {{ time_interval_form }}
+                <input type="submit" value="Submit">
+            </form>
+            {{ graph | safe }}
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
