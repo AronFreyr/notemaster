@@ -17,9 +17,10 @@
     flex-wrap: nowrap;
     background-color: #e7e7e7;
     overflow: auto;
-    margin-right: 10%;
+    /*margin-right: 10%;*/
     height: 80vh;
     border-radius: 6px;
+    width: fit-content;
 }
 
 .task-board-container{
@@ -61,7 +62,8 @@
 .task-list-column{
     /*min-width: 10%;*/
     min-width: 250px;
-    max-width: 15%;
+    /*max-width: 15%;*/
+    max-width: 300px;
     margin-top: 10px;
 }
 
