@@ -18,9 +18,12 @@
     background-color: #e7e7e7;
     overflow: auto;
     /*margin-right: 10%;*/
-    height: 80vh;
+    /*height: 80vh;*/
+    height: fit-content;
+    max-height: 80vh;
     border-radius: 6px;
     width: fit-content;
+    max-width: 90vw;
 }
 
 .task-board-container{
