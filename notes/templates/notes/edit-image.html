@@ -37,8 +37,13 @@
         </div>
 
         <div class="col-sm-8">
-            <div>
-                <h1>{{ image.image_name }}</h1>
+            <div id="id-image-name">
+                <form action="{% url 'notes:edit_image' image.id %}" method="post" id="id-form-change-image-name">
+                    {% csrf_token %}
+                    <textarea id="id-textarea-change-image-name" form="id-form-change-image-name"
+                    name="name_textarea_edit_image_name">{{ image.image_name }}</textarea>
+                    <input type="submit" value="Submit">
+                </form>
             </div>
             <div id="div-container-image-picture">
                 <img src="{{ image.image_picture.url }}" alt="{{ image.image_name }}"

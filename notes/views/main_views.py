@@ -230,6 +230,18 @@ def edit_image(request, img_id: int):
             new_image_text = request.POST['name_textarea_edit_image_text']
             image.image_text = new_image_text
             image.save()
+        if 'name_textarea_edit_image_name' in request.POST:
+            new_image_name = request.POST['name_textarea_edit_image_name']
+            if new_image_name == image.image_name:
+                # TODO: send error that the name is the same as the old one.
+                pass
+            is_name_in_use = Image.objects.filter(image_name=new_image_name).first()
+            if not is_name_in_use:
+                image.image_name = new_image_name
+                image.save()
+            else:
+                # TODO: send error that the name is taken by another image.
+                pass
         return redirect(reverse('notes:display_img', kwargs={'img_id': image.id}))
     return render(request, 'notes/edit-image.html', {'image': image, 'form': AddTagForm()})
 
