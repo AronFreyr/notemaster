@@ -120,6 +120,12 @@ class TextParser:
                                                        {'image': image, 'style_string': style_string,
                                                         'no_text': no_text})
             output_text = output_text.replace(text_with_brackets, output_with_html)
+        else:
+            #output_text = f'<p style="color: red;">No image with the name ({image_name}) was found.</p>'
+            output_with_html = loader.render_to_string(
+                'notes/snippets/error-parser-snippet.html',
+                    {'error_message': f'No image with the name ({image_name}) was found.'})
+            output_text = output_text.replace(text_with_brackets, output_with_html)
         return output_text
 
     def link_to_table_parser(self, input_text, text_with_brackets, text_without_brackets):

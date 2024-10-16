@@ -28,9 +28,7 @@
         <section class="col-sm-8">
             <h1>{{ document.document_name }}</h1>
             <div id="div-container-document-text">
-                <label id="id-label-textarea-display-document-text">
-                    {{ document.get_parsed_text|safe }}
-                </label>
+                {{ document.get_parsed_text|safe }}
             </div>
         </section>
 
