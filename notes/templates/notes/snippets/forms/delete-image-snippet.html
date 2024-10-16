@@ -1,0 +1,8 @@
+<form action="{% url 'notes:remove' image.id %}" method="post">
+    {% csrf_token %}
+        <div>
+            <input type="hidden" name="object_type" value="image">
+            <input type="hidden" name="action_type" value="delete">
+            <button type="submit" class="btn btn-danger" value="Delete Image">Delete Image</button>
+        </div>
+</form>

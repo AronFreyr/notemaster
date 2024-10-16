@@ -62,6 +62,11 @@ def delete_object(obj_id: int, obj_type: str, request):
         for tagmap in doc_to_delete.tagmap_set.all():
             tagmap.delete()
         doc_to_delete.delete()
+    elif obj_type == 'image':  # If we are deleting an image.
+        img_to_delete = Image.objects.get(id=obj_id)
+        for tagmap in img_to_delete.imagetagmap_set.all():
+            tagmap.delete()
+        img_to_delete.delete()
 
 
 def remove_object(obj_id: int, obj_type: str, request):

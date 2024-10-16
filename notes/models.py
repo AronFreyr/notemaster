@@ -127,6 +127,10 @@ class Image(models.Model):
     def get_all_tags_sorted(self):
         return [tagmap.tag for tagmap in self.imagetagmap_set.all().order_by('tag__tag_name')]
 
+    def delete(self, using=None, keep_parents=False):
+        self.image_picture.storage.delete(self.image_picture.name)
+        super().delete()
+
     def __str__(self):
         return self.image_name
 

@@ -40,6 +40,10 @@
             <div>
                 <h1>{{ image.image_name }}</h1>
             </div>
+            <div id="div-container-image-picture">
+                <img src="{{ image.image_picture.url }}" alt="{{ image.image_name }}"
+                                     class="img-responsive img-rounded">
+            </div>
             {% comment %} The text associated with the image. {% endcomment %}
             <div id="div-container-edit-image">
                 <div id="div-container-edit-image-text">
@@ -71,6 +75,13 @@
                         <input type="submit" />
                     </div>
                 </form>
+            </div>
+            <div id="id-div-container-delete-image">
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteImageModal">
+                    Delete Image
+                </button>
+                {% include 'notes/snippets/modals/delete-image-modal.html' %}
             </div>
         </div>
     </div>
