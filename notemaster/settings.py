@@ -174,6 +174,9 @@ CACHES = {
     }
 }
 
+# This fixes an error popup that came after upgrading Django from version 2.
+# It has to do with the fact that I never explicitly defined the ID columns of my old models.
+# This makes the ID field default to auto or something.
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 # This fixes a problem with the being run twice in Django when it is in debug mode.
