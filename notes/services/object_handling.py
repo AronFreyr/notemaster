@@ -16,7 +16,7 @@ def handle_new_tag(new_tags, tag_creator=None, new_doc=None, new_image=None, new
     if new_tags == '':
         return
     # Tags are separated by a comma (,) but if there is a comma in the tag name then it can be escaped with this trick.
-    new_tags = new_tags.replace('\,', 'replacecommahackfromhell')
+    new_tags = new_tags.replace(r'\,', 'replacecommahackfromhell')
     split_tags = new_tags.split(',')
     for new_tag in split_tags:
         new_tag = new_tag.replace('replacecommahackfromhell', ',').strip()
@@ -46,7 +46,6 @@ def handle_new_tag(new_tags, tag_creator=None, new_doc=None, new_image=None, new
             if not IntervalTagMap.objects.filter(tag=current_tag, interval=new_interval).exists():
                 new_interval_tagmap = IntervalTagMap(tag=current_tag, interval=new_interval)
                 new_interval_tagmap.save()
-
 
 
 def delete_object(obj_id: int, obj_type: str, request):

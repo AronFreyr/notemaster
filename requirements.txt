@@ -1,12 +1,13 @@
 gunicorn
 networkx
 plotly
-django==2.1.*
+django==3.*
 channels
 Pillow
 lxml
 numpy
-psycopg2-binary
+#psycopg2-binary
+psycopg
 requests
 markdown
 python-markdown-math

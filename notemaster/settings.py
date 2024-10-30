@@ -174,6 +174,8 @@ CACHES = {
     }
 }
 
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+
 # This fixes a problem with the being run twice in Django when it is in debug mode.
 # The solution was found here:
 # https://stackoverflow.com/questions/26682413/django-rotating-file-handler-stuck-when-file-is-equal-to-maxbytes
