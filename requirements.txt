@@ -6,10 +6,15 @@ channels
 Pillow
 lxml
 numpy
-#psycopg2-binary
 psycopg
 requests
 markdown
 python-markdown-math
+
+# Google Drive API
+google-api-python-client
+google-auth-httplib2
+google-auth-oauthlib
+# ----------------
 
 beautifulsoup4
