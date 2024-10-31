@@ -6,6 +6,7 @@ channels
 Pillow
 lxml
 numpy
+psycopg2-binary  # Needed until Django v4.2
 psycopg
 requests
 markdown
