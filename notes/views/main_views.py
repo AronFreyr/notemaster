@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import cache_page
 
 from notes.models import Document, Tag, Tagmap, Image, ImageDocumentMap, ImageTagMap
-from notes.forms import AddTagForm, CreateDocumentForm, CreateImageForm
+from notes.forms import AddTagForm, CreateDocumentForm, CreateImageForm, EditDocumentForm
 from notes.services.object_handling import handle_new_tag, remove_object, delete_object
 from notemaster.settings import CACHE_TIME
 from notes.views.portal_views import *
@@ -193,22 +193,25 @@ def edit_doc(request, doc_id):
     """
     document = Document.objects.get(id=doc_id)
     if request.method == 'POST':
-        form = AddTagForm(request.POST)
+        add_tag_form = AddTagForm(request.POST)
         document.document_last_modified_by = request.user
-        if form.is_valid():
-            tag = form.cleaned_data.get('tag_name')
+        edit_doc_form = EditDocumentForm(request.POST)
+        if add_tag_form.is_valid():
+            tag = add_tag_form.cleaned_data.get('tag_name')
             handle_new_tag(tag, tag_creator=request.user, new_doc=document)
-        if 'name_textarea_edit_document_text' in request.POST:
-            new_doc_text = request.POST['name_textarea_edit_document_text']
-            document.document_text = new_doc_text
-            document.save()
-        if 'name_type_choices' in request.POST:
-            new_doc_type = request.POST['name_type_choices']
-            if new_doc_type != document.document_type:
+        if edit_doc_form.is_valid():
+            new_doc_text = edit_doc_form.cleaned_data.get('document_text')
+            new_doc_type = edit_doc_form.cleaned_data.get('document_type')
+            if new_doc_text != document.document_text and new_doc_text:
+                document.document_text = new_doc_text
+                document.save()
+            if new_doc_type != document.document_type and new_doc_type:
                 document.document_type = new_doc_type
                 document.save()
+
         return redirect(reverse('notes:display_doc', kwargs={'doc_id': document.id}))
-    return render(request, 'notes/edit-doc2.html', {'document': document, 'form': AddTagForm()})
+    return render(request, 'notes/edit-doc2.html', {'document': document, 'form': AddTagForm(),
+                                                    'edit_doc_form': EditDocumentForm(instance=document)})
 
 
 @login_required

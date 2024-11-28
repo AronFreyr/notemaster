@@ -1,5 +1,7 @@
 from django import forms
-from .models import Tag, Image
+from django.db import models
+from .models import Tag, Image, Document
+from tinymce.widgets import TinyMCE
 
 
 class AddTagForm(forms.ModelForm):
@@ -25,8 +27,11 @@ class AddTagForm(forms.ModelForm):
 
 class CreateDocumentForm(forms.Form):
     document_name = forms.CharField(label='Document name:')
-    document_text = forms.CharField(label='Document text:', widget=forms.Textarea)
+    # document_text = forms.CharField(label='Document text:', widget=forms.Textarea)
+    document_text = forms.CharField(label='Document text:', widget=TinyMCE(attrs={'cols': 80, 'rows': 30}))
     new_tag = forms.CharField(label='Document tags:')
+
+    # formfield_overrides = {models.TextField: {'widget': TinyMCE()}}
 
     class Meta:
         fields = ['document_name', 'document_text', 'new_tag']
@@ -41,3 +46,11 @@ class CreateImageForm(forms.Form):
     class Meta:
         model = Image
         fields = ['image_name', 'image_text', 'image_picture', 'new_tag']
+
+
+class EditDocumentForm(forms.ModelForm):
+    document_text = forms.CharField(label=False, widget=TinyMCE())
+
+    class Meta:
+        model = Document
+        fields = ['document_text']

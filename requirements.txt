@@ -11,6 +11,7 @@ psycopg
 requests
 markdown
 python-markdown-math
+django-tinymce
 
 # Google Drive API
 google-api-python-client

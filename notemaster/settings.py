@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'tinymce',
     'notemaster_core',
     'notes',
     'xml_converter',
@@ -174,6 +175,10 @@ CACHES = {
     }
 }
 
+# TINYMCE_JS_URL = os.path.join(STATIC_URL, "tinymce/tinymce.min.js")
+# TINYMCE_JS_ROOT = os.path.join(STATIC_ROOT, "js/tinymce")
+
+
 # This fixes an error popup that came after upgrading Django from version 2.
 # It has to do with the fact that I never explicitly defined the ID columns of my old models.
 # This makes the ID field default to auto or something.
@@ -184,3 +189,17 @@ DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 # https://stackoverflow.com/questions/26682413/django-rotating-file-handler-stuck-when-file-is-equal-to-maxbytes
 if DEBUG and os.environ.get('RUN_MAIN', None) != 'true':
     LOGGING = {}
+
+
+TINYMCE_DEFAULT_CONFIG = {
+    "theme": "silver",
+    "height": 500,
+    "menubar": True,
+    "plugins": "advlist,autolink,lists,link,image,charmap,preview,anchor,"
+    "searchreplace,visualblocks,code,fullscreen,insertdatetime,media,table,"
+    "code,help,wordcount",
+    "toolbar": "undo redo | formatselect | "
+    "bold italic backcolor | alignleft aligncenter "
+    "alignright alignjustify | bullist numlist outdent indent | code |"
+    "removeformat | help",
+}

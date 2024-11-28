@@ -1,5 +1,5 @@
 {% extends 'notes/edit-object.html' %}
-
+{% load static %}
 {% block title %} EDIT DOCUMENT {% endblock title %}
 {% block obj_name %} {{ document.document_name }} {% endblock obj_name %}
 
@@ -36,6 +36,7 @@
         <form action="{% url 'notes:edit_doc' document.id %}" method="post" id="id-form-change-document-text">
             {% csrf_token %}
             <div id="div-container-document-submit">
+            {% comment %}
                 <input type="hidden" name="currently_viewed_doc" value="{{ document.document_name }}">
                 <label>
                     <textarea id="id-textarea-change-document-text" form="id-form-change-document-text" name="name_textarea_edit_document_text" >{{ document.document_text }}</textarea>
@@ -44,6 +45,9 @@
                     <label for="input-edit-document-text"></label>
                     <input type="submit" value="Submit">
                 </div>
+                {% endcomment %}
+                {{ edit_doc_form.as_p }}
+                <input type="submit" value="Submit">
             </div>
         </form>
     </div>

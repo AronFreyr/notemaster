@@ -28,6 +28,7 @@ urlpatterns = [
     path('timemaster/', include('timemaster.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
     path('notemaster/xml/', include('xml_converter.urls')),
+    path('tinymce/', include('tinymce.urls')),
     path('', TemplateView.as_view(template_name='registration/login.html'), name='login_screen')
 ]
 
