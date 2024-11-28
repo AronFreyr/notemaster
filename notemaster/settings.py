@@ -161,6 +161,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     ('bootstrap', BASE_DIR + '/notemaster_core/static/notes/bootstrap/bootstrap_4'),
     ('jquery', BASE_DIR + '/notemaster_core/static/notes/jquery'),
+    #('tinymce', BASE_DIR + '/notemaster_core/static/notes/tinymce'),
 ]
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
@@ -175,8 +176,9 @@ CACHES = {
     }
 }
 
-# TINYMCE_JS_URL = os.path.join(STATIC_URL, "tinymce/tinymce.min.js")
-# TINYMCE_JS_ROOT = os.path.join(STATIC_ROOT, "js/tinymce")
+TINYMCE_JS_URL = os.path.join(STATIC_URL, "notemaster_core/js/tinymce/6.8.4/tinymce.min.js")
+#TINYMCE_JS_ROOT = os.path.join(STATIC_ROOT, "js/tinymce")
+TINYMCE_JS_ROOT = os.path.join(STATIC_URL, "notemaster_core/js/tinymce/6.8.4")
 
 
 # This fixes an error popup that came after upgrading Django from version 2.

@@ -91,8 +91,10 @@
             crossorigin="anonymous"></script>
 
             <!-- Pointing to the location of TinyMCE as determined by the django-tinymce plugin. -->
-            <script type="text/javascript" src="{% static 'tinymce/tinymce.min.js' %}"></script>
-            <script type="text/javascript" src="{% static 'django_tinymce/init_tinymce.js' %}"></script>
+            {% comment %} <script src="{% static 'tinymce/tinymce.min.js' %}"></script> {% endcomment %}
+            {% comment %} <script src="{% static 'django_tinymce/init_tinymce.js' %}"></script> {% endcomment %}
+            <script type="text/javascript" src="{% static 'notemaster_core/js/tinymce/6.8.4/tinymce.min.js' %}"></script>
+            <script type="text/javascript" src="{% static 'notemaster_core/js/tinymce/6.8.4/init_tinymce.js' %}"></script>
 
             <!-- Bootstrap needs to load AFTER jQuery -->
             <script src="{% static 'notemaster_core/bootstrap/bootstrap_4/bootstrap.bundle.min.js' %}"
