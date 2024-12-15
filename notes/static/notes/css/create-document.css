@@ -15,7 +15,7 @@
 
 label{
     display: block;
-    float: left;
+    /*float: left;*/
     padding: 4px 10px 0 0;
     width: 160px;
     font-weight: bold;
