@@ -8,23 +8,27 @@
 {% endblock head_css_section %}
 
 {# Navigation Menu #}
-{% block header_content %}
-<a class="navbar-brand" href="{% url 'notes:index' %}">Home</a>
+{% block navbar_brand %} <a class="navbar-brand" href="{% url 'notes:index' %}">Home</a> {% endblock navbar_brand %}
+{% block header_listed_content %}
 <!-- Create dropdown -->
-<div class="dropdown show">
-    <a class="btn btn-secondary dropdown-toggle" role="button"
+<li class="nav-item dropdown">
+    <a class="dropdown-toggle nav-link" role="button"
        data-toggle="dropdown" href="#"
        aria-haspopup="true" aria-expanded="false">Create</a>
     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
         <a class="dropdown-item" href="{% url 'notes:create_doc' %}">New Document</a>
         <a class="dropdown-item" href="{% url 'notes:create_image' %}">New Image</a>
     </div>
-</div>
-<a class="navbar-brand" href="{% url 'notes:display_help' %}">Help</a>
-<a class="navbar-brand" href="{% url 'notes:list_db_content' %}">All Items List</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link" href="{% url 'notes:display_help' %}">Help</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="{% url 'notes:list_db_content' %}">All Items List</a>
+</li>
 <!-- Dev Stuff dropdown -->
-<div class="dropdown show">
-    <a class="btn btn-secondary dropdown-toggle" role="button"
+<li class="nav-item dropdown">
+    <a class="dropdown-toggle nav-link" role="button"
        data-toggle="dropdown" href="#"
        aria-haspopup="true" aria-expanded="false">Dev Stuff</a>
     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
@@ -34,7 +38,11 @@
         <a class="dropdown-item" href="{% url 'notes:display_angular_portal' %}">Angular Portal</a>
         <a class="dropdown-item" href="{% url 'notes:homepage_test' %}">Homepage Test</a>
     </div>
-</div>
+</li>
+
+{% endblock header_listed_content %}
+
+{% block header_unlisted_content %}
 <!--Search bar -->
 <form class="form-inline" action="{% url 'notes:search_results' %}" method="get">
     <div class="input-group">
@@ -58,15 +66,11 @@
                 <a class="dropdown-item" href="{% url 'notes:advanced_search' %}">Advanced Search</a>
             </div>
         </div>
-
-
-
-        <input id="tag-search-id" name="search-bar-input" class="mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <input id="tag-search-id" name="search-bar-input" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
         <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
     </div>
 </form>
-
-{% endblock header_content %}
+{%endblock header_unlisted_content %}
 
 {% block footer_javascript_section %}
     <!-- Testing mivhak for code block highlighting -->

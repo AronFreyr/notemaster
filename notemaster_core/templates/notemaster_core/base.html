@@ -26,27 +26,35 @@
 <body>
 {# Navigation Menu #}
 <header>
-    <nav class="navbar navbar-dark bg-dark fixed-top
+    <nav class="navbar navbar-dark navbar-expand-lg bg-dark fixed-top justify-content-between
         {% block nav-style %}{% endblock nav-style %}" role="navigation"
     >
-        <div class="container p-none">
-            {% block header_content %} {%endblock header_content %}
-
-            <!-- Links to the other sites -->
-            <div class="dropdown show header-other-sites">
-                <a class="btn btn-secondary dropdown-toggle" role="button"
-                   data-toggle="dropdown" href="#" aria-haspopup="true" aria-expanded="false"> Sister Sites</a>
-               <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                    <a class="dropdown-item" href="{% url 'notes:index' %}">Notemaster</a>
-                    <a class="dropdown-item" href="{% url 'taskmaster:index' %}">Taskmaster</a>
-                   <a class="dropdown-item" href="{% url 'timemaster:index' %}">Timemaster</a>
-                </div>
-            </div>
-
+        {% block navbar_brand %} <a class="navbar-brand" href="#">Navbar Brand</a> {%endblock navbar_brand %}
+        <button class="navbar-toggler" type="button" data-toggle="collapse"
+                data-target="#main-navbar-container" aria-controls="main-navbar-container"
+                aria-expanded="false">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="main-navbar-container">
+            <ul class="navbar-nav mr-auto">
+                {% block header_listed_content %} {%endblock header_listed_content %}
+                <!-- Links to the other sites -->
+                <li class="nav-item dropdown">
+                    <a class="dropdown-toggle nav-link" role="button"
+                       data-toggle="dropdown" href="#" aria-haspopup="true" aria-expanded="false"> Sister Sites</a>
+                   <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        <a class="dropdown-item" href="{% url 'notes:index' %}">Notemaster</a>
+                        <a class="dropdown-item" href="{% url 'taskmaster:index' %}">Taskmaster</a>
+                       <a class="dropdown-item" href="{% url 'timemaster:index' %}">Timemaster</a>
+                    </div>
+                </li>
+            </ul>
+            {% block header_unlisted_content %} {%endblock header_unlisted_content %}
             <!-- User account dropdown -->
-            <div class="dropdown show header-user-button">
+            <ul class="navbar-nav">
+            <li class="dropdown nav-item">
                 {% if user.is_authenticated %}
-                    <a class="btn btn-secondary dropdown-toggle" role="button"
+                    <a class="dropdown-toggle nav-link" role="button"
                        data-toggle="dropdown" href="#"
                        aria-haspopup="true" aria-expanded="false">{{ user.get_username }}</a>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
@@ -54,7 +62,7 @@
                         <a class="dropdown-item" href={% url 'logout' %}>Logout</a>
                     </div>
                 {% else %}
-                    <a class="btn btn-secondary dropdown-toggle" role="button"
+                    <a class="dropdown-toggle nav-link" role="button"
                        data-toggle="dropdown" href="#"
                        aria-haspopup="true" aria-expanded="false">Login/SignUp</a>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
@@ -62,7 +70,8 @@
                         <a class="dropdown-item" href="#">SignUp</a>
                     </div>
                 {% endif %}
-            </div>
+            </li>
+            </ul>
         </div>
     </nav>
 </header>

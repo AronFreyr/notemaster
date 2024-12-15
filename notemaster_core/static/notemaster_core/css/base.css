@@ -2,3 +2,8 @@
     margin-top: 100px;
     margin-bottom: 100px;
 }
+
+.nav-item{
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+}
