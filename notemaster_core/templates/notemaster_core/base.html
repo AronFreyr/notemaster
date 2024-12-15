@@ -38,6 +38,10 @@
         <div class="collapse navbar-collapse" id="main-navbar-container">
             <ul class="navbar-nav mr-auto">
                 {% block header_listed_content %} {%endblock header_listed_content %}
+            </ul>
+            {% block header_unlisted_content %} {%endblock header_unlisted_content %}
+            <!-- User account dropdown -->
+            <ul class="navbar-nav">
                 <!-- Links to the other sites -->
                 <li class="nav-item dropdown">
                     <a class="dropdown-toggle nav-link" role="button"
@@ -48,29 +52,25 @@
                        <a class="dropdown-item" href="{% url 'timemaster:index' %}">Timemaster</a>
                     </div>
                 </li>
-            </ul>
-            {% block header_unlisted_content %} {%endblock header_unlisted_content %}
-            <!-- User account dropdown -->
-            <ul class="navbar-nav">
-            <li class="dropdown nav-item">
-                {% if user.is_authenticated %}
-                    <a class="dropdown-toggle nav-link" role="button"
-                       data-toggle="dropdown" href="#"
-                       aria-haspopup="true" aria-expanded="false">{{ user.get_username }}</a>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                        <a class="dropdown-item" href="#">Account</a>
-                        <a class="dropdown-item" href={% url 'logout' %}>Logout</a>
-                    </div>
-                {% else %}
-                    <a class="dropdown-toggle nav-link" role="button"
-                       data-toggle="dropdown" href="#"
-                       aria-haspopup="true" aria-expanded="false">Login/SignUp</a>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                        <a class="dropdown-item" href={% url 'login' %}>Login</a>
-                        <a class="dropdown-item" href="#">SignUp</a>
-                    </div>
-                {% endif %}
-            </li>
+                <li class="dropdown nav-item">
+                    {% if user.is_authenticated %}
+                        <a class="dropdown-toggle nav-link" role="button"
+                           data-toggle="dropdown" href="#"
+                           aria-haspopup="true" aria-expanded="false">{{ user.get_username }}</a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            <a class="dropdown-item" href="#">Account</a>
+                            <a class="dropdown-item" href={% url 'logout' %}>Logout</a>
+                        </div>
+                    {% else %}
+                        <a class="dropdown-toggle nav-link" role="button"
+                           data-toggle="dropdown" href="#"
+                           aria-haspopup="true" aria-expanded="false">Login/SignUp</a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            <a class="dropdown-item" href={% url 'login' %}>Login</a>
+                            <a class="dropdown-item" href="#">SignUp</a>
+                        </div>
+                    {% endif %}
+                </li>
             </ul>
         </div>
     </nav>
