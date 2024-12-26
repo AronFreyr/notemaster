@@ -17,6 +17,7 @@ class Document(models.Model):
         ('document', 'Document'),
         ('task', 'Task'),
         ('activity', 'Activity'),
+        ('diary_entry', 'Diary Entry'),
     )
 
     document_type = models.TextField(

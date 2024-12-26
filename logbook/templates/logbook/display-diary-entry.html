@@ -1,0 +1,29 @@
+{% extends 'logbook/base.html' %}
+{% load static %}
+
+{% block title %} DISPLAY ENTRY {% endblock title %}
+{% block head_css_page %}
+    <link href="{% static 'logbook/css/display-diary-entry.css' %}" rel="stylesheet" media="screen">
+{% endblock head_css_page %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <div class="card mb-3">
+                <div class="card-header">
+                    {{ entry.entry_date }}
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">{{ entry.document_name }}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">{{ entry.document_created_by }}</h6>
+                    <p class="card-text">{{ entry.document_text|safe }}</p>
+                    <p class="card-text"> <small class="text-muted">Type: {{ entry.document_type }}</small></p>
+                    <p class="card-text"> <small class="text-muted">Created: {{ entry.document_created }}</small></p>
+                    <p class="card-text"> <small class="text-muted">Last Modified: {{ entry.document_modified }}</small></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

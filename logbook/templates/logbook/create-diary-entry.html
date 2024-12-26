@@ -1,0 +1,21 @@
+{% extends 'logbook/base.html' %}
+{% load static %}
+
+{% block title %} CREATE ENTRY {% endblock title %}
+{% block head_css_page %}
+    <link href="{% static 'logbook/css/create-diary-entry.css' %}" rel="stylesheet" media="screen">
+{% endblock head_css_page %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <form action="{% url 'logbook:create_entry'%}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ create_diary_entry_form }}
+                <input type="submit" value="Submit">
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock content %}

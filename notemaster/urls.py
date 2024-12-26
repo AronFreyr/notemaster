@@ -26,6 +26,7 @@ urlpatterns = [
     path('notemaster/', include('notes.urls')),
     path('taskmaster/', include('taskmaster.urls')),
     path('timemaster/', include('timemaster.urls')),
+    path('logbook/', include('logbook.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
     path('notemaster/xml/', include('xml_converter.urls')),
     path('tinymce/', include('tinymce.urls')),

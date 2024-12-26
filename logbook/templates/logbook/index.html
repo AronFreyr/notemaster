@@ -1,0 +1,30 @@
+{% extends 'logbook/base.html' %}
+{% load static %}
+
+{% block title %} LOGBOOK {% endblock title %}
+{% block nav-style %}mkt-nav{% endblock nav-style %}
+{% block head_css_page %}
+    <link rel="stylesheet" type="text/css" href="{% static 'logbook/css/index.css' %}" />
+{% endblock head_css_page %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col">
+            {% if all_entries %}
+                {% for entry in all_entries %}
+                <div class="card mb-3">
+                    <div class="card-header">
+                        <a href="{% url 'logbook:display_entry' entry.id %}">{{ entry.entry_date }}</a>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ entry.document_name }}</h5>
+                        <p class="card-text">{{ entry.document_text|safe }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock content %}

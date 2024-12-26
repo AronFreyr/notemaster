@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     'xml_converter',
     'taskmaster',
     'timemaster',
+    'logbook',
 ]
 
 MIDDLEWARE = [

@@ -1,0 +1,10 @@
+{% extends 'notemaster_core/base.html' %}
+{% load static %}
+{% block head_css_section %}
+    <link href="{% static 'logbook/css/base.css' %}" rel="stylesheet" media="screen">
+{% endblock head_css_section %}
+
+{# Navigation Menu #}
+{% block navbar_brand %}
+<a class="navbar-brand" href="{% url 'logbook:index' %}">LogBook</a>
+{% endblock navbar_brand %}
