@@ -1,0 +1,33 @@
+{% extends 'logbook/base.html' %}
+{% load static %}
+
+{% block title %} DISPLAY ALL ENTRIES {% endblock title %}
+{% block head_css_page %}
+    <link href="{% static 'logbook/css/display-all-entries.css' %}" rel="stylesheet" media="screen">
+{% endblock head_css_page %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        {% for entry in all_entries %}
+        <div class="col-sm-3">
+            <div class="card mb-3">
+                <div class="card-header">
+                    <a href="{% url 'logbook:display_entry' entry.id %}">{{ entry.entry_date }}</a>
+                </div>
+                {% comment %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ entry.document_name }}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">{{ entry.document_created_by }}</h6>
+                    <p class="card-text">{{ entry.document_text|safe }}</p>
+                    <p class="card-text"> <small class="text-muted">Type: {{ entry.document_type }}</small></p>
+                    <p class="card-text"> <small class="text-muted">Created: {{ entry.document_created }}</small></p>
+                    <p class="card-text"> <small class="text-muted">Last Modified: {{ entry.document_modified }}</small></p>
+                </div>
+                {% endcomment %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock content %}

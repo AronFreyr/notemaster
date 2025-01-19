@@ -8,3 +8,12 @@
 {% block navbar_brand %}
 <a class="navbar-brand" href="{% url 'logbook:index' %}">LogBook</a>
 {% endblock navbar_brand %}
+
+{% block header_listed_content %}
+<li class="nav-item">
+    <a class="nav-link" href="{% url 'logbook:create_entry' %}">Create Entry</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link" href="{% url 'logbook:display_all_entries' %}">Display All Entries</a>
+</li>
+{% endblock header_listed_content %}

@@ -10,6 +10,11 @@
 <div class="container">
     <div class="row">
         <div class="col">
+            {% if error_message %}
+            <div class="alert alert-danger" role="alert">
+                <strong>Oops!</strong> {{ error_message }}
+            </div>
+            {% endif %}
             <form action="{% url 'logbook:create_entry'%}" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 {{ create_diary_entry_form }}
