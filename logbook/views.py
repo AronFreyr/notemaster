@@ -32,6 +32,7 @@ def display_all_entries(request):
 def create_entry(request):
     if request.method == 'POST':
         create_diary_entry_form = CreateDiaryEntryForm(request.POST)
+        print(create_diary_entry_form)
         if create_diary_entry_form.is_valid():
             entry_date = create_diary_entry_form.cleaned_data['entry_date']
             if DiaryEntry.objects.filter(entry_date=entry_date).exists():

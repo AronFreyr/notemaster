@@ -3,7 +3,7 @@
 
 {% block title %} CREATE ENTRY {% endblock title %}
 {% block head_css_page %}
-    <link href="{% static 'logbook/css/create-diary-entry.css' %}" rel="stylesheet" media="screen">
+    <link href="{% static 'logbook/css/create-diary-entry.css' %}" rel="stylesheet" media="screen" crossorigin="anonymous">
 {% endblock head_css_page %}
 
 {% block content %}
@@ -17,8 +17,22 @@
             {% endif %}
             <form action="{% url 'logbook:create_entry'%}" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
-                {{ create_diary_entry_form }}
-                <input type="submit" value="Submit">
+                {{ create_diary_entry_form.document_text }}
+                <div class="row form-extras-container">
+                    <div class="col-md-5 form-extra">
+                        {{ create_diary_entry_form.entry_date.label }} {{ create_diary_entry_form.entry_date }}
+                    </div>
+                    <div class="col-md-5 form-extra">
+                        {{create_diary_entry_form.new_tag.label}} {{ create_diary_entry_form.new_tag }}
+                    </div>
+                    <div class="col-sm-2 justify-content-end d-flex form-extra">
+                        <input type="submit" value="Submit">
+                        <!-- hidden inputs need to be added for the form to be valid -->
+                        {{ create_diary_entry_form.created_by }}
+                        {{ create_diary_entry_form.document_type }}
+                    </div>
+                </div>
+
             </form>
         </div>
     </div>

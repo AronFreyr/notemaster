@@ -8,8 +8,8 @@ from .models import DiaryEntry
 class CreateDiaryEntryForm(forms.ModelForm):
     #document_name = forms.CharField(label='Document name:')
     document_name = forms.CharField(widget=forms.HiddenInput(), required=False)
-    document_text = forms.CharField(label='Document text:', widget=TinyMCE())
-    new_tag = forms.CharField(label='Document tags:')
+    document_text = forms.CharField(label='', widget=TinyMCE())
+    new_tag = forms.CharField(label='Tags:')
     entry_date = forms.DateField(label='Entry date:', initial=datetime.date.today,
                                  widget=forms.DateInput(attrs={'type': 'date'}))
     created_by = forms.CharField(widget=forms.HiddenInput(), required=False)
