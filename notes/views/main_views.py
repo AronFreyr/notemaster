@@ -279,6 +279,7 @@ def delete_or_remove(request, obj_id: int):
         action_type = request.POST['action_type']  # Are we deleting or removing?
         if 'currently_viewed_doc' in request.POST:  # If we are viewing a document.
             #if request.POST['currently_viewed_doc'] != obj_name:  # And if that doc is not the doc we are removing.
+            print('currently_viewed_doc:', request.POST['currently_viewed_doc'])
             currently_viewed_document = Document.objects.get(document_name=request.POST['currently_viewed_doc'])
             if obj_type == 'document' and currently_viewed_document.id == obj_id:  # The doc is being deleted.
                 currently_viewed_document = None

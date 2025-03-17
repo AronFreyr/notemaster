@@ -1,0 +1,74 @@
+{% extends 'logbook/base.html' %}
+{% load static %}
+
+{% block title %} CREATE ENTRY {% endblock title %}
+{% block head_css_page %}
+    <link href="{% static 'logbook/css/edit-diary-entry.css' %}" rel="stylesheet" media="screen" crossorigin="anonymous">
+{% endblock head_css_page %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <div class="sidebar-module">
+            <h3>Tags</h3>
+                {% for tag in entry.get_all_tags_sorted %}
+                    <div id="id-div-tag-container">
+                        <div class="div-tag-input-container">
+                            <div class="div-tag-name">
+                                <p>
+                                    <a href="{% url 'notes:display_tag' tag.id %}">{{ tag.tag_name }}</a>
+                                    <span class="badge badge-light"> ({{ tag.get_nr_of_docs_with_tag }})</span>
+                                </p>
+                            </div>
+                            <div class="div-red-x-container">
+                                <!-- TODO: modal for confirmation when you press the button -->
+                                <button class="close" data-toggle="modal" data-target="#removeTagModal_{{tag.id}}">
+                                    <span style="color:red; font-size:20pt;">&times;</span>
+                                </button>
+                                {% with entry as document %}
+                                {% include 'notes/snippets/modals/remove-tag-modal.html' %}
+                                {% endwith %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="col-9">
+            {% if error_message %}
+            <div class="alert alert-danger" role="alert">
+                <strong>Oops!</strong> {{ error_message }}
+            </div>
+            {% endif %}
+            <form action="{% url 'logbook:edit_entry' entry.id %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ edit_diary_entry_form.document_text }}
+                <div class="row form-extras-container">
+                    <div class="col-md-5 form-extra">
+                        {{ edit_diary_entry_form.entry_date.label }} {{ edit_diary_entry_form.entry_date }}
+                    </div>
+                    <div class="col-md-5 form-extra">
+                        {{edit_diary_entry_form.new_tag.label}} {{ edit_diary_entry_form.new_tag }}
+                    </div>
+                    <div class="col-sm-2 justify-content-end d-flex form-extra">
+                        <input type="submit" value="Submit">
+                        <!-- hidden inputs need to be added for the form to be valid -->
+                        {{ edit_diary_entry_form.created_by }}
+                        {{ edit_diary_entry_form.document_type }}
+                    </div>
+                </div>
+
+            </form>
+        </div>
+        <div class="col">
+            <div class="delete-entry-container">
+                <button type="submit" class="btn btn-danger" data-toggle="modal" data-target="#deleteEntryModal">
+                    Delete Entry
+                </button>
+                {% include 'logbook/snippets/modals/delete-entry-modal.html' %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

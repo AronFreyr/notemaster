@@ -10,6 +10,8 @@
 <div class="container">
     <div class="row">
         <div class="col">
+        </div>
+        <div class="col-9">
             <div class="card mb-3">
                 <div class="card-header">
                     {{ entry.entry_date }}
@@ -21,7 +23,15 @@
                     <p class="card-text"> <small class="text-muted">Type: {{ entry.document_type }}</small></p>
                     <p class="card-text"> <small class="text-muted">Created: {{ entry.document_created }}</small></p>
                     <p class="card-text"> <small class="text-muted">Last Modified: {{ entry.document_modified }}</small></p>
+                    {% for tag in entry.get_all_tags_sorted %}
+                        <span class="badge badge-primary">{{ tag.tag_name }}</span>
+                    {% endfor %}
                 </div>
+            </div>
+        </div>
+        <div class="col">
+            <div id="id-edit-entry-button">
+                <a class="btn btn-secondary" href="{% url 'logbook:edit_entry' entry.id %}"> edit entry</a>
             </div>
         </div>
     </div>
