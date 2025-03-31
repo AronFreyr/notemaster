@@ -17,12 +17,11 @@
                     {{ entry.entry_date }}
                 </div>
                 <div class="card-body">
-                    <h5 class="card-title">{{ entry.document_name }}</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">{{ entry.document_created_by }}</h6>
                     <p class="card-text">{{ entry.document_text|safe }}</p>
                     <p class="card-text"> <small class="text-muted">Type: {{ entry.document_type }}</small></p>
                     <p class="card-text"> <small class="text-muted">Created: {{ entry.document_created }}</small></p>
                     <p class="card-text"> <small class="text-muted">Last Modified: {{ entry.document_modified }}</small></p>
+                    <h6 class="card-subtitle mb-2 text-muted">{{ entry.document_created_by }}</h6>
                     {% for tag in entry.get_all_tags_sorted %}
                         <span class="badge badge-primary">{{ tag.tag_name }}</span>
                     {% endfor %}
