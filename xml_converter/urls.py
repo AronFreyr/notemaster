@@ -12,4 +12,5 @@ urlpatterns = [
     path('task_boards/', views.task_boards, name='task_boards'),
     path('activities/', views.activities, name='activities'),
     path('time_intervals/', views.time_intervals, name='time_intervals'),
+    path('diary_entries/', views.diary_entries, name='diary_entries'),
 ]
