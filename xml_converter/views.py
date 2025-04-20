@@ -6,6 +6,7 @@ from lxml import objectify
 from notes.models import Document, Tag, Tagmap, Image, ImageDocumentMap, ImageTagMap
 from taskmaster.models import Task, TaskBoard, TaskList
 from timemaster.models import Activity, TimeInterval
+from logbook.models import DiaryEntry
 
 
 def index(request):
@@ -39,6 +40,10 @@ def activities(request):
 @login_required
 def time_intervals(request):
     return HttpResponse(create_xml_from_time_intervals(), content_type='text/xml')
+
+@login_required
+def diary_entries(request):
+    return HttpResponse(create_xml_from_diary_entries(), content_type='text/xml')
 
 
 def create_xml_from_documents():
@@ -325,6 +330,49 @@ def create_xml_from_time_intervals():
         xml_text += '</time_interval>\n'
 
     xml_text += '</time_intervals>'
+
+    xml_element = LET.ElementTree(objectify.fromstring(xml_text))
+
+    xml_to_string = LET.tostring(xml_element.getroot(), pretty_print=True, xml_declaration=True,
+                                 encoding='UTF-8').decode()
+
+    return xml_to_string
+
+
+def create_xml_from_diary_entries():
+    all_diary_entries = DiaryEntry.objects.all()
+
+    xml_text = '<diary_entries>\n'
+    for entry in all_diary_entries:
+        xml_text += '<diary_entry>\n'
+        xml_text += '<entry_id>' + str(entry.id) + '</entry_id>\n'
+        xml_text += '<entry_name>' + entry.document_name + '</entry_name>\n'
+        xml_text += '<entry_date>' + entry.entry_date.strftime('%Y-%m-%d') + '</entry_date>\n'
+        input_text = entry.document_text
+        while ']]>' in input_text:
+            input_text = input_text.replace(']]>', '.\].\].\>')
+        while '<![CDATA[' in input_text:
+            input_text = input_text.replace('<![CDATA[', '\<!\[CDATA\[')
+        xml_text += '<text> <![CDATA[' + input_text + ']]> </text>\n'
+        xml_text += '<entry_tags>\n'
+        for tag in entry.get_all_tags_sorted():
+            xml_text += '<entry_tag>\n'
+            xml_text += '<tag_id>' + str(tag.id) + '</tag_id>\n'
+            xml_text += '<tag_name>' + tag.tag_name + '</tag_name>\n'
+            xml_text += '<tag_type>' + tag.tag_type + '</tag_type>\n'
+            xml_text += '<meta_tag_type>' + tag.meta_tag_type + '</meta_tag_type>\n'
+            xml_text += '</entry_tag>\n'
+        xml_text += '</entry_tags>\n'
+        xml_text += '<last_modified>' + entry.document_modified.strftime('%Y-%m-%d') + '</last_modified> \n'
+        xml_text += '<last_modified_by>' + str(entry.document_last_modified_by) + '</last_modified_by> \n'
+        xml_text += '<last_modified_by_id>' + (str(entry.document_last_modified_by.id) if entry.document_last_modified_by else "None") + '</last_modified_by_id> \n'
+        xml_text += '<created>' + entry.document_created.strftime('%Y-%m-%d') + '</created> \n'
+        xml_text += '<created_by>' + str(entry.document_created_by) + '</created_by> \n'
+        xml_text += '<created_by_id>' + (str(entry.document_created_by.id) if entry.document_created_by else "None") + '</created_by_id> \n'
+        xml_text += '<document_type>' + entry.document_type + '</document_type> \n'
+        xml_text += '</diary_entry>\n'
+
+    xml_text += '</diary_entries>'
 
     xml_element = LET.ElementTree(objectify.fromstring(xml_text))
 
