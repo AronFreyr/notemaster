@@ -3,6 +3,13 @@ from django.contrib.auth.models import User
 
 
 class Document(models.Model):
+
+    class DocumentTypes(models.TextChoices):
+        DOCUMENT = 'document', 'Document'
+        TASK = 'task', 'Task'
+        ACTIVITY = 'activity', 'Activity'
+        DIARY_ENTRY = 'diary_entry', 'Diary Entry'
+
     document_name = models.TextField()
     document_text = models.TextField()
 
@@ -13,18 +20,10 @@ class Document(models.Model):
     document_last_modified_by = models.ForeignKey(User, on_delete=models.SET_NULL, related_name='document_last_modified_by',
                                              blank=True, null=True)
 
-    DOCUMENT_CHOICES = (
-        ('document', 'Document'),
-        ('task', 'Task'),
-        ('activity', 'Activity'),
-        ('diary_entry', 'Diary Entry'),
-    )
-
     document_type = models.TextField(
-        choices=DOCUMENT_CHOICES,
-        default='document',
+        choices=DocumentTypes.choices,
+        default=DocumentTypes.DOCUMENT,
     )
-
 
     def get_parsed_text(self):
         from .services.parser import TextParser
@@ -43,17 +42,16 @@ class Document(models.Model):
 
 class Tag(models.Model):
 
-    TAG_TYPE_CHOICES = (
-        ('normal', 'Normal'),
-        ('meta', 'Meta')
-    )
+    class TagTypes(models.TextChoices):
+        NORMAL = 'normal', 'Normal'
+        META = 'meta', 'Meta'
 
-    META_TAG_TYPE_CHOICES = (
-        ('list', 'List'),
-        ('task', 'Task'),
-        ('none', 'None'),
-        ('time measurement', 'Time Measurement'),
-    )
+    class MetaTagTypes(models.TextChoices):
+        LIST = 'list', 'List'
+        TASK = 'task', 'Task'
+        NONE = 'none', 'None'
+        TIME_MEASUREMENT = 'time measurement', 'Time Measurement'
+        DIARY_ENTRY = 'diary entry', 'Diary Entry'
 
     tag_created = models.DateTimeField(auto_now_add=True)
     tag_modified = models.DateTimeField(auto_now=True)
@@ -67,13 +65,13 @@ class Tag(models.Model):
     tag_name = models.TextField()
 
     tag_type = models.TextField(
-        choices=TAG_TYPE_CHOICES,
-        default='normal'
+        choices=TagTypes.choices,
+        default=TagTypes.NORMAL,
     )
 
     meta_tag_type = models.TextField(
-        choices=META_TAG_TYPE_CHOICES,
-        default='none'
+        choices=MetaTagTypes.choices,
+        default=MetaTagTypes.NONE,
     )
 
     def get_nr_of_docs_with_tag(self):

@@ -176,13 +176,20 @@ def edit_tag(request, tag_id: int):
     if request.method == 'POST':
         tag.tag_last_modified_by = request.user
         if 'tag_choices' in request.POST:  # Changing the tag type.
-            tag_choice = request.POST['tag_choices']
-            if tag_choice == 'normal':  # Normal tags shouldn't have any meta type.
-                tag.meta_tag_type = 'none'
-            tag.tag_type = tag_choice
+            tag_choice: str = request.POST['tag_choices']
+            if tag_choice != tag.tag_type:
+                if tag_choice == 'normal':  # Normal tags shouldn't have any meta type.
+                    tag.meta_tag_type = 'none'
+                tag.tag_type = tag_choice
 
         if 'meta_tag_choices' in request.POST:  # Changing the meta tag type.
-            tag.meta_tag_type = request.POST['meta_tag_choices']
+            meta_tag_choice: str = request.POST['meta_tag_choices']
+            # A normal tag should not be able to have any meta tag type except "none".
+            if tag.tag_type == 'normal' and meta_tag_choice != 'none':
+                # TODO: throw error and let the user know that a normal tag can't have a meta tag type.
+                meta_tag_choice = 'none'
+            if meta_tag_choice != tag.meta_tag_type:
+                tag.meta_tag_type = request.POST['meta_tag_choices']
         tag.save()
         return redirect(reverse('notes:display_tag', kwargs={'tag_id': tag.id}))
     return render(request, 'notes/edit-tag2.html', {'tag': tag})
@@ -206,11 +213,17 @@ def edit_doc(request, doc_id):
             handle_new_tag(tag, tag_creator=request.user, new_doc=document)
         if edit_doc_form.is_valid():
             new_doc_text = edit_doc_form.cleaned_data.get('document_text')
-            new_doc_type = edit_doc_form.cleaned_data.get('document_type')
+            #new_doc_type = edit_doc_form.cleaned_data.get('document_type')
             if new_doc_text != document.document_text and new_doc_text:
                 document.document_text = new_doc_text
                 document.save()
-            if new_doc_type != document.document_type and new_doc_type:
+            # if new_doc_type != document.document_type and new_doc_type:
+            #     document.document_type = new_doc_type
+            #     document.save()
+        # TODO: This functionality should be in the form.
+        if 'name_type_choices' in request.POST:
+            new_doc_type = request.POST['name_type_choices']
+            if new_doc_type != document.document_type:
                 document.document_type = new_doc_type
                 document.save()
 

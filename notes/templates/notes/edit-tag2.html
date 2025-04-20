@@ -14,28 +14,29 @@
     <form action="{% url 'notes:edit_tag' tag.id %}" method="post">
         {% csrf_token %}
         <label>
+            <!-- Populate a dropdown for the type of the tag. -->
             <select name="tag_choices">
-                {% for choice in tag.TAG_TYPE_CHOICES %}
-                    <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+                {% for choice in tag.TagTypes.choices %}
+                    <option value="{{ choice.0 }}" {% if choice.0 == tag.tag_type %} selected {% endif %}>
+                        {{ choice.1 }}</option>
                 {% endfor %}
             </select>
         </label>
-        <button type="submit" class="btn btn-secondary" value="Change Tag">Submit</button>
+        {% if tag.tag_type == "meta" %}
+        <span><b>Meta Type:</b></span>
+        <label>
+            <!-- Populate a dropdown for the meta tag type. -->
+            <select name="meta_tag_choices">
+                {% for meta_choice in tag.MetaTagTypes.choices %}
+                    <option value="{{ meta_choice.0 }}" {% if meta_choice.0 == tag.meta_tag_type %} selected {% endif %}>
+                        {{ meta_choice.1 }}</option>
+                {% endfor %}
+            </select>
+        </label>
+        {% endif %}
+        <button type="submit" class="btn btn-secondary" value="Change tag types">Submit</button>
     </form>
-    {% if tag.tag_type == "meta" %}
-        <form action="{% url 'notes:edit_tag' tag.id %}" method="post">
-            {% csrf_token %}
-            <label>
-                <select name="meta_tag_choices">
-                    {% for meta_choice in tag.META_TAG_TYPE_CHOICES %}
-                        <option value="{{ meta_choice.0 }}">{{ meta_choice.1 }}</option>
-                    {% endfor %}
-                </select>
-            </label>
-            <button type="submit" class="btn btn-secondary" value="Change Meta Tag">Submit</button>
-        </form>
-    {% endif %}
-    <span></span>
+
 </div>
 {% endblock tags %}
 

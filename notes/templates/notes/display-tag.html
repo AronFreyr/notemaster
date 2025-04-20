@@ -16,11 +16,11 @@
             <div class="sidebar-module">
                 <div class="tag-type-container">
                     <div class="tag-type-display-container">
-                        <span><b>Tag Type: </b>{{ tag.tag_type }}</span>
+                        <span><b>Tag Type: </b>{{ tag.get_tag_type_display }}</span>
                     </div>
                     <div class="meta-tag-type-display-container">
                         {% if tag.tag_type == "meta" %}
-                            <span><b>Meta Type: </b>{{ tag.meta_tag_type }}</span>
+                            <span><b>Meta Type: </b>{{ tag.get_meta_tag_type_display }}</span>
                         {% endif %}
                     </div>
                 </div>
