@@ -45,6 +45,10 @@ def create_entry(request):
             new_diary_entry.document_created_by = request.user
             new_diary_entry.save()
             diary_tags = create_diary_entry_form.cleaned_data['new_tag']
+
+            # All diary entries should have the "Diary Entry" meta-tag.
+            handle_new_tag('Diary Entry', new_doc=new_diary_entry,
+                           tag_creator=request.user, tag_type=('meta', 'diary_entry'))
             if diary_tags:
                 handle_new_tag(new_tags=diary_tags, new_doc=new_diary_entry, tag_creator=request.user)
             return redirect(reverse('logbook:index'))

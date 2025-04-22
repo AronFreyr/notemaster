@@ -41,10 +41,12 @@ def index(request):
     #test_create_graph()
 
     most_recently_created_docs = Document.objects.exclude(tagmap__tag__meta_tag_type='task')\
-                           .exclude(document_type='activity').exclude(document_type='task')\
-                           .order_by('-document_created')[:10]
-    most_recently_edited_docs = Document.objects.exclude(tagmap__tag__meta_tag_type='task')\
                             .exclude(document_type='activity').exclude(document_type='task')\
+                            .exclude(document_type='diary_entry')\
+                            .order_by('-document_created')[:10]
+    most_recently_edited_docs = Document.objects.exclude(tagmap__tag__meta_tag_type='task')\
+                            .exclude(document_type='activity').exclude(document_type='task') \
+                            .exclude(document_type='diary_entry') \
                             .order_by('-document_modified')[:10]
 
     return render(request, 'notes/index.html',
