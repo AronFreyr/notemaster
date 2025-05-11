@@ -9,29 +9,23 @@
 {% block content %}
 <div class="container">
     <div class="row">
-        {% for entry in all_entries %}
-        <div class="col-sm-3">
-            <div class="card mb-3">
-                <div class="card-header">
-                    <a href="{% url 'logbook:display_entry' entry.id %}">{{ entry.entry_date }}</a>
-                </div>
-            </div>
-        </div>
-        {% endfor %}
-    </div>
-    <div class="row">
-        {% for key, entries in grouped_entries.items %}
+        {% for year, month in grouped_entries.items %}
             <div class="col-sm-12">
-                <h2>{{ key }}</h2>
+                <h2 class="text-center">{{ year }}</h2>
             </div>
-            {% for entry in entries %}
-                <div class="col-sm-3">
-                    <div class="card mb-3">
-                        <div class="card-header">
-                            <a href="{% url 'logbook:display_entry' entry.id %}">{{ entry.entry_date }}</a>
+            {% for month, entries in month.items %}
+                <div class="col-sm-12">
+                    <h3>{{ month }}</h3>
+                </div>
+                {% for entry in entries %}
+                    <div class="col-sm-3">
+                        <div class="card mb-3">
+                            <div class="card-header">
+                                <a href="{% url 'logbook:display_entry' entry.id %}">{{ entry.entry_date }}</a>
+                            </div>
                         </div>
                     </div>
-                </div>
+                {% endfor %}
             {% endfor %}
         {% endfor %}
     </div>

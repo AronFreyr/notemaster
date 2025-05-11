@@ -28,15 +28,17 @@ def display_all_entries(request):
     # group entries based on month and year
     grouped_entries = {}
     for entry in all_entries:
-        month_year = entry.entry_date.strftime('%Y-%m')
-        if month_year not in grouped_entries:
-            grouped_entries[month_year] = []
-        grouped_entries[month_year].append(entry)
+        year = entry.entry_date.strftime('%Y')
+        if year not in grouped_entries:
+            grouped_entries[year] = {}
+        month = entry.entry_date.strftime('%B')
+        if month not in grouped_entries[year]:
+            grouped_entries[year][month] = []
+        grouped_entries[year][month].append(entry)
 
 
     return render(request, 'logbook/display-all-entries.html',
-                  {'all_entries': all_entries,
-                   'grouped_entries': grouped_entries})
+                  {'grouped_entries': grouped_entries})
 
 
 @login_required
