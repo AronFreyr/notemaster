@@ -15,17 +15,24 @@
                 <div class="card-header">
                     <a href="{% url 'logbook:display_entry' entry.id %}">{{ entry.entry_date }}</a>
                 </div>
-                {% comment %}
-                <div class="card-body">
-                    <h6 class="card-subtitle mb-2 text-muted">{{ entry.document_created_by }}</h6>
-                    <p class="card-text">{{ entry.document_text|safe }}</p>
-                    <p class="card-text"> <small class="text-muted">Type: {{ entry.document_type }}</small></p>
-                    <p class="card-text"> <small class="text-muted">Created: {{ entry.document_created }}</small></p>
-                    <p class="card-text"> <small class="text-muted">Last Modified: {{ entry.document_modified }}</small></p>
-                </div>
-                {% endcomment %}
             </div>
         </div>
+        {% endfor %}
+    </div>
+    <div class="row">
+        {% for key, entries in grouped_entries.items %}
+            <div class="col-sm-12">
+                <h2>{{ key }}</h2>
+            </div>
+            {% for entry in entries %}
+                <div class="col-sm-3">
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            <a href="{% url 'logbook:display_entry' entry.id %}">{{ entry.entry_date }}</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
         {% endfor %}
     </div>
 </div>

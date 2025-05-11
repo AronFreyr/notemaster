@@ -25,8 +25,18 @@ def display_entry(request, entry_id):
 def display_all_entries(request):
     all_entries = DiaryEntry.objects.filter(document_created_by=request.user).order_by('-entry_date')
 
+    # group entries based on month and year
+    grouped_entries = {}
+    for entry in all_entries:
+        month_year = entry.entry_date.strftime('%Y-%m')
+        if month_year not in grouped_entries:
+            grouped_entries[month_year] = []
+        grouped_entries[month_year].append(entry)
+
+
     return render(request, 'logbook/display-all-entries.html',
-                  {'all_entries': all_entries})
+                  {'all_entries': all_entries,
+                   'grouped_entries': grouped_entries})
 
 
 @login_required
