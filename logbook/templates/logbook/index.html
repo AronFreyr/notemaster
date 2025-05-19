@@ -20,7 +20,7 @@
                     <div class="card-body">
                         <p class="card-text">{{ entry.document_text|safe }}</p>
                         {% for tag in entry.get_all_tags_sorted %}
-                        <span class="badge badge-primary">{{ tag.tag_name }}</span>
+                            <span class="badge badge-primary">{{ tag.tag_name }}</span>
                         {% endfor %}
                     </div>
                 </div>

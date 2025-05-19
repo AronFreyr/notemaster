@@ -15,10 +15,6 @@ from notes.services.object_handling import handle_new_tag
 def index(request):
 
     boards = TaskBoard.objects.all()
-    if request.method == 'GET':
-        return render(request, 'taskmaster/index.html',
-                      {'boards': boards,
-                              'create_board_form': AddBoardForm()})
     if request.method == 'POST':
         form = AddBoardForm(request.POST)
         if form.is_valid():
@@ -36,20 +32,16 @@ def index(request):
                       {'boards': boards,
                               'create_board_form': AddBoardForm()})
 
+    return render(request, 'taskmaster/index.html',
+                  {'boards': boards,
+                   'create_board_form': AddBoardForm()})
+
 
 @login_required
 def display_board(request, board_id):
     board = TaskBoard.objects.get(id=board_id)
     board_lists = list(board.tasklist_set.all())
     tasks_without_lists = board.task_set.filter(task_board=board, task_list=None)
-
-    if request.method == 'GET':
-
-        return render(request, 'taskmaster/display-task-board.html', {'board': board,
-                                                                       'board_lists': board_lists,
-                                                                       'orphan_tasks': tasks_without_lists,
-                                                                       'create_board_list_form': CreateTaskListForm(),
-                                                                       'create_task_form': CreateTaskMiniForm()})
 
     if request.method == 'POST':
         list_form = CreateTaskListForm(request.POST)
@@ -127,6 +119,12 @@ def display_board(request, board_id):
                                                                       'orphan_tasks': tasks_without_lists,
                                                                       'create_board_list_form': CreateTaskListForm(),
                                                                       'create_task_form': CreateTaskMiniForm()})
+
+    return render(request, 'taskmaster/display-task-board.html', {'board': board,
+                                                                  'board_lists': board_lists,
+                                                                  'orphan_tasks': tasks_without_lists,
+                                                                  'create_board_list_form': CreateTaskListForm(),
+                                                                  'create_task_form': CreateTaskMiniForm()})
 
 @login_required
 def edit_board(request, board_id):

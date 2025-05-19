@@ -113,6 +113,11 @@
                                         <span style="color:red; font-size:10pt;">&#x2B06;</span>
                                     </button>
                                 </form>
+                                {% for tag in task.get_all_tags_sorted %}
+                                    <a href="{% url 'notes:display_tag' tag.id %}">
+                                        <span class="badge badge-primary"> {{tag.tag_name}} ({{ tag.get_nr_of_docs_with_tag }})</span>
+                                    </a>
+                                {% endfor %}
                             </div>
 
                         </div>
