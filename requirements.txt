@@ -12,6 +12,7 @@ requests
 markdown
 python-markdown-math
 django-tinymce
+pylint
 
 # Google Drive API
 google-api-python-client
