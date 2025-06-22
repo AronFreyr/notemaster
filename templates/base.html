@@ -7,7 +7,7 @@
   {% load static %}
   {% block head_css %}
         {% block head_css_site %}
-          <link rel="stylesheet" href="{% static 'bootstrap/bootstrap.min.css' %}"
+          <link rel="stylesheet" href="{% static 'notemaster_core/bootstrap/bootstrap_4/bootstrap.min.css' %}"
             crossorigin="anonymous" media="screen"/>
         {% endblock head_css_site %}
   {% endblock head_css %}
@@ -23,11 +23,11 @@
     {% block footer_javascript %}
         {% block footer_javascript_site %}
 
-        <script src="{% static 'jquery/jquery-3.4.1.min.js' %}"
+        <script src="{% static 'notemaster_core/jquery/jquery-3.4.1.min.js' %}"
                 crossorigin="anonymous"></script>
 
          <!-- Bootstrap needs to load AFTER jQuery -->
-          <script src="{% static 'bootstrap/bootstrap.bundle.min.js' %}"
+          <script src="{% static 'notemaster_core/bootstrap/bootstrap_4/bootstrap.bundle.min.js' %}"
                   crossorigin="anonymous"></script>
 
         {% endblock footer_javascript_site %}
