@@ -3,6 +3,7 @@ from django.db.models import Q
 from django.views.decorators.http import require_safe
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import cache_page
+from django.http import HttpRequest
 
 from notes.models import Document, Tag, Tagmap, Image, ImageDocumentMap, ImageTagMap
 from notes.forms import AddTagForm, CreateDocumentForm, CreateImageForm, EditDocumentForm
@@ -18,7 +19,7 @@ from notes.services.graph_generator import test_create_graph
 @require_safe  # Only allows the GET and HEAD HTTP methods through.
 @login_required
 # @cache_page(CACHE_TIME)  # Caching the first page is not helpful.
-def index(request):
+def index(request: HttpRequest):
     programming_portal_tags = Tag.objects.filter(
       Q(tag_name='Programming')
       | Q(tag_name='Javascript')
@@ -58,7 +59,7 @@ def index(request):
 
 @login_required
 @cache_page(CACHE_TIME)
-def list_db_content(request):
+def list_db_content(request: HttpRequest):
     # TODO: Update the documentation.
     """
     Shows a list of all the documents, tags and tagmaps currently in the database.
@@ -76,12 +77,12 @@ def list_db_content(request):
 
 
 @login_required
-def display_help(request):
+def display_help(request: HttpRequest):
     return render(request, 'notes/help.html')
 
 
 @login_required
-def create_doc(request):
+def create_doc(request: HttpRequest):
     if request.method == 'GET':
         return render(request, 'notes/create-document.html',
                       {'create_document_form': CreateDocumentForm()})
@@ -112,7 +113,7 @@ def create_doc(request):
 
 
 @login_required
-def create_image(request):
+def create_image(request: HttpRequest):
     if request.method == 'GET':
         return render(request, 'notes/create-image.html', {'create_image_form': CreateImageForm()})
     if request.method == 'POST':
@@ -141,7 +142,7 @@ def create_image(request):
 
 
 @login_required
-def display_doc(request, doc_id):
+def display_doc(request: HttpRequest, doc_id: int):
     """
     Displays a single document and all of its tags.
     :param doc_id: The ID of the document that is to be displayed.
@@ -154,13 +155,19 @@ def display_doc(request, doc_id):
 
 
 @login_required
-def display_image(request, img_id):
+def display_image(request: HttpRequest, img_id: int):
+    """
+    Displays a single image and all of its tags.
+    :param request: The request object.
+    :param img_id: The ID of the image.
+    :return: HTML render for the image.
+    """
     image = Image.objects.get(id=img_id)
     return render(request, 'notes/display-image.html', {'image': image})
 
 
 @login_required
-def display_tag(request, tag_id: int):
+def display_tag(request: HttpRequest, tag_id: int):
     """
     Displays a single tag.
     :param request: The request object.
@@ -172,7 +179,7 @@ def display_tag(request, tag_id: int):
 
 
 @login_required
-def edit_tag(request, tag_id: int):
+def edit_tag(request: HttpRequest, tag_id: int):
     # TODO: Document.
     tag = Tag.objects.get(id=tag_id)
     if request.method == 'POST':
@@ -198,7 +205,7 @@ def edit_tag(request, tag_id: int):
 
 
 @login_required
-def edit_doc(request, doc_id):
+def edit_doc(request: HttpRequest, doc_id: int):
     """
     Enables edits to the current document. TODO: currently it's only possible to edit the document text.
     :param request: The request object.
@@ -235,7 +242,7 @@ def edit_doc(request, doc_id):
 
 
 @login_required
-def edit_image(request, img_id: int):
+def edit_image(request: HttpRequest, img_id: int):
     """
     Enables edits to the current image. TODO: currently it's only possible to edit the image text.
     :param request: The request object.
@@ -270,7 +277,7 @@ def edit_image(request, img_id: int):
 
 
 @login_required
-def delete_or_remove(request, obj_id: int):
+def delete_or_remove(request: HttpRequest, obj_id: int):
     """
     This function deletes or removes objects from the database. It takes in a post request that uses
     the request object with obj_name to determine what kind of object it is working with and whether it
@@ -300,9 +307,9 @@ def delete_or_remove(request, obj_id: int):
                 currently_viewed_document = None
 
         if action_type == 'delete':
-            delete_object(obj_id, obj_type, request)
+            delete_object(obj_id, obj_type)
         elif action_type == 'remove':
-            remove_object(obj_id, obj_type, request)
+            remove_object(obj_id, obj_type)
         else:
             # TODO: throw error, action_type should only be delete of remove
             pass
@@ -312,7 +319,7 @@ def delete_or_remove(request, obj_id: int):
 
 
 @login_required
-def display_search_results(request):
+def display_search_results(request: HttpRequest):
     items_to_display = {'documents': [], 'tags': [], 'images': []}
     if request.method == 'GET':
         item_list = [x.strip() for x in request.GET['search-bar-input'].split(',')]
@@ -343,34 +350,38 @@ def display_search_results(request):
 
 
 @login_required
-def advanced_search(request):
+def advanced_search(request: HttpRequest):
     """
     Returns the interface for making an advanced search. Does not return the result of the search itself.
     :param request: The request object.
     :return: The advanced-search view.
     """
     items_to_display = {'documents': [], 'tags': []}
-    if request.method == 'GET':
-        if 'doc-and-search' not in request.GET:
-            return render(request, 'notes/advanced-search.html', {})
-        else:
-            print('and:', request.GET['doc-and-search'])
-            doc = request.GET['doc-and-search']
-            not_doc = request.GET['doc-not-search']
-            if Document.objects.filter(document_name__contains=doc).exists():
-                document_object = Document.objects.filter(document_name__contains=doc).exclude(document_name__exact=not_doc)
-                items_to_display['documents'].extend(document_object)
 
-            print('not:', request.GET['doc-not-search'])
+    if request.method != 'GET':
+        # TODO: throw error, advanced search should only be GET.
+        pass
 
-            print('or:', request.GET['doc-or-search'])
+    if 'doc-and-search' not in request.GET:
+        return render(request, 'notes/advanced-search.html', {})
 
-            tag = request.GET['tag-and-search']
-            not_tag = request.GET['tag-not-search']
-            or_tag = request.GET['tag-or-search']
+    print('and:', request.GET['doc-and-search'])
+    doc = request.GET['doc-and-search']
+    not_doc = request.GET['doc-not-search']
+    if Document.objects.filter(document_name__contains=doc).exists():
+        document_object = Document.objects.filter(document_name__contains=doc).exclude(document_name__exact=not_doc)
+        items_to_display['documents'].extend(document_object)
 
-            if Tag.objects.filter(tag_name__contains=tag).exists():
-                tag_object = Tag.objects.filter(tag_name__contains=tag)
-                items_to_display['tags'].extend(tag_object)
-            # TODO: return proper things.
-            return render(request, 'notes/search-results.html', {'search_results': items_to_display})
+    print('not:', request.GET['doc-not-search'])
+
+    print('or:', request.GET['doc-or-search'])
+
+    tag = request.GET['tag-and-search']
+    not_tag = request.GET['tag-not-search']
+    or_tag = request.GET['tag-or-search']
+
+    if Tag.objects.filter(tag_name__contains=tag).exists():
+        tag_object = Tag.objects.filter(tag_name__contains=tag)
+        items_to_display['tags'].extend(tag_object)
+    # TODO: return proper things.
+    return render(request, 'notes/search-results.html', {'search_results': items_to_display})

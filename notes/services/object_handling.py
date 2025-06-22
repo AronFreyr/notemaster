@@ -1,16 +1,22 @@
-from ..models import Tag, Document, Tagmap, ImageTagMap, Image
+"""
+Functions for handling the creation and deletion of objects in the database.
+Sometimes that means disassociating them from other objects, sometimes it means deleting them entirely.
+"""
+
+from notes.models import Tag, Document, Tagmap, ImageTagMap, Image
 from timemaster.models import IntervalTagMap
 
 
-def handle_new_tag(new_tags, tag_creator=None, new_doc=None, new_image=None, new_interval=None, tag_type:tuple=None):
-    # TODO: Update documentation for multi tag support and ImageTagMaps.
+def handle_new_tag(new_tags: str, tag_creator=None, new_doc=None,
+                   new_image=None, new_interval=None, tag_type:tuple=None):
+    # TODO: Update documentation for ImageTagMaps.
     # TODO: Create functionality for DocumentTagMaps.
     """
     Function for handling the creation of new tags, adding them to the document and saving them in the database.
-    :param new_tag: A tag that is to be added to a document. The tag may already be in the database but not yet associated
-    with the document that we want to link it to.
-    :param new_doc: If we are creating a new document at the same time we are creating a new tag, we need to create a new
-    tagmap as well.
+    :param new_tags: Tags to be added to a document. The tag may already be in the database but not yet associated
+     with the document that we want to link it to.
+    :param new_doc: If we are creating a new document at the same time we are creating a new tag, we need to create
+     a newtagmap as well.
     :return: nothing.
     """
     if new_tags == '':
@@ -48,14 +54,20 @@ def handle_new_tag(new_tags, tag_creator=None, new_doc=None, new_image=None, new
                 new_interval_tagmap.save()
 
 
-def delete_object(obj_id: int, obj_type: str, request):
+def delete_object(obj_id: int, obj_type: str):
+    """
+    Deletes objects from the database based on their type. Also removes all tag maps associated with the object.
+    :param obj_id: The object ID to be deleted.
+    :param obj_type: The type of the object to be deleted. Can be 'tag', 'document', or 'image'.
+    :return: Nothing
+    """
+    # TODO: refactor this. We can handle all types of objects in the same way.
+    # TODO: Make some tests for this before the refactor.
     if obj_type == 'tag':  # If we are deleting a tag.
         tag_to_delete = Tag.objects.get(id=obj_id)
         for tagmap in tag_to_delete.tagmap_set.all():
             tagmap.delete()
         tag_to_delete.delete()
-        # if 'currently_viewed_doc' in request.POST:
-        #    document = Document.objects.get(document_name=request.POST['currently_viewed_doc'])
     elif obj_type == 'document':  # If we are deleting a document.
         doc_to_delete = Document.objects.get(id=obj_id)
         for tagmap in doc_to_delete.tagmap_set.all():
@@ -69,6 +81,14 @@ def delete_object(obj_id: int, obj_type: str, request):
 
 
 def remove_object(obj_id: int, obj_type: str, request):
+    """
+    Disconnects documents from tags and vice versa.
+    This does not delete the objects, but does delete the tag map that connects them.
+    :param obj_id: The ID of the object to be removed.
+    :param obj_type: The type of the object to be removed. Can be 'tag' or 'document'.
+    :param request: Django request object, used to get the currently viewed document or tag.
+    :return: Nothing
+    """
     if obj_type == 'tag':
         tag_to_remove = Tag.objects.get(id=obj_id)
         document = Document.objects.get(document_name=request.POST['currently_viewed_doc'])
