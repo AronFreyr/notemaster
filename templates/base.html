@@ -2,12 +2,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8">
-  <title>{% block title %}Django Auth Tutorial{% endblock %}</title>
-  {% load static %}
-  {% block head_css %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Django Auth Tutorial{% endblock %}</title>
+    {% load static %}
+    {% block head_css %}
         {% block head_css_site %}
-          <link rel="stylesheet" href="{% static 'notemaster_core/bootstrap/bootstrap_4/bootstrap.min.css' %}"
+            <link rel="stylesheet" href="{% static 'notemaster_core/bootstrap/bootstrap_4/bootstrap.min.css' %}"
             crossorigin="anonymous" media="screen"/>
         {% endblock head_css_site %}
   {% endblock head_css %}
