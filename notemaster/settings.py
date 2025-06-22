@@ -4,6 +4,7 @@ import configparser
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 CONFIG_DIR = BASE_DIR + '/notemaster/config/'
+SECRETS_DIR = BASE_DIR + '/notemaster/secrets/'
 config = configparser.ConfigParser(allow_no_value=True)
 
 log_location = 'logs/'
@@ -13,15 +14,12 @@ try:
 except Exception as e:
     pass
 
-with open(BASE_DIR + '/notemaster/secrets/secret_key.txt') as f:
+with open(SECRETS_DIR + 'secret_key.txt') as f:
     SECRET_KEY = f.read().strip()
 
-ALLOWED_HOSTS = []
-CACHE_TIME = 0
-cache_location = ''
-
 # When the environment is not defined it usually means we are running tests.
-if not 'ENVIRONMENT' in os.environ:
+# I would prefer to let it fail if the environment is not defined, but this is a workaround for running tests.
+if 'ENVIRONMENT' not in os.environ:
     os.environ['ENVIRONMENT'] = 'test'
 
 
@@ -124,27 +122,12 @@ else:
     raise EnvironmentError('Neither PRODUCTION nor DEBUG environments detected')
 
 
-# Password validation
-# https://docs.djangoproject.com/en/1.10/ref/settings/#auth-password-validators
-
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
-
-
-# Internationalization
-# https://docs.djangoproject.com/en/1.10/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
 
@@ -193,7 +176,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 if DEBUG and os.environ.get('RUN_MAIN', None) != 'true':
     LOGGING = {}
 
-
+# Config for the TinyMCE text editor.
+# TODO: Move this out of the settings file.
 TINYMCE_DEFAULT_CONFIG = {
     "theme": "silver",
     "height": 500,
