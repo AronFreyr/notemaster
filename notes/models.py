@@ -31,11 +31,11 @@ class Document(models.Model):
         parser = TextParser()
         return parser.perform_parse(self.document_text)
 
-    def get_all_tags(self) -> list['Tag']:
+    def get_all_tags(self) -> list:
         """Returns all tags associated with this document."""
         return [tagmap.tag for tagmap in self.tagmap_set.all()]
 
-    def get_all_tags_sorted(self) -> list['Tag']:
+    def get_all_tags_sorted(self) -> list:
         """Returns all tags associated with this document, sorted by tag name."""
         return [tagmap.tag for tagmap in self.tagmap_set.all().order_by('tag__tag_name')]
 
@@ -82,7 +82,7 @@ class Tag(models.Model):
         """ Returns the number of documents that have this tag."""
         return self.tagmap_set.count()
 
-    def get_all_docs(self) -> list['Document']:
+    def get_all_docs(self) -> list:
         """ Returns all documents that have this tag."""
         return [tagmap.document for tagmap in self.tagmap_set.all()]
 
@@ -127,11 +127,11 @@ class Image(models.Model):
         parser = TextParser()
         return parser.perform_parse(self.image_text)
 
-    def get_all_tags(self) -> list['Tag']:
+    def get_all_tags(self) -> list:
         """Returns all tags associated with this image."""
         return [tagmap.tag for tagmap in self.imagetagmap_set.all()]
 
-    def get_all_tags_sorted(self) -> list['Tag']:
+    def get_all_tags_sorted(self) -> list:
         """Returns all tags associated with this image, sorted by tag name."""
         return [tagmap.tag for tagmap in self.imagetagmap_set.all().order_by('tag__tag_name')]
 
