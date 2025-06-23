@@ -1,13 +1,16 @@
+"""Tests for the TextParser class in the notes application."""
+import setup_for_django_tests  # Needs to be a the top import to run Django tests properly.
+import re
 from django.test.testcases import TestCase
 from notes.models import Document, Tag, Tagmap
 # from notes.services.parser import tagged_docs_to_list_parser
 from notes.services.parser import TextParser
-import re
 
 
 class TaggedDocsToListTests(TestCase):
 
     def test_doc_to_list_function(self):
+
         Document.objects.create(document_name="Java", document_text="Java document text test 1")
         Document.objects.create(document_name="JAXB", document_text="JAXB document text test 1")
         Document.objects.create(document_name="XML", document_text="XML document text test 1")

@@ -1,3 +1,4 @@
+import setup_for_django_tests
 from django.test.testcases import TestCase, override_settings
 from notes.models import Document, Tag, Tagmap, Image, ImageDocumentMap, ImageTagMap
 from lxml import etree as LET
