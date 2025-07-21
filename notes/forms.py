@@ -26,7 +26,7 @@ class AddTagForm(forms.ModelForm):
 
 
 class CreateDocumentForm(forms.Form):
-    document_name = forms.CharField(label='Document name:')
+    document_name = forms.CharField(label='Document name:', required=True)
     # document_text = forms.CharField(label='Document text:', widget=forms.Textarea)
     document_text = forms.CharField(label='Document text:', widget=TinyMCE(attrs={'cols': 80, 'rows': 30}))
     new_tag = forms.CharField(label='Document tags:')

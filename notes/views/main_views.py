@@ -1,3 +1,4 @@
+import logging
 from django.shortcuts import get_object_or_404, render, redirect, reverse
 from django.db.models import Q
 from django.views.decorators.http import require_safe
@@ -15,6 +16,7 @@ from notes.services.graph_generator import test_create_graph
 
 #from .tests import turtle_graphics_tests
 
+logger = logging.getLogger(__name__)
 
 @require_safe  # Only allows the GET and HEAD HTTP methods through.
 @login_required
@@ -89,7 +91,6 @@ def create_doc(request: HttpRequest):
     if request.method == 'POST':
         form = CreateDocumentForm(request.POST)
         if form.is_valid():
-            # TODO: throw an error if the document name is blank.
             doc_name = form.cleaned_data.get('document_name')
             doc_text = form.cleaned_data.get('document_text')
             new_tag = form.cleaned_data.get('new_tag')
@@ -108,6 +109,12 @@ def create_doc(request: HttpRequest):
                 return render(request, 'notes/create-document.html',
                               {'create_document_form': invalid_form,
                                'duplicate_name_error': duplicate_name_error})
+        else:
+            logger.warning(f'Form is not valid: {form.errors}')
+            # The form is not valid, so we return the form with errors.
+            return render(request, 'notes/create-document.html', {
+                'create_document_form': form
+            })
 
     return redirect(reverse('notes:index'))
 

@@ -10,15 +10,27 @@
         {% csrf_token %}
         <div class="create-doc-input">
             <fieldset class="module aligned">
+                <div class="duplicate-name-error-container alert alert-danger" role="alert">
+                    {% if duplicate_name_error %}
+                        {{ duplicate_name_error }}
+                    {% endif %}
+                    {% if create_document_form.errors %}
+                      <ul class="errorlist">
+                        {% for field in create_document_form %}
+                          {% for error in field.errors %}
+                            <li>{{ field.label }}: {{ error }}</li>
+                          {% endfor %}
+                        {% endfor %}
+                        {% for error in create_document_form.non_field_errors %}
+                          <li>{{ error }}</li>
+                        {% endfor %}
+                      </ul>
+                    {% endif %}
+                </div>
                 <div class="form-row">
                     <div class="create-doc-name-container">
                         <label>{{ create_document_form.document_name.label }}</label>
                         {{ create_document_form.document_name|add_class:'form-doc-name' }}
-                        <div class="duplicate-name-error-container">
-                        {% if duplicate_name_error %}
-                            {{ duplicate_name_error }}
-                        {% endif %}
-                        </div>
                     </div>
 
                 </div>
