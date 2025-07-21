@@ -39,6 +39,10 @@ class Document(models.Model):
         """Returns all tags associated with this document, sorted by tag name."""
         return [tagmap.tag for tagmap in self.tagmap_set.all().order_by('tag__tag_name')]
 
+    def get_nr_of_tags(self) -> int:
+        """Returns the number of tags associated with this document."""
+        return self.tagmap_set.count()
+
     def __str__(self):
         """Override the string representation and return the document name."""
         return self.document_name
