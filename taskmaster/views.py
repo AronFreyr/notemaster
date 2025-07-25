@@ -6,7 +6,7 @@ from datetime import datetime
 
 from notes.models import Document
 from taskmaster.models import TaskBoard, TaskList, Task
-from taskmaster.forms import AddBoardForm, CreateTaskListForm, CreateTaskForm, CreateTaskMiniForm
+from taskmaster.forms import AddBoardForm, CreateTaskListForm, CreateTaskForm, CreateTaskMiniForm, TaskForm
 from taskmaster import services
 from notes.forms import AddTagForm
 from notes.services.object_handling import handle_new_tag
@@ -268,7 +268,122 @@ def edit_task(request, task_id):
     return render(request, 'taskmaster/edit-task.html', {'task': task,
                                                          'tasks_in_list': all_tasks_in_same_list,
                                                          'add_tag_form': AddTagForm(),
+                                                         'task_form': TaskForm(instance=task),
                                                          'possible_parent_tasks': possible_parent_tasks})
+
+@login_required
+def edit_task_2(request, task_id):
+    # TODO: For the love of god make unit tests for this function.
+    task = Task.objects.get(id=task_id)
+    unchanged_task = Task.objects.get(id=task_id)  # We will use this to compare the changes made to the task.
+    if request.method == 'POST':
+        add_tag_form = AddTagForm(request.POST)
+        task_form = TaskForm(request.POST, instance=task)
+
+        if add_tag_form.is_valid():
+            tag = add_tag_form.cleaned_data.get('tag_name')
+            if tag != '':
+                handle_new_tag(tag, new_doc=task, tag_creator=request.user)
+
+        if task_form.is_valid():
+            print('task_form is valid')
+
+            # Check the new parent task.
+            new_parent_task_name = task_form.cleaned_data.get('parent_task')
+            print(f'new_parent_task_name: {new_parent_task_name}')
+            task_obj = task_form.save(commit=False)
+            if new_parent_task_name:
+                new_parent_task = Task.objects.get(document_name=new_parent_task_name, task_board=task.task_board)
+                if task.parent_task:
+                    if task.parent_task != new_parent_task and task != new_parent_task and new_parent_task.parent_task != task:
+                        task_obj.parent_task = new_parent_task
+                else:
+                    if new_parent_task != task and new_parent_task.parent_task != task:
+                        task_obj.parent_task = new_parent_task
+            else:
+                task_obj.parent_task = None
+
+            # Check if we changed the task list.
+            new_list = task_form.cleaned_data.get('task_list')
+            print(f'new_list: {new_list}')
+            print(f'old task list: {unchanged_task.task_list}')
+            old_task_list = unchanged_task.task_list  # The old list that the task used to belong to.
+            # The new list the task belongs to.
+            new_task_list = TaskList.objects.get(list_name=new_list, list_board=task.task_board)
+            prev_task = unchanged_task.previous_task
+            if new_task_list != old_task_list:
+                if prev_task:  # If there exists a previous task (i.e. more than one task exists)
+                    next_task = unchanged_task.next_task
+                    if next_task:  # If there exists a next task.
+                        prev_task.next_task = next_task
+                        next_task.previous_task = prev_task
+                        next_task.save()
+                        prev_task.save()
+                    else:
+                        prev_task.next_task = None
+                        prev_task.save()
+                else:
+                    # If there is no previous task but there is a next task then that next task must change its
+                    # previous task to None.
+                    next_task = unchanged_task.next_task
+                    if next_task:
+                        next_task.previous_task = None
+                        next_task.save()
+                task_obj.task_list = new_task_list
+                # The task that used to be at the end of the new list.
+                old_last_task = new_task_list.task_set.filter(next_task=None, task_list=new_task_list).last()
+                if old_last_task:
+                    if old_last_task != task:
+                        old_last_task.next_task = task
+                        task_obj.previous_task = old_last_task
+                        task_obj.next_task = None
+                        old_last_task.save()
+                else:
+                    task_obj.next_task = None
+                    task_obj.previous_task = None
+
+            # check previous task
+            new_prev_task_name = task_form.cleaned_data.get('previous_task')
+            print(f'new_prev_task_name: {new_prev_task_name}')
+            if new_prev_task_name:
+                new_prev_task = Task.objects.get(document_name=new_prev_task_name, task_list=unchanged_task.task_list)
+                if new_prev_task != unchanged_task.previous_task:
+                    task_obj.previous_task = new_prev_task
+            else:
+                task_obj.previous_task = None
+
+            # check next task
+            new_next_task_name = task_form.cleaned_data.get('next_task')
+            print(f'new_next_task_name: {new_next_task_name}')
+            if new_next_task_name:
+                new_next_task = Task.objects.get(document_name=new_next_task_name, task_list=unchanged_task.task_list)
+                if new_next_task != unchanged_task.next_task:
+                    task_obj.next_task = new_next_task
+            else:
+                task_obj.next_task = None
+
+            task_obj.save()
+            task_id = task_obj.id
+
+            return redirect(reverse('taskmaster:display_task', args=(task_id,)))
+        else:
+            print('task_form is not valid')
+            print(task_form.errors)
+
+    if task.task_list:
+        all_tasks_in_same_list = task.task_list.get_all_tasks_in_list()
+        all_tasks_in_same_list.append({'document_name': None})
+    else:
+        all_tasks_in_same_list = None
+
+    possible_parent_tasks = list(task.task_board.task_set.exclude(id=task.id).all())
+    possible_parent_tasks.append({'document_name': None})  # Add the possibility that the task does not have a parent.
+    return render(request, 'taskmaster/edit-task.html', {'task': task,
+                                                         'tasks_in_list': all_tasks_in_same_list,
+                                                         'add_tag_form': AddTagForm(),
+                                                         'task_form': TaskForm(instance=task),
+                                                         'possible_parent_tasks': possible_parent_tasks})
+
 
 
 @login_required

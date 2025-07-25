@@ -1,0 +1,3 @@
+[MASTER]
+ignore=venv,migrations,tests
+ignore-patterns=test_.*\.py

@@ -8,6 +8,15 @@
     /*float:left;*/
 }
 
+.task-name-input{
+    width: 700px;
+    /*height: 700px;*/
+    padding: 12px 20px;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    background-color: #f8f8f8;
+}
+
 #id-textarea-change-task-text{
     width: 700px;
     height: 300px;
@@ -18,7 +27,7 @@
     /*float:left;*/
 }
 
-.change-tasks{
+.select-block{
     width: 150px;
 }
 
@@ -28,7 +37,7 @@
     justify-content: space-between;
 }
 
-#id-div-tag-container{
+.div-tag-container{
     border: 1px solid black;
     border-radius: 3px;
     margin-bottom: 20px;
