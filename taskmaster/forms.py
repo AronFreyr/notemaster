@@ -1,5 +1,5 @@
 from django import forms
-from taskmaster.models import Task
+from taskmaster.models import Task, TaskList
 from django.contrib.auth.models import User
 from tinymce.widgets import TinyMCE
 
@@ -71,9 +71,10 @@ class TaskForm(forms.ModelForm):
     document_name = forms.CharField(label='Task name:', required=True)
     document_text = forms.CharField(label='', required=False,
                                     widget=TinyMCE(mce_attrs={'width': '700px', 'height': '400px'}))
-    task_assigned_to = forms.ModelChoiceField(label='Assigned to:', required=False, queryset=User.objects.all())
+    task_assigned_to = forms.ModelChoiceField(label='Assigned to:', required=False, queryset=User.objects.all(), empty_label=None)
     task_deadline = forms.DateField(label='Task deadline:', required=False,
-                                    widget=forms.DateInput(attrs={'type': 'date'}))
+                                    widget=forms.DateInput(attrs={'type': 'date'}),
+                                    initial=None)
     task_board = forms.CharField(label='Task board:', required=False, disabled=True)
     class Meta:
         model = Task
@@ -112,6 +113,12 @@ class TaskForm(forms.ModelForm):
             ).exclude(pk=curr_instance.pk)
 
             self.fields['task_board'].initial = str(curr_instance.task_board)
+
+            # We make lists only show lists that are on the same board as the task being edited.
+            self.fields['task_list'].queryset = curr_instance.task_board.get_all_lists_in_board_in_custom_order_queryset()
+            self.fields['task_list'].empty_label = None
+
+            self.fields['task_assigned_to'].initial = User.objects.filter(username=curr_instance.task_assigned_to).first()
         else:
             self.fields['task_board'].initial = ''
             self.fields['next_task'].queryset = Task.objects.none()

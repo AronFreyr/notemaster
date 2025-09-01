@@ -303,6 +303,8 @@ def edit_task_2(request, task_id):
             else:
                 task_obj.parent_task = None
 
+            task_obj.task_assigned_to = str(task_form.cleaned_data.get("task_assigned_to"))
+
             # Check if we changed the task list.
             new_list = task_form.cleaned_data.get('task_list')
             print(f'new_list: {new_list}')
@@ -333,8 +335,8 @@ def edit_task_2(request, task_id):
                 # The task that used to be at the end of the new list.
                 old_last_task = new_task_list.task_set.filter(next_task=None, task_list=new_task_list).last()
                 if old_last_task:
-                    if old_last_task != task:
-                        old_last_task.next_task = task
+                    if old_last_task != task_obj:
+                        old_last_task.next_task = task_obj
                         task_obj.previous_task = old_last_task
                         task_obj.next_task = None
                         old_last_task.save()
@@ -345,22 +347,24 @@ def edit_task_2(request, task_id):
             # check previous task
             new_prev_task_name = task_form.cleaned_data.get('previous_task')
             print(f'new_prev_task_name: {new_prev_task_name}')
-            if new_prev_task_name:
-                new_prev_task = Task.objects.get(document_name=new_prev_task_name, task_list=unchanged_task.task_list)
-                if new_prev_task != unchanged_task.previous_task:
-                    task_obj.previous_task = new_prev_task
-            else:
-                task_obj.previous_task = None
+            if new_prev_task_name != unchanged_task.previous_task:
+                if new_prev_task_name:
+                    new_prev_task = Task.objects.get(document_name=new_prev_task_name, task_list=unchanged_task.task_list)
+                    if new_prev_task != unchanged_task.previous_task:
+                        task_obj.previous_task = new_prev_task
+                else:
+                    task_obj.previous_task = None
 
             # check next task
             new_next_task_name = task_form.cleaned_data.get('next_task')
             print(f'new_next_task_name: {new_next_task_name}')
-            if new_next_task_name:
-                new_next_task = Task.objects.get(document_name=new_next_task_name, task_list=unchanged_task.task_list)
-                if new_next_task != unchanged_task.next_task:
-                    task_obj.next_task = new_next_task
-            else:
-                task_obj.next_task = None
+            if new_next_task_name != unchanged_task.next_task:
+                if new_next_task_name:
+                    new_next_task = Task.objects.get(document_name=new_next_task_name, task_list=unchanged_task.task_list)
+                    if new_next_task != unchanged_task.next_task:
+                        task_obj.next_task = new_next_task
+                else:
+                    task_obj.next_task = None
 
             task_obj.save()
             task_id = task_obj.id
