@@ -150,7 +150,7 @@
             </div>
         </div>
     </div>
-    <form action="{% url 'taskmaster:edit_task_2' task.id %}" method="post" id="id-form-edit-task-2">
+    <form action="{% url 'taskmaster:edit_task' task.id %}" method="post" id="id-form-edit-task-2">
         {% csrf_token %}
         <div class="row">
             <div class="col-sm-2">

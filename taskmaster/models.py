@@ -45,8 +45,6 @@ class TaskBoard(models.Model):
     board_last_modified_by = models.ForeignKey(User, on_delete=models.SET_NULL,
                                                related_name='board_last_modified_by', blank=True, null=True)
 
-
-
     def get_all_lists_in_board_in_custom_order_queryset(self) -> QuerySet:
 
         # We do some funky stuff to make sure that the queryset is ordered in the custom order.

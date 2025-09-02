@@ -144,8 +144,10 @@ def display_task(request, task_id):
     task = Task.objects.get(id=task_id)
     return render(request, 'taskmaster/display-task.html', {'task': task})
 
+
+@DeprecationWarning
 @login_required
-def edit_task(request, task_id):
+def edit_task_old(request, task_id):
     task = Task.objects.get(id=task_id)
     if request.method == 'POST':
 
@@ -272,14 +274,13 @@ def edit_task(request, task_id):
                                                          'possible_parent_tasks': possible_parent_tasks})
 
 @login_required
-def edit_task_2(request, task_id):
+def edit_task(request, task_id):
     # TODO: For the love of god make unit tests for this function.
     task = Task.objects.get(id=task_id)
     unchanged_task = Task.objects.get(id=task_id)  # We will use this to compare the changes made to the task.
     if request.method == 'POST':
         add_tag_form = AddTagForm(request.POST)
         task_form = TaskForm(request.POST, instance=task)
-
         if add_tag_form.is_valid():
             tag = add_tag_form.cleaned_data.get('tag_name')
             if tag != '':
@@ -311,7 +312,7 @@ def edit_task_2(request, task_id):
             print(f'old task list: {unchanged_task.task_list}')
             old_task_list = unchanged_task.task_list  # The old list that the task used to belong to.
             # The new list the task belongs to.
-            new_task_list = TaskList.objects.get(list_name=new_list, list_board=task.task_board)
+            new_task_list = TaskList.objects.filter(list_name=new_list, list_board=task.task_board).first()
             prev_task = unchanged_task.previous_task
             if new_task_list != old_task_list:
                 if prev_task:  # If there exists a previous task (i.e. more than one task exists)
@@ -371,7 +372,7 @@ def edit_task_2(request, task_id):
 
             return redirect(reverse('taskmaster:display_task', args=(task_id,)))
         else:
-            print('task_form is not valid')
+            print('task_form is not valid!!!')
             print(task_form.errors)
 
     if task.task_list:
