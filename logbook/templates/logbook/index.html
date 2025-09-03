@@ -11,6 +11,11 @@
 <div class="container">
     <div class="row">
         <div class="col">
+            {% if filtered_by_tag %}
+                <h2>Entries tagged with "{{ filtered_by_tag.tag_name }}"</h2>
+            {% else %}
+                <h2>All Entries</h2>
+            {% endif %}
             {% if all_entries %}
                 {% for entry in all_entries %}
                 <div class="card mb-3">
@@ -20,7 +25,10 @@
                     <div class="card-body">
                         <p class="card-text">{{ entry.document_text|safe }}</p>
                         {% for tag in entry.get_all_tags_sorted %}
-                            <span class="badge badge-primary">{{ tag.tag_name }}</span>
+                            <span class="badge badge-primary">
+                                <a href="{% url 'logbook:display_entries_by_tag' tag.id %}"
+                                class="text-reset text-decoration-none text-white">{{ tag.tag_name }}</a>
+                            </span>
                         {% endfor %}
                     </div>
                 </div>

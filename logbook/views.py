@@ -1,8 +1,10 @@
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_safe
 from django.shortcuts import render, redirect, reverse, get_object_or_404
 
 from .forms import CreateDiaryEntryForm
 from .models import DiaryEntry
+from notes.models import Tag
 from notes.services.object_handling import handle_new_tag
 
 
@@ -36,9 +38,21 @@ def display_all_entries(request):
             grouped_entries[year][month] = []
         grouped_entries[year][month].append(entry)
 
-
     return render(request, 'logbook/display-all-entries.html',
                   {'grouped_entries': grouped_entries})
+
+
+@login_required
+@require_safe
+def display_entries_by_tag(request, tag_id):
+    tag = Tag.objects.filter(id=tag_id).first()
+    if not tag:
+        # TODO: log
+        print(f'No tag found with id {tag_id} for user {request.user}. Redirecting to index.')
+        return redirect(reverse('logbook:index'))
+    entries = DiaryEntry.objects.filter(document_created_by=request.user, tagmap__tag__id=tag.id).order_by('-entry_date')
+    return render(request, 'logbook/index.html',
+                  {'all_entries': entries, 'filtered_by_tag': tag})
 
 
 @login_required
