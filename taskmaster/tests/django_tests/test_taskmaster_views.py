@@ -11,7 +11,7 @@ class EditTaskViewTests(TestCase):
                                               board_last_modified_by=self.user)
         self.task = Task.objects.create(document_name='Test Task', task_board=self.board, task_assigned_to='test_user')
         self.list1 = TaskList.objects.create(list_name='List 1', list_board=self.board)
-        self.edit_task_url = reverse('taskmaster:edit_task_2', kwargs={'task_id': self.task.id})
+        self.edit_task_url = reverse('taskmaster:edit_task', kwargs={'task_id': self.task.id})
         self.client.login(username='test_user', password='test_pass')
 
     def test_edit_task_get(self):
@@ -54,7 +54,7 @@ class EditTaskViewTests(TestCase):
             'task_importance': 4,
         }
 
-        edit_task3_url = reverse('taskmaster:edit_task_2', kwargs={'task_id': task3.id})
+        edit_task3_url = reverse('taskmaster:edit_task', kwargs={'task_id': task3.id})
         response = self.client.post(edit_task3_url, data)
         task3.refresh_from_db()
         task2.refresh_from_db()
