@@ -65,7 +65,7 @@
                 <div class="task-list-container">
                     <div class="list-top">
                         <div class="list-name">
-                            {{ board_list.list_name }}
+                            <a href="{% url 'taskmaster:edit_list' board_list.id %}">{{ board_list.list_name }}</a>
                         </div>
                         <div class="move-list-buttons-container">
                             <form action="{% url 'taskmaster:display_board' board.id %}" method="post" enctype="multipart/form-data">

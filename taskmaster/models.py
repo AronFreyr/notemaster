@@ -6,6 +6,7 @@ class Task(Document):
 
     task_difficulty = models.IntegerField(default=0)
     task_importance = models.IntegerField(default=0)
+    task_finished = models.BooleanField(default=False)
     task_assigned_to = models.TextField(blank=True, null=True)
 
     # Tasks should be in a list, but it is possible for them to not be.
@@ -28,6 +29,19 @@ class Task(Document):
 
     # Deadline for a task. It can be null.
     task_deadline = models.DateTimeField(blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        """
+        Override the save method to automatically finish tasks that are added to lists meant for finished tasks.
+        Also marks tasks as unfinished if they are moved out of such lists.
+        """
+        super().save(*args, **kwargs)
+        if self.task_list and self.task_list.list_for_finished_tasks and not self.task_finished:
+            self.task_finished = True
+            self.save()
+        elif self.task_list and not self.task_list.list_for_finished_tasks and self.task_finished:
+            self.task_finished = False
+            self.save()
 
 
 class TaskBoard(models.Model):
@@ -86,6 +100,10 @@ class TaskList(models.Model):
     # The previous list on the board.
     previous_list = models.ForeignKey('TaskList', on_delete=models.SET_NULL, blank=True, null=True,
                                       related_name='previous_list_in_board')
+
+    # Tasks in lists where this is True are all supposed to be finished.
+    # When they are moved to this list, their task_finished attribute should be set to True.
+    list_for_finished_tasks = models.BooleanField(default=False)
 
     def __str__(self):
         return self.list_name
