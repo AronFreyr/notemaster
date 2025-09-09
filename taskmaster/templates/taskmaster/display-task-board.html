@@ -65,7 +65,7 @@
                 <div class="task-list-container">
                     <div class="list-top">
                         <div class="list-name">
-                            {{ board_list.list_name }}
+                            <a href="{% url 'taskmaster:edit_list' board_list.id %}">{{ board_list.list_name }}</a>
                         </div>
                         <div class="move-list-buttons-container">
                             <form action="{% url 'taskmaster:display_board' board.id %}" method="post" enctype="multipart/form-data">
@@ -114,9 +114,11 @@
                                     </button>
                                 </form>
                                 {% for tag in task.get_all_tags_sorted %}
-                                    <a href="{% url 'notes:display_tag' tag.id %}">
-                                        <span class="badge badge-primary"> {{tag.tag_name}} ({{ tag.get_nr_of_docs_with_tag }})</span>
-                                    </a>
+                                    {% if tag.tag_type != 'meta' %}
+                                        <a href="{% url 'notes:display_tag' tag.id %}">
+                                            <span class="badge badge-primary"> {{tag.tag_name}} ({{ tag.get_nr_of_docs_with_tag }})</span>
+                                        </a>
+                                    {% endif %}
                                 {% endfor %}
                             </div>
 

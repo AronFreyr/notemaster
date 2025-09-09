@@ -6,7 +6,7 @@ from datetime import datetime
 
 from notes.models import Document
 from taskmaster.models import TaskBoard, TaskList, Task
-from taskmaster.forms import AddBoardForm, CreateTaskListForm, CreateTaskForm, CreateTaskMiniForm, TaskForm
+from taskmaster.forms import AddBoardForm, CreateTaskListForm, CreateTaskForm, CreateTaskMiniForm, TaskForm, EditTaskListForm
 from taskmaster import services
 from notes.forms import AddTagForm
 from notes.services.object_handling import handle_new_tag
@@ -429,3 +429,31 @@ def delete_board(request, board_id):
     board = TaskBoard.objects.get(id=board_id)
     board.delete()
     return redirect(reverse('taskmaster:index'))
+
+@login_required
+def edit_list(request, list_id):
+    """
+    Edit a task list. Currently, you can edit the name and if the list is for finished tasks or not.
+    """
+    task_list = TaskList.objects.get(id=list_id)
+    if request.method == 'POST':
+        form = EditTaskListForm(request.POST)
+        if form.is_valid():
+            new_list_name: str = form.cleaned_data.get('list_name')
+            finished_tasks_list: bool = form.cleaned_data.get('list_for_finished_tasks')
+
+            if new_list_name == '':
+                form.add_error('list_name', 'List name cannot be empty.')
+            elif TaskList.objects.filter(list_name=new_list_name, list_board=task_list.list_board).exists() and new_list_name != task_list.list_name:
+                form.add_error('list_name', 'A list with this name already exists.')
+
+            if form.errors:
+                return render(request, 'taskmaster/edit-task-list.html', {'list': task_list, 'form': form})
+
+            task_list.list_name = new_list_name
+            task_list.list_for_finished_tasks = finished_tasks_list
+            task_list.save()
+
+        return redirect(reverse('taskmaster:display_board', args=(task_list.list_board.id, )))
+    return render(request, 'taskmaster/edit-task-list.html', {'list': task_list,
+                                                              'form': EditTaskListForm(instance=task_list)})

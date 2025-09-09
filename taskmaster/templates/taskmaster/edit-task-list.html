@@ -1,0 +1,39 @@
+{% extends 'taskmaster/base.html' %}
+{% load static %}
+
+{% block title %} Edit List {% endblock title %}
+
+{% block head_css_page %}
+    <link rel="stylesheet" type="text/css" href="{% static 'taskmaster/css/edit-task-list.css' %}" />
+{% endblock head_css_page %}
+
+{% block content %}
+<div class="container">
+
+    <div class="row">
+        <div class="col-sm-2"></div>
+        <div class="col-md-4">
+            <form action="{% url 'taskmaster:edit_list' list.id %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% if form.errors %}
+                    <div class="alert alert-danger">
+                        {{ form.non_field_errors }}
+                        {% for field in form %}
+                            {% for error in field.errors %}
+                                <div>{{ error }}</div>
+                            {% endfor %}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                {% for field in form %}
+                    <div class="form-group">
+                        {{ field.label_tag }}
+                        {{ field }}
+                    </div>
+                {% endfor %}
+                <input class="btn btn-secondary btn-sm" type="submit" value="Change List">
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock content %}

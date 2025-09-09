@@ -19,6 +19,15 @@ class CreateTaskListForm(forms.Form):
     class Meta:
         fields = ['list_name']
 
+class EditTaskListForm(forms.ModelForm):
+
+    list_name = forms.CharField(label='List name:', required=True)
+    list_for_finished_tasks = forms.BooleanField(label='Is this list for finished tasks?', required=False)
+
+    class Meta:
+        model = TaskList
+        fields = ['list_name', 'list_for_finished_tasks']
+
 
 class CreateTaskMiniForm(forms.ModelForm):
     """
