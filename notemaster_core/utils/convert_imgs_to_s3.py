@@ -9,7 +9,8 @@ from django.conf import settings
 
 import boto3
 from botocore.exceptions import NoCredentialsError, ClientError
-from notes.models import Image
+from notes.models import Image, _s3_image_upload_path
+from django.db import models
 
 
 
@@ -34,10 +35,14 @@ def move_images_to_s3(local_directory, s3_directory='uploads/images/'):
                       aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
                       region_name=AWS_REGION)
 
-    s3_directory += 'dev/' if settings.DEBUG else 'prod/'
+    s3_directory = settings.S3_DIRECTORY
 
     for image in images:
         image_key = s3_directory + os.path.basename(image.image_picture.name)
+        if image.image_picture.name != image_key:
+            print(f"Updating image record to point to S3 location: {image_key}, was {image.image_picture.name}")
+            image.image_picture.name = image_key
+            image.save()
         if image_exists_in_s3(s3, AWS_S3_BUCKET, image_key):
             print(f"Image already exists in S3: {image_key}")
             continue
