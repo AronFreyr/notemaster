@@ -2,6 +2,7 @@ gunicorn
 networkx
 plotly
 django==3.*
+django-storages
 channels
 Pillow
 lxml
@@ -13,6 +14,11 @@ markdown
 python-markdown-math
 django-tinymce
 pylint
+
+
+# Amazon libraries
+boto3
+# ----------------
 
 # Google Drive API
 google-api-python-client

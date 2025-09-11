@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.conf import settings
 
 
 class Document(models.Model):
@@ -110,11 +111,14 @@ class Tagmap(models.Model):
     def __str__(self):
         return 'doc: ' + self.document.document_name + ' - tag: ' + self.tag.tag_name
 
+def _s3_image_upload_path(instance, filename):
+    # Use the S3_DIRECTORY from settings
+    return f"{settings.S3_DIRECTORY}{filename}"
 
 class Image(models.Model):
     image_name = models.TextField(blank=True)
     image_text = models.TextField(blank=True)
-    image_picture = models.ImageField(upload_to='gallery')
+    image_picture = models.ImageField(upload_to=_s3_image_upload_path)
 
     image_created = models.DateTimeField(auto_now_add=True)
     image_modified = models.DateTimeField(auto_now=True)

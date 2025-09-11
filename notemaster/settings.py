@@ -42,6 +42,16 @@ log_location = config['DEFAULT']['LOG_LOCATION']
 logger_settings = LoggerSettings(log_location)
 LOGGING = logger_settings.get_logger_settings()
 
+# AWS S3 configuration -----------
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+AWS_ACCESS_KEY_ID = config['AWS']['AWS_ACCESS_KEY_ID']
+AWS_SECRET_ACCESS_KEY = config['AWS']['AWS_SECRET_ACCESS_KEY']
+AWS_STORAGE_BUCKET_NAME = config['AWS']['AWS_S3_BUCKET']
+AWS_S3_REGION_NAME = config['AWS']['AWS_REGION']
+S3_DIRECTORY = 'dev/' if DEBUG else 'prod/'
+S3_DIRECTORY += 'uploads/images/'
+# --------------------------------
+
 # Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -57,6 +67,7 @@ INSTALLED_APPS = [
     'taskmaster',
     'timemaster',
     'logbook',
+    'storages',
 ]
 
 MIDDLEWARE = [
