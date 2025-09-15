@@ -1,0 +1,42 @@
+{% load static %}
+{% load app_filters %}
+
+
+{% if duplicate_name_error or item_form.errors %}
+    <div class="duplicate-name-error-container alert alert-danger" role="alert">
+        {% if duplicate_name_error %}
+            {{ duplicate_name_error }}
+        {% endif %}
+        {% if item_form.errors %}
+          <ul class="errorlist">
+            {% for field in item_form %}
+              {% for error in field.errors %}
+                <li>{{ field.label }}: {{ error }}</li>
+              {% endfor %}
+            {% endfor %}
+            {% for error in item_form.non_field_errors %}
+              <li>{{ error }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+    </div>
+{% endif %}
+<div class="form-row">
+    <div class="create-name-container">
+        <label>{{ item_form.get_name_label }}</label>
+        {{ item_form.get_name_field }}
+    </div>
+
+</div>
+<div class="form-row">
+    <div class="create-text-container">
+        <label>{{ item_form.get_name_label }}</label>
+        {{ item_form.get_text_field }}
+    </div>
+</div>
+<div class="form-row">
+    <div class="create-tag-container">
+        <label>{{ item_form.get_tag_label }}</label>
+        {{ item_form.get_tag_field }}
+    </div>
+</div>
