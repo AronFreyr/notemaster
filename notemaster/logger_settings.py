@@ -32,6 +32,7 @@ class LoggerSettings:
                     'interval': 1,
                     'filename': self.log_location + 'ErrorLoggers.log',
                     'formatter': 'large',
+                    'delay': True,
                 },
                 'info_file': {
                     'level': 'INFO',
@@ -40,6 +41,7 @@ class LoggerSettings:
                     'interval': 1,
                     'filename': self.log_location + 'InfoLoggers.log',
                     'formatter': 'large',
+                    'delay': True,
                 },
                 'debug_file': {
                     'level': 'DEBUG',
@@ -48,6 +50,7 @@ class LoggerSettings:
                     'interval': 1,
                     'filename': self.log_location + 'DebugLoggers.log',
                     'formatter': 'large',
+                    'delay': True,
                 },
                 'console': {
                     'level': 'DEBUG',

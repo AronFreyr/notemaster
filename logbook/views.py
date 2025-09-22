@@ -106,7 +106,7 @@ def edit_entry(request, entry_id):
                 handle_new_tag(new_tags=diary_tags, new_doc=entry_to_edit, tag_creator=request.user)
             edit_diary_entry_form.save()
             return redirect(reverse('logbook:display_entry', args=[entry_id]))
-
+    print(f"entry name: {entry_to_edit.document_name}")
     return render(request, 'logbook/edit-diary-entry.html',
                   {'edit_diary_entry_form': CreateDiaryEntryForm(instance=entry_to_edit),
                    'entry': entry_to_edit})

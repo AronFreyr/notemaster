@@ -316,7 +316,7 @@ def delete_or_remove(request: HttpRequest, obj_id: int):
         if action_type == 'delete':
             delete_object(obj_id, obj_type)
         elif action_type == 'remove':
-            remove_object(obj_id, obj_type)
+            remove_object(obj_id, obj_type, request)
         else:
             # TODO: throw error, action_type should only be delete of remove
             pass
