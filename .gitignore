@@ -6,3 +6,5 @@
 **/logs
 **/notemaster/config
 **/.github
+
+db.sqlite3
