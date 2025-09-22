@@ -259,7 +259,7 @@ def remove_interval_tag(request, tag_id: int):
 
 
 @login_required()
-def remove_tag(request, obj_id):
+def remove_tag(request, obj_id: int):
     if request.method == 'GET':
         # todo what to do
         pass
