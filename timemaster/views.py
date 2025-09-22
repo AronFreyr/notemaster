@@ -294,6 +294,7 @@ def display_interval_graph(request):
     # TimeInterval.objects.raw('SELECT id, interval_date, SUM(interval_amount) as my_sum
     # FROM timemaster_TimeInterval GROUP BY interval_date;'
     # )
+
     all_intervals = (TimeInterval.objects.values('interval_date').annotate(interval_sum=Sum('interval_amount')).order_by())
 
     time_interval_form = forms.PlotTimeIntervalsInRangeForm(request.GET)
