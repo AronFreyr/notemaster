@@ -38,7 +38,7 @@ def index(request):
                   {'all_activities': activities, 'activity_form': activity_form})
 
 @login_required
-def display_activity(request, activity_id):
+def display_activity(request, activity_id: int):
     activity = Activity.objects.get(id=activity_id)
 
     if request.method == 'POST':
@@ -92,7 +92,7 @@ def display_activity(request, activity_id):
                                                                 'total_month_time': month_time_list,
                                                                 'total_week_time': week_time_list})
 @login_required
-def edit_activity(request, activity_id):
+def edit_activity(request, activity_id: int):
     activity = Activity.objects.get(id=activity_id)
 
     if request.method == 'POST':
@@ -137,7 +137,7 @@ def edit_activity(request, activity_id):
 
 
 @login_required
-def delete_activity(request, activity_id):
+def delete_activity(request, activity_id: int):
     # We need to delete the activity, the name tag associated with the activity and all intervals
     # that have no other activity than this one.
 
@@ -173,7 +173,7 @@ def delete_activity(request, activity_id):
 
 
 @login_required
-def display_interval(request, interval_id):
+def display_interval(request, interval_id: int):
     interval = TimeInterval.objects.get(id=interval_id)
 
     all_connected_activities = []
@@ -189,7 +189,7 @@ def display_interval(request, interval_id):
 
 
 @login_required
-def edit_interval(request, interval_id):
+def edit_interval(request, interval_id: int):
     interval = TimeInterval.objects.get(id=interval_id)
 
     all_connected_activities = []
@@ -240,7 +240,7 @@ def delete_interval(request, interval_id):
     return redirect(reverse('timemaster:index'))
 
 @login_required
-def remove_interval_tag(request, tag_id):
+def remove_interval_tag(request, tag_id: int):
     if request.method == 'GET':
         # todo what to do
         pass
