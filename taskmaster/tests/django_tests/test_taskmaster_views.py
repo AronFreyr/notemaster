@@ -1,5 +1,6 @@
 from django.test.testcases import TestCase
 from taskmaster.models import TaskBoard, TaskList, Task
+from notes.models import Tag
 from django.urls import reverse
 from django.contrib.auth.models import User
 
@@ -63,3 +64,86 @@ class EditTaskViewTests(TestCase):
         self.assertIsNone(task3.next_task)
         self.assertIsNone(task2.previous_task)
         self.assertEqual(task2.next_task, task3)
+
+    def test_add_tag_to_task(self):
+        data = {
+            'document_name': 'Test Task',
+            'document_text': 'Test text',
+            'task_difficulty': 2,
+            'task_importance': 3,
+            'tag_name': 'urgent'
+        }
+        response = self.client.post(self.edit_task_url, data)
+        self.task.refresh_from_db()
+        self.assertIn('urgent', [tag.tag_name for tag in self.task.get_all_tags()])
+        new_tag = Tag.objects.get(tag_name='urgent')
+        self.assertIsNotNone(new_tag)
+        self.assertEqual(new_tag.tag_type, Tag.TagTypes.NORMAL)
+        self.assertRedirects(response, reverse('taskmaster:display_task', kwargs={'task_id': self.task.id}))
+
+    def test_add_parent_task(self):
+        parent_task = Task.objects.create(document_name='Parent Task', task_board=self.board)
+        data = {
+            'document_name': 'Test Task',
+            'document_text': 'Test text',
+            'task_difficulty': 2,
+            'task_importance': 3,
+            'parent_task': parent_task.id
+        }
+        response = self.client.post(self.edit_task_url, data)
+        self.task.refresh_from_db()
+        self.assertEqual(self.task.parent_task, parent_task)
+        self.assertRedirects(response, reverse('taskmaster:display_task', kwargs={'task_id': self.task.id}))
+
+    def test_remove_parent_task(self):
+        parent_task = Task.objects.create(document_name='Parent Task', task_board=self.board)
+        self.task.parent_task = parent_task
+        self.task.save()
+        data = {
+            'document_name': 'Test Task',
+            'document_text': 'Test text',
+            'task_difficulty': 2,
+            'task_importance': 3,
+            'parent_task': ''
+        }
+        response = self.client.post(self.edit_task_url, data)
+        self.task.refresh_from_db()
+        self.assertIsNone(self.task.parent_task)
+        self.assertRedirects(response, reverse('taskmaster:display_task', kwargs={'task_id': self.task.id}))
+
+    def test_add_improper_parent_task(self):
+        # Parent task from another board should not be allowed.
+        other_board = TaskBoard.objects.create(board_name='Other Board', board_created_by=self.user,
+                                               board_last_modified_by=self.user)
+        parent_task = Task.objects.create(document_name='Parent Task', task_board=other_board)
+        data = {
+            'document_name': 'Test Task',
+            'document_text': 'Test text',
+            'task_difficulty': 2,
+            'task_importance': 3,
+            'parent_task': parent_task.id
+        }
+        response = self.client.post(self.edit_task_url, data)
+        self.task.refresh_from_db()
+        self.assertIsNone(self.task.parent_task)
+        self.assertNotEqual(response.status_code, 302)
+        self.assertTemplateUsed(response, 'taskmaster/edit-task.html')
+
+        # Parent task that is the same as the task being edited should not be allowed.
+        data['parent_task'] = self.task.id
+        response = self.client.post(self.edit_task_url, data)
+        self.task.refresh_from_db()
+        self.assertIsNone(self.task.parent_task)
+        self.assertNotEqual(response.status_code, 302)
+        self.assertTemplateUsed(response, 'taskmaster/edit-task.html')
+
+        # Parent task that is a child of the task being edited should not be allowed.
+        child_task = Task.objects.create(document_name='Child Task', task_board=self.board, parent_task=self.task)
+        data['parent_task'] = child_task.id
+        response = self.client.post(self.edit_task_url, data)
+        self.task.refresh_from_db()
+        print(f"parent of task:{self.task.parent_task}")
+        print(f"parent of child task: {child_task.parent_task}")
+        self.assertIsNone(self.task.parent_task)
+        self.assertRedirects(response, reverse('taskmaster:display_task', kwargs={'task_id': self.task.id}))
+

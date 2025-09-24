@@ -290,15 +290,23 @@ def edit_task(request, task_id):
             print('task_form is valid')
 
             # Check the new parent task.
-            new_parent_task_name = task_form.cleaned_data.get('parent_task')
-            print(f'new_parent_task_name: {new_parent_task_name}')
+            new_parent_task = task_form.cleaned_data.get('parent_task')
             task_obj = task_form.save(commit=False)
-            if new_parent_task_name:
-                new_parent_task = Task.objects.get(document_name=new_parent_task_name, task_board=task.task_board)
+
+            if new_parent_task and new_parent_task.task_board != task.task_board:
+                new_parent_task = None
+
+            if new_parent_task:
                 if task.parent_task:
+                    print(new_parent_task.parent_task == task)
+                    # The current parent task can't be the same as the new parent task.
+                    # The task can't be its own parent task.
+                    # The new parent task can't have this task as its own parent task (to avoid circular references).
                     if task.parent_task != new_parent_task and task != new_parent_task and new_parent_task.parent_task != task:
                         task_obj.parent_task = new_parent_task
                 else:
+                    # The task can't be its own parent task.
+                    # The new parent task can't have this task as its own parent task (to avoid circular references).
                     if new_parent_task != task and new_parent_task.parent_task != task:
                         task_obj.parent_task = new_parent_task
             else:

@@ -85,6 +85,9 @@ class TaskForm(forms.ModelForm):
                                     widget=forms.DateInput(attrs={'type': 'date'}),
                                     initial=None)
     task_board = forms.CharField(label='Task board:', required=False, disabled=True)
+
+    parent_task = forms.ModelChoiceField(label='Parent task:', required=False, queryset=Task.objects.none(),
+                                         empty_label='No parent task')
     class Meta:
         model = Task
         fields = [
@@ -120,6 +123,8 @@ class TaskForm(forms.ModelForm):
             self.fields['parent_task'].queryset = Task.objects.filter(
                 task_board=task_board
             ).exclude(pk=curr_instance.pk)
+            # This is supposedly a way to make the dropdown show the document_name of the task instead of "Task object (1)".
+            self.fields['parent_task'].label_from_instance = lambda obj: obj.document_name
 
             self.fields['task_board'].initial = str(curr_instance.task_board)
 
