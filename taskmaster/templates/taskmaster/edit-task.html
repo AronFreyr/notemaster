@@ -181,11 +181,11 @@
                         </div>
                     {% endfor %}
 
-                    {{ task_form.task_list.label }}: {{ task_form.task_list }}
-                    {{ task_form.task_difficulty.label }}: {{ task_form.task_difficulty }}
-                    {{ task_form.task_importance.label }}: {{ task_form.task_importance }}
+                    {{ task_form.task_list.label }} {{ task_form.task_list }}
+                    {{ task_form.task_difficulty.label }} {{ task_form.task_difficulty }}
+                    {{ task_form.task_importance.label }} {{ task_form.task_importance }}
                     {{ task_form.task_assigned_to.label }} {{ task_form.task_assigned_to }}
-                    {{ task_form.parent_task.label }}: {{ task_form.parent_task }}
+                    {{ task_form.parent_task.label }} {{ task_form.parent_task }}
                     {{ task_form.task_deadline.label }} {{ task_form.task_deadline }}
                     <div>
                         <div>
@@ -207,8 +207,8 @@
                     <p>Board: <a href="{% url 'taskmaster:display_board' task.task_board.id %}">
                         {{ task.task_board }}</a></p>
                 </div>
-                {{ task_form.next_task.label }}: {{ task_form.next_task }}
-                {{ task_form.previous_task.label }}: {{ task_form.previous_task }}
+                {{ task_form.next_task.label }} {{ task_form.next_task }}
+                {{ task_form.previous_task.label }} {{ task_form.previous_task }}
             </div>
         </div>
         <div class="test"></div>

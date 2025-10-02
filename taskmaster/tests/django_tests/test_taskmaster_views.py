@@ -186,3 +186,19 @@ class EditTaskViewTests(TestCase):
         self.task.refresh_from_db()
         self.assertIsNone(self.task.next_task)
         self.assertRedirects(response, reverse('taskmaster:display_task', kwargs={'task_id': self.task.id}))
+
+    def test_fail_at_making_next_task_the_same_as_previous_task(self):
+        next_task = Task.objects.create(document_name='Next Task', task_board=self.board, task_list=None)
+        self.task.previous_task = next_task
+        self.task.save()
+        data = {
+            'document_name': 'Test Task',
+            'document_text': 'Test text',
+            'task_difficulty': 2,
+            'task_importance': 3,
+            'next_task': next_task.id
+        }
+        response = self.client.post(self.edit_task_url, data)
+        self.task.refresh_from_db()
+        self.assertIsNone(self.task.next_task)
+

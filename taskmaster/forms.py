@@ -80,7 +80,7 @@ class TaskForm(forms.ModelForm):
     document_name = forms.CharField(label='Task name:', required=True)
     document_text = forms.CharField(label='', required=False,
                                     widget=TinyMCE(mce_attrs={'width': '700px', 'height': '400px'}))
-    task_assigned_to = forms.ModelChoiceField(label='Assigned to:', required=False, queryset=User.objects.all(), empty_label=None)
+    task_assigned_to = forms.ModelChoiceField(label='Assigned to:', required=False, queryset=User.objects.all(), empty_label='None')
     task_deadline = forms.DateField(label='Task deadline:', required=False,
                                     widget=forms.DateInput(attrs={'type': 'date'}),
                                     initial=None)
@@ -88,6 +88,18 @@ class TaskForm(forms.ModelForm):
 
     parent_task = forms.ModelChoiceField(label='Parent task:', required=False, queryset=Task.objects.none(),
                                          empty_label='No parent task')
+
+    next_task = forms.ModelChoiceField(label='Next task:', required=False, queryset=Task.objects.none(),
+                                       empty_label='No next task')
+
+    previous_task = forms.ModelChoiceField(label='Previous task:', required=False, queryset=Task.objects.none(),
+                                           empty_label='No previous task')
+
+    task_difficulty = forms.IntegerField(label='Task difficulty:', required=True,
+                                         widget=forms.NumberInput(attrs={'min': 0, 'max': 5}), initial=0)
+
+    task_importance = forms.IntegerField(label='Task importance:', required=True,
+                                         widget=forms.NumberInput(attrs={'min': 0, 'max': 5}), initial=0)
 
     class Meta:
         model = Task
@@ -97,7 +109,6 @@ class TaskForm(forms.ModelForm):
             'task_difficulty',
             'task_importance',
             'task_list',
-            #'task_board',
             'next_task',
             'previous_task',
             'parent_task',
@@ -131,7 +142,9 @@ class TaskForm(forms.ModelForm):
 
             # We make lists only show lists that are on the same board as the task being edited.
             self.fields['task_list'].queryset = curr_instance.task_board.get_all_lists_in_board_in_custom_order_queryset()
-            self.fields['task_list'].empty_label = None
+            # It can happen that tasks are not in a list, but you should not be able to do it purposely.
+            self.fields['task_list'].empty_label = 'None' if not curr_instance.task_list else None
+            self.fields['task_list'].label = 'Task list:'
 
             self.fields['task_assigned_to'].initial = User.objects.filter(username=curr_instance.task_assigned_to).first()
         else:

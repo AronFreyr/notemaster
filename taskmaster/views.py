@@ -9,7 +9,7 @@ from taskmaster.models import TaskBoard, TaskList, Task
 from taskmaster.forms import AddBoardForm, CreateTaskListForm, CreateTaskForm, CreateTaskMiniForm, TaskForm, EditTaskListForm
 from taskmaster import services
 from notes.forms import AddTagForm
-from notes.services.object_handling import handle_new_tag
+from notes.services.object_handling import handle_new_tag, remove_object
 
 @login_required
 def index(request):
@@ -280,6 +280,11 @@ def edit_task(request, task_id):
 
     unchanged_task = Task.objects.get(id=task_id)  # We will use this to compare the changes made to the task.
     if request.method == 'POST':
+        if 'remove_tag' in request.POST:
+            tag_to_remove = request.POST['remove_tag']
+            remove_object(tag_to_remove, 'tag', request)
+            return redirect(reverse('taskmaster:edit_task', args=(task_id, )))
+
         add_tag_form = AddTagForm(request.POST)
         task_form = TaskForm(request.POST, instance=task)
         if add_tag_form.is_valid():
@@ -374,12 +379,13 @@ def edit_task(request, task_id):
                     task_obj.previous_task = None
 
             # check next task
-            new_next_task_name = task_form.cleaned_data.get('next_task')
-            if new_next_task_name != unchanged_task.next_task:
-                if new_next_task_name:
-                    new_next_task = Task.objects.get(document_name=new_next_task_name, task_list=unchanged_task.task_list)
+            new_next_task = task_form.cleaned_data.get('next_task')
+            if new_next_task != unchanged_task.next_task:
+                if new_next_task:
                     if new_next_task != unchanged_task.next_task:
                         task_obj.next_task = new_next_task
+                    if not new_prev_task_name and new_next_task == unchanged_task.previous_task:
+                        task_obj.next_task = None
                 else:
                     task_obj.next_task = None
 
