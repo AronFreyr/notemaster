@@ -277,6 +277,7 @@ def edit_task_old(request, task_id):
 def edit_task(request, task_id):
     # TODO: For the love of god make unit tests for this function.
     task = Task.objects.get(id=task_id)
+
     unchanged_task = Task.objects.get(id=task_id)  # We will use this to compare the changes made to the task.
     if request.method == 'POST':
         add_tag_form = AddTagForm(request.POST)
@@ -287,27 +288,38 @@ def edit_task(request, task_id):
                 handle_new_tag(tag, new_doc=task, tag_creator=request.user)
 
         if task_form.is_valid():
-            print('task_form is valid')
+            # WARNING: checking if the task is valid will apply the changes to the model instance.
+            # If you have this: task_form = TaskForm(request.POST, instance=task) then after doing .is_valid()
+            # the task instance will have the changes applied to it.
+            # This won't save the changes though, but it will affect the instance.
 
             # Check the new parent task.
             new_parent_task = task_form.cleaned_data.get('parent_task')
+
+            # TODO: check if we can replace task_obj with "task" without issues.
             task_obj = task_form.save(commit=False)
 
-            if new_parent_task and new_parent_task.task_board != task.task_board:
+            if new_parent_task and new_parent_task.task_board != unchanged_task.task_board:
+                new_parent_task = None
+
+            # We can't allow the new parent task to be a child of the task being edited.
+            # This would create a circular reference.
+            if new_parent_task and new_parent_task.parent_task == task:
                 new_parent_task = None
 
             if new_parent_task:
-                if task.parent_task:
-                    print(new_parent_task.parent_task == task)
+                if unchanged_task.parent_task:
                     # The current parent task can't be the same as the new parent task.
                     # The task can't be its own parent task.
                     # The new parent task can't have this task as its own parent task (to avoid circular references).
-                    if task.parent_task != new_parent_task and task != new_parent_task and new_parent_task.parent_task != task:
+                    if (unchanged_task.parent_task != new_parent_task
+                            and unchanged_task != new_parent_task
+                            and new_parent_task.parent_task != unchanged_task):
                         task_obj.parent_task = new_parent_task
                 else:
                     # The task can't be its own parent task.
                     # The new parent task can't have this task as its own parent task (to avoid circular references).
-                    if new_parent_task != task and new_parent_task.parent_task != task:
+                    if new_parent_task != unchanged_task and new_parent_task.parent_task != unchanged_task:
                         task_obj.parent_task = new_parent_task
             else:
                 task_obj.parent_task = None
@@ -316,8 +328,6 @@ def edit_task(request, task_id):
 
             # Check if we changed the task list.
             new_list = task_form.cleaned_data.get('task_list')
-            print(f'new_list: {new_list}')
-            print(f'old task list: {unchanged_task.task_list}')
             old_task_list = unchanged_task.task_list  # The old list that the task used to belong to.
             # The new list the task belongs to.
             new_task_list = TaskList.objects.filter(list_name=new_list, list_board=task.task_board).first()
@@ -355,7 +365,6 @@ def edit_task(request, task_id):
 
             # check previous task
             new_prev_task_name = task_form.cleaned_data.get('previous_task')
-            print(f'new_prev_task_name: {new_prev_task_name}')
             if new_prev_task_name != unchanged_task.previous_task:
                 if new_prev_task_name:
                     new_prev_task = Task.objects.get(document_name=new_prev_task_name, task_list=unchanged_task.task_list)
@@ -366,7 +375,6 @@ def edit_task(request, task_id):
 
             # check next task
             new_next_task_name = task_form.cleaned_data.get('next_task')
-            print(f'new_next_task_name: {new_next_task_name}')
             if new_next_task_name != unchanged_task.next_task:
                 if new_next_task_name:
                     new_next_task = Task.objects.get(document_name=new_next_task_name, task_list=unchanged_task.task_list)

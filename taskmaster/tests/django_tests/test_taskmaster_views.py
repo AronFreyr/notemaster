@@ -137,13 +137,52 @@ class EditTaskViewTests(TestCase):
         self.assertNotEqual(response.status_code, 302)
         self.assertTemplateUsed(response, 'taskmaster/edit-task.html')
 
+    def test_add_circular_parent_task(self):
+        data = {
+            'document_name': 'Test Task',
+            'document_text': 'Test text',
+            'task_difficulty': 2,
+            'task_importance': 3
+        }
+
         # Parent task that is a child of the task being edited should not be allowed.
         child_task = Task.objects.create(document_name='Child Task', task_board=self.board, parent_task=self.task)
+
+        # We set that our task has a parent task that is its own child. This should be rejected.
         data['parent_task'] = child_task.id
+        self.assertIsNone(self.task.parent_task)
         response = self.client.post(self.edit_task_url, data)
         self.task.refresh_from_db()
-        print(f"parent of task:{self.task.parent_task}")
-        print(f"parent of child task: {child_task.parent_task}")
-        self.assertIsNone(self.task.parent_task)
+        manipulated_task = Task.objects.get(id=self.task.id)
+        self.assertIsNone(manipulated_task.parent_task)
         self.assertRedirects(response, reverse('taskmaster:display_task', kwargs={'task_id': self.task.id}))
 
+    def test_add_next_task(self):
+        next_task = Task.objects.create(document_name='Next Task', task_board=self.board, task_list=None)
+        data = {
+            'document_name': 'Test Task',
+            'document_text': 'Test text',
+            'task_difficulty': 2,
+            'task_importance': 3,
+            'next_task': next_task.id
+        }
+        response = self.client.post(self.edit_task_url, data)
+        self.task.refresh_from_db()
+        self.assertEqual(self.task.next_task, next_task)
+        self.assertRedirects(response, reverse('taskmaster:display_task', kwargs={'task_id': self.task.id}))
+
+    def test_remove_next_task(self):
+        next_task = Task.objects.create(document_name='Next Task', task_board=self.board, task_list=None)
+        self.task.next_task = next_task
+        self.task.save()
+        data = {
+            'document_name': 'Test Task',
+            'document_text': 'Test text',
+            'task_difficulty': 2,
+            'task_importance': 3,
+            'next_task': ''
+        }
+        response = self.client.post(self.edit_task_url, data)
+        self.task.refresh_from_db()
+        self.assertIsNone(self.task.next_task)
+        self.assertRedirects(response, reverse('taskmaster:display_task', kwargs={'task_id': self.task.id}))

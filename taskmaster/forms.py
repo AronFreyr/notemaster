@@ -88,6 +88,7 @@ class TaskForm(forms.ModelForm):
 
     parent_task = forms.ModelChoiceField(label='Parent task:', required=False, queryset=Task.objects.none(),
                                          empty_label='No parent task')
+
     class Meta:
         model = Task
         fields = [
