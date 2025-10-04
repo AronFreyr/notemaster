@@ -1,6 +1,8 @@
 from django.db import models
 from notes.models import Document
 from django.contrib.auth.models import User
+from django.db.models import Case, When, QuerySet
+
 
 class Task(Document):
 
@@ -56,6 +58,20 @@ class TaskBoard(models.Model):
                                             blank=True, null=True)
     board_last_modified_by = models.ForeignKey(User, on_delete=models.SET_NULL,
                                                related_name='board_last_modified_by', blank=True, null=True)
+
+    def get_all_lists_in_board_in_custom_order_queryset(self) -> QuerySet:
+
+        # We do some funky stuff to make sure that the queryset is ordered in the custom order.
+        # This is because Django forms want to have a queryset and not a list.
+        task_list = self.tasklist_set.filter(previous_list=None).first()
+        if not task_list:
+            return self.tasklist_set.none()
+        ordered_ids = [task_list.id]
+        while task_list.next_list:
+            task_list = task_list.next_list
+            ordered_ids.append(task_list.id)
+        preserved = Case(*[When(pk=pk, then=pos) for pos, pk in enumerate(ordered_ids)])
+        return self.tasklist_set.filter(pk__in=ordered_ids).order_by(preserved)
 
     def get_all_lists_in_board_in_custom_order(self) -> list:
         task_list = self.tasklist_set.filter(previous_list=None).first()

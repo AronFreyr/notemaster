@@ -11,145 +11,83 @@
 
 <div class="container">
     <h1>Editing a Task</h1>
-    <div class="row">
-        <div class="col-sm-2">
-            <!-- Tags that are currently associated with the document -->
-            <div class="sidebar-module">
-                {% block tags %} {% endblock tags %}
-                <h3>Tags</h3>
-                {% for tag in task.get_all_tags_sorted %}
-                    <div id="id-div-tag-container">
-                        <div class="div-tag-input-container">
-                            <div class="div-tag-name">
-                                <p>
-                                    <a href="{% url 'notes:display_tag' tag.id %}">{{ tag.tag_name }}</a>
-                                    <span class="badge badge-light"> ({{ tag.get_nr_of_docs_with_tag }})</span>
-                                </p>
-                            </div>
-                            <div class="div-red-x-container">
-                                <!-- TODO: modal for confirmation when you press the button -->
-                                <button class="close" data-toggle="modal" data-target="#removeTagModal_{{tag.id}}">
-                                    <span style="color:red; font-size:20pt;">&times;</span>
-                                </button>
-                                {% with task as document %}
-                                {% include 'notes/snippets/modals/remove-tag-modal.html' %}
-                                {% endwith %}
+    <form action="{% url 'taskmaster:edit_task' task.id %}" method="post" id="id-form-edit-task-2">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-sm-2">
+                <!-- Tags that are currently associated with the document -->
+                <div class="sidebar-module">
+                    <h3>Tags</h3>
+                    {% for tag in task.get_all_tags_sorted %}
+                        <div class="div-tag-container">
+                            <div class="div-tag-input-container">
+                                <div class="div-tag-name">
+                                    <p>
+                                        <a href="{% url 'notes:display_tag' tag.id %}">{{ tag.tag_name }}</a>
+                                        <span class="badge badge-light"> ({{ tag.get_nr_of_docs_with_tag }})</span>
+                                    </p>
+                                </div>
+                                <div class="div-red-x-container">
+                                    <!-- TODO: modal for confirmation when you press the button -->
+                                    <button class="close" type="button" data-toggle="modal" data-target="#removeTagModal_{{tag.id}}">
+                                        <span style="color:red; font-size:20pt;">&times;</span>
+                                    </button>
+                                    {% with task as document %}
+                                    {% include 'taskmaster/snippets/modals/remove-tag-modal.html' %}
+                                    {% endwith %}
+                                </div>
                             </div>
                         </div>
-                    </div>
-                {% endfor %}
-            </div>
-            <form action="{% url 'taskmaster:edit_task' task.id %}" method="post" id="id-form-change-task-details">
-                {% csrf_token %}
-                List:
-                <select id="list-dropdown" name="name_list_dropdown">
-                    {% for list in task.task_board.get_all_lists_in_board_in_custom_order %}
-                        <option value="{{list.list_name}}" {% if list.list_name == task.task_list.list_name %} selected {% endif %}>
-                            {{ list.list_name }}</option>
                     {% endfor %}
-                </select>
-                Difficulty: <input type="number" id="id-difficulty-number"
-                                   name="name_task_difficulty" value="{{task.task_difficulty}}">
-                Importance: <input type="number" id="id-importance-number"
-                                   name="name_task_importance" value="{{task.task_importance}}">
-                Assigned To: <input type="text" id="id-assignee"
-                                    name="name_task_assigned_to" value="{{ task.task_assigned_to }}">
 
-                <label for="parent-task-dropdown">Parent task:</label>
-                <select id="parent-task-dropdown" name="name_parent_task_dropdown" class="change-tasks">
-                    {% for parent_task in possible_parent_tasks %}
-                        <option value="{{parent_task.document_name}}"
-                                {% if parent_task.document_name == task.parent_task.document_name %} selected {% endif %}>
-                            {{ parent_task.document_name }}</option>
-                    {% endfor %}
-                </select>
-
-                <label for="id-due-date-picker">Pick a date</label>
-                <input id="id-due-date-picker" name="name-due-date-picker"
-                       type="date" {% if task.task_deadline %} value="{{ task.task_deadline }}" {% endif %}>
-
-                <div id="id-container-add-tag">
+                    {{ task_form.task_list.label }} {{ task_form.task_list }}
+                    {{ task_form.task_difficulty.label }} {{ task_form.task_difficulty }}
+                    {{ task_form.task_importance.label }} {{ task_form.task_importance }}
+                    {{ task_form.task_assigned_to.label }} {{ task_form.task_assigned_to }}
+                    {{ task_form.parent_task.label }} {{ task_form.parent_task }}
+                    {{ task_form.task_deadline.label }} {{ task_form.task_deadline }}
                     <div>
-                        {{ add_tag_form.as_p }}
+                        <div>
+                            {{ add_tag_form.as_p }}
+                        </div>
                     </div>
                 </div>
-
-                <input type="submit" value="Submit">
-            </form>
-
-        </div>
-
-        <div class="col-sm-8">
-            <form action="{% url 'taskmaster:edit_task' task.id %}" method="post" id="id-form-change-task-text">
-                {% csrf_token %}
-                <div id="id-task-name">
-                    <textarea id="id-textarea-change-task-name" form="id-form-change-task-text"
-                    name="name_textarea_edit_task_name">{{ task.document_name }}</textarea>
-                </div>
-
-                <div id="id-task-text">
-                    <textarea id="id-textarea-change-task-text" form="id-form-change-task-text"
-                    name="name_textarea_edit_task_text">{{ task.document_text }}</textarea>
-                </div>
-                <div id="div-container-edit-task-submit-button">
-                    <label for="input-edit-document-text"></label>
-                    <input type="submit" value="Submit">
-                </div>
-            </form>
-
-        </div>
-        <!-- Edit and delete buttons to the right side -->
-        <div class="col-sm-2">
-            {% block add_tag %} {% endblock add_tag %}
-            {% block delete_button %} {% endblock delete_button %}
-            <div class="delete-task-container">
-                {% comment %}
-                 <form action="{% url 'taskmaster:delete_task' task.id %}" method="post">
-                    {% csrf_token %}
-                    <div>
-                        <input type="hidden" name="object_type" value="task">
-                        <input type="hidden" name="action_type" value="delete">
-                        <input type="hidden" name="currently_viewed_doc" value="{{ task.document_name }}">
-                        <button type="submit" class="btn btn-danger" value="Delete Task">Delete Task</button>
-                    </div>
-                </form>
-                {% endcomment %}
-                <button type="submit" class="btn btn-danger" data-toggle="modal" data-target="#deleteTaskModal">
-                    Delete Task
-                </button>
-                {% include 'taskmaster/snippets/modals/delete-task-modal.html' %}
             </div>
-            <div class="assigned-board">
-
-                <p>Board: <a href="{% url 'taskmaster:display_board' task.task_board.id %}">
-                    {{ task.task_board.board_name }}</a></p>
+            <div class="col-sm-8">
+                <div>
+                    {{ task_form.document_name }}
+                </div>
+                <div>
+                    {{ task_form.document_text }}
+                </div>
             </div>
-            <div class="connected-tasks">
-                <form action="{% url 'taskmaster:edit_task' task.id %}" method="post" id="id-form-change-task-connections">
-                    {% csrf_token %}
-                    <label for="previous-task-dropdown">Previous task:</label>
-                    <select id="previous-task-dropdown" name="name_previous_task_dropdown" class="change-tasks">
-                        {% for prev_task in tasks_in_list %}
-                            <option value="{{prev_task.document_name}}"
-                                    {% if prev_task.document_name == task.previous_task.document_name %} selected {% endif %}>
-                                {{ prev_task.document_name }}</option>
-                        {% endfor %}
-                    </select>
-
-                     <label for="next-task-dropdown">Next task:</label>
-                    <select id="next-task-dropdown" name="name_next_task_dropdown" class="change-tasks">
-                        {% for next_task in tasks_in_list %}
-                            <option value="{{next_task.document_name}}"
-                                    {% if next_task.document_name == task.next_task.document_name %} selected {% endif %}>
-                                {{ next_task.document_name }}</option>
-                        {% endfor %}
-                    </select>
-
-                    <input type="submit" value="Submit">
-                </form>
+            <div class="col-sm-2">
+                <div class="assigned-board">
+                    <p>Board: <a href="{% url 'taskmaster:display_board' task.task_board.id %}">
+                        {{ task.task_board }}</a></p>
+                </div>
+                {{ task_form.next_task.label }} {{ task_form.next_task }}
+                {{ task_form.previous_task.label }} {{ task_form.previous_task }}
             </div>
         </div>
-    </div>
+        <div class="test"></div>
+
+        <!-- Save and delete buttons are at the bottom where you can't accidentally click them -->
+        <div class="row">
+            <div class="col-sm-2">
+                <input type="submit" value="Save Changes" class="btn btn-primary">
+            </div>
+            <div class="col-sm-8"></div>
+            <div class="col-sm-2">
+                <div class="delete-task-container">
+                    <button type="submit" class="btn btn-danger" data-toggle="modal" data-target="#deleteTaskModal">
+                        Delete Task
+                    </button>
+                    {% include 'taskmaster/snippets/modals/delete-task-modal.html' %}
+                </div>
+            </div>
+        </div>
+    </form>
 </div>
 
 {% endblock content %}

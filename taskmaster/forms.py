@@ -1,5 +1,7 @@
 from django import forms
 from taskmaster.models import Task, TaskList
+from django.contrib.auth.models import User
+from tinymce.widgets import TinyMCE
 
 class AddBoardForm(forms.Form):
 
@@ -69,3 +71,94 @@ class CreateTaskForm(forms.ModelForm):
     #     self.fields['task_difficulty'].widget = forms.NumberInput(attrs={'min': 0, 'max': 10})
     #     self.fields['task_importance'].widget = forms.NumberInput(attrs={'min': 0, 'max': 10})
     #     self.fields['task_assigned_to'].widget = forms.TextInput(attrs={'placeholder': 'Assigned to...'})
+
+
+class TaskForm(forms.ModelForm):
+    """
+    Form for creating and editing tasks.
+    """
+    document_name = forms.CharField(label='Task name:', required=True)
+    document_text = forms.CharField(label='', required=False,
+                                    widget=TinyMCE(mce_attrs={'width': '700px', 'height': '400px'}))
+    task_assigned_to = forms.ModelChoiceField(label='Assigned to:', required=False, queryset=User.objects.all(), empty_label='None')
+    task_deadline = forms.DateField(label='Task deadline:', required=False,
+                                    widget=forms.DateInput(attrs={'type': 'date'}),
+                                    initial=None)
+    task_board = forms.CharField(label='Task board:', required=False, disabled=True)
+
+    parent_task = forms.ModelChoiceField(label='Parent task:', required=False, queryset=Task.objects.none(),
+                                         empty_label='No parent task')
+
+    next_task = forms.ModelChoiceField(label='Next task:', required=False, queryset=Task.objects.none(),
+                                       empty_label='No next task')
+
+    previous_task = forms.ModelChoiceField(label='Previous task:', required=False, queryset=Task.objects.none(),
+                                           empty_label='No previous task')
+
+    task_difficulty = forms.IntegerField(label='Task difficulty:', required=True,
+                                         widget=forms.NumberInput(attrs={'min': 0, 'max': 5}), initial=0)
+
+    task_importance = forms.IntegerField(label='Task importance:', required=True,
+                                         widget=forms.NumberInput(attrs={'min': 0, 'max': 5}), initial=0)
+
+    class Meta:
+        model = Task
+        fields = [
+            'document_name',
+            'document_text',
+            'task_difficulty',
+            'task_importance',
+            'task_list',
+            'next_task',
+            'previous_task',
+            'parent_task',
+            'task_deadline',
+        ]
+
+    def __init__(self, *args, **kwargs):
+        super(TaskForm, self).__init__(*args, **kwargs)
+        curr_instance: Task = kwargs.get('instance')  # The task being edited.
+        if curr_instance:
+            # We restrict the next_task, previous_task, and parent_task fields to only show tasks
+            # that are in the same list and on the same board as the task being edited.
+            # Note: parent_task can be from any list on the same board.
+            task_list = curr_instance.task_list
+            task_board = curr_instance.task_board
+            self.fields['next_task'].queryset = Task.objects.filter(
+                task_list=task_list,
+                task_board=task_board
+            ).exclude(pk=curr_instance.pk)
+            self.fields['previous_task'].queryset = Task.objects.filter(
+                task_list=task_list,
+                task_board=task_board
+            ).exclude(pk=curr_instance.pk)
+            self.fields['parent_task'].queryset = Task.objects.filter(
+                task_board=task_board
+            ).exclude(pk=curr_instance.pk)
+            # This is supposedly a way to make the dropdown show the document_name of the task instead of "Task object (1)".
+            self.fields['parent_task'].label_from_instance = lambda obj: obj.document_name
+
+            self.fields['task_board'].initial = str(curr_instance.task_board)
+
+            # We make lists only show lists that are on the same board as the task being edited.
+            self.fields['task_list'].queryset = curr_instance.task_board.get_all_lists_in_board_in_custom_order_queryset()
+            # It can happen that tasks are not in a list, but you should not be able to do it purposely.
+            self.fields['task_list'].empty_label = 'None' if not curr_instance.task_list else None
+            self.fields['task_list'].label = 'Task list:'
+
+            self.fields['task_assigned_to'].initial = User.objects.filter(username=curr_instance.task_assigned_to).first()
+        else:
+            self.fields['task_board'].initial = ''
+            self.fields['next_task'].queryset = Task.objects.none()
+            self.fields['previous_task'].queryset = Task.objects.none()
+            self.fields['parent_task'].queryset = Task.objects.none()
+
+        # This gives the parent_task a field that limits it's size as defined in the edit-task.css.
+        self.fields['parent_task'].widget.attrs.update({'class': 'select-block'})
+        self.fields['next_task'].widget.attrs.update({'class': 'select-block'})
+        self.fields['previous_task'].widget.attrs.update({'class': 'select-block'})
+        self.fields['task_assigned_to'].widget.attrs.update({'class': 'select-block'})
+        self.fields['task_list'].widget.attrs.update({'class': 'select-block'})
+        self.fields['task_importance'].widget.attrs.update({'class': 'select-block'})
+        self.fields['task_difficulty'].widget.attrs.update({'class': 'select-block'})
+        self.fields['document_name'].widget.attrs.update({'class': 'task-name-input'})
