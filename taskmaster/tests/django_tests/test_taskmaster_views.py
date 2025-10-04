@@ -6,6 +6,11 @@ from django.contrib.auth.models import User
 
 
 class EditTaskViewTests(TestCase):
+
+    # We need tests for:
+    # add tag to task
+    # remove tag from task
+
     def setUp(self):
         self.user = User.objects.create_user(username='test_user', password='test_pass')
         self.board = TaskBoard.objects.create(board_name='Test Board', board_created_by=self.user,
@@ -80,6 +85,34 @@ class EditTaskViewTests(TestCase):
         self.assertIsNotNone(new_tag)
         self.assertEqual(new_tag.tag_type, Tag.TagTypes.NORMAL)
         self.assertRedirects(response, reverse('taskmaster:display_task', kwargs={'task_id': self.task.id}))
+
+    def test_remove_tag_from_task(self):
+        data = {
+            'document_name': 'Test Task',
+            'document_text': 'Test text',
+            'task_difficulty': 2,
+            'task_importance': 3,
+            'tag_name': 'urgent, urgent2'
+        }
+        response = self.client.post(self.edit_task_url, data)
+        self.task.refresh_from_db()
+
+        self.assertIn('urgent', [tag.tag_name for tag in self.task.get_all_tags()])
+        self.assertIn('urgent2', [tag.tag_name for tag in self.task.get_all_tags()])
+
+        urgent_tag = Tag.objects.get(tag_name='urgent')
+
+        data = {
+            'remove_tag': urgent_tag.id,
+            'currently_viewed_doc': self.task.document_name
+        }
+
+        response = self.client.post(self.edit_task_url, data)
+        self.task.refresh_from_db()
+
+        self.assertNotIn('urgent', [tag.tag_name for tag in self.task.get_all_tags()])
+        self.assertIn('urgent2', [tag.tag_name for tag in self.task.get_all_tags()])
+        self.assertRedirects(response, reverse('taskmaster:edit_task', kwargs={'task_id': self.task.id}))
 
     def test_add_parent_task(self):
         parent_task = Task.objects.create(document_name='Parent Task', task_board=self.board)
